@@ -1,5 +1,5 @@
 name: Deploy to GitHub Pages
-
+# Trigger rebuild
 on:
   push:
     branches: [main]
