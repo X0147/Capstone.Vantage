@@ -1,41 +1,39 @@
-# Tripma
+# Capstone Flight Booking System
 
-<br/>
-This is a Flight Booking UI template built using React and Tailwind CSS. It provides a sleek and user-friendly interface for users to search and book flights. The template is fully responsive and can be easily customized to fit your specific needs.
+A premium, modern flight booking web application built from scratch, synthesizing learnings from Tripma, TravelGrid, and Amadeus Django repositories.
 
 ## Features
 
-- User-friendly interface for flight search and booking
-- Responsive design, suitable for various devices and screen sizes
-- Easy customization with React components and Tailwind CSS utility classes
-- Well-structured codebase, following best practices and conventions
-- show warning and success messages.
+- **Modern Architecture**: Vite + React 18, utilizing functional components and hooks.
+- **Global State**: Managed via Zustand (`useBookingStore.js`), replacing scattered local state and Context API overhead.
+- **Mock API**: Deterministic flight search logic simulating the Amadeus API (`flightService.js`).
+- **Premium Styling**: Tailwind CSS with a custom dark theme, glassmorphism UI elements, and highly responsive layouts.
+- **Checkout Flow**: 
+  1. Search & Results
+  2. Passenger Information
+  3. Interactive Seat Selection
+  4. Payment
+  5. E-Ticket Confirmation / Boarding Pass
 
-## Prerequisites
+## Development
 
-To use this template, you need to have the following installed on your machine:
+```bash
+cd capstone-app
 
-- Node.js (version ....)
-- npm (version ....)
+# Install dependencies
+npm install
 
-## Installation
+# Start the dev server
+npm run dev
 
-1. Clone the repository: git clone https://github.com/PrtHub/Tripma.git
-2. Install the dependencies: npm install
-3. To start the development server and view the template in your browser, run the following command: npm run dev
+# Run unit tests
+npm test
+```
 
-## Customization
+## Structure
 
-The Flight Booking UI template is highly customizable. You can modify the existing components or create new ones to suit your requirements. The main files and directories you may need to work with are:
-
-- src/App.js: The main entry point of the application.
-- src/components & src/container: Directory containing reusable React components.
-- src/assets: All the icons, images, logos are here
-
-## Deployment
-
-- To build the optimized production-ready version of the template, run the following command: npm run build
-This will create a build directory with the optimized and minified assets. You can then deploy this directory to your hosting platform of choice.
-
-## Contributing
-Contributions are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request. Make sure to follow the existing coding style and guidelines.
+- `/docs`: Architecture, Analysis, and Implementation plan documents.
+- `/capstone-app`: Main application root.
+  - `src/pages`: Individual step pages for the booking flow.
+  - `src/store`: Zustand state management.
+  - `src/services`: Flight search logic.
