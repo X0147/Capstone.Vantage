@@ -1,39 +1,16 @@
-# Capstone Flight Booking System
+# React + Vite
 
-A premium, modern flight booking web application built from scratch, synthesizing learnings from Tripma, TravelGrid, and Amadeus Django repositories.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
+Currently, two official plugins are available:
 
-- **Modern Architecture**: Vite + React 18, utilizing functional components and hooks.
-- **Global State**: Managed via Zustand (`useBookingStore.js`), replacing scattered local state and Context API overhead.
-- **Mock API**: Deterministic flight search logic simulating the Amadeus API (`flightService.js`).
-- **Premium Styling**: Tailwind CSS with a custom dark theme, glassmorphism UI elements, and highly responsive layouts.
-- **Checkout Flow**: 
-  1. Search & Results
-  2. Passenger Information
-  3. Interactive Seat Selection
-  4. Payment
-  5. E-Ticket Confirmation / Boarding Pass
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Development
+## React Compiler
 
-```bash
-cd capstone-app
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-# Install dependencies
-npm install
+## Expanding the ESLint configuration
 
-# Start the dev server
-npm run dev
-
-# Run unit tests
-npm test
-```
-
-## Structure
-
-- `/docs`: Architecture, Analysis, and Implementation plan documents.
-- `/capstone-app`: Main application root.
-  - `src/pages`: Individual step pages for the booking flow.
-  - `src/store`: Zustand state management.
-  - `src/services`: Flight search logic.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
