@@ -144,7 +144,17 @@ export const useBookingStore = create<BookingState>()(
     }),
     {
       name: 'vantage-booking-store',
-      storage: createJSONStorage(() => localStorage),
+      // Provide a safe fallback storage when `localStorage` is unavailable (tests / SSR).
+      storage: createJSONStorage(() => {
+        if (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.setItem === 'function') return window.localStorage;
+        // lightweight in-memory fallback
+        const store: Record<string, string> = {};
+        return {
+          getItem: (key: string) => (key in store ? store[key] : null),
+          setItem: (key: string, value: string) => { store[key] = value; },
+          removeItem: (key: string) => { delete store[key]; },
+        } as Storage;
+      }),
     }
   )
 );
