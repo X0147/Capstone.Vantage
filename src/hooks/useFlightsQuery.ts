@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useSearchStore from '../store/useSearchStore';
-import { searchFlights, type FlightSearchResult } from '../services/flightService';
+import { searchFlights, type FlightSearchResult } from '../services/flightService.ts';
 
 const useDebouncedValue = <T,>(value: T, delayMs: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
