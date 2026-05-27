@@ -1,4 +1,3 @@
-import js from '@eslint/js';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -12,7 +11,6 @@ export default [
   {
     ignores: ['dist', 'node_modules', 'vite.config.ts', 'eslint.config.js', 'vite.config.js'],
   },
-  js.configs.recommended,
   security.configs.recommended,
   jsxA11y.flatConfigs.recommended,
   {

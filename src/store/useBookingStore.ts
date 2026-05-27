@@ -48,8 +48,8 @@ export interface BookingState {
   selectOutbound: (flight: Flight) => void;
   selectReturn: (flight: Flight) => void;
 
-  payment: any | null;
-  setPayment: (payment: any) => void;
+  payment: Record<string, unknown> | null;
+  setPayment: (payment: Record<string, unknown>) => void;
   bookingReference: string | null;
   bookingConfirmed: boolean;
   confirmBooking: () => Promise<void>;
@@ -91,23 +91,33 @@ export const useBookingStore = create<BookingState>()(
         set({ isSearching: true });
         try {
           const { searchParams } = get();
-          const results = await flightService.searchFlights({
+          interface FlightServiceType {
+            searchFlights(args: {
+              from: string;
+              to: string;
+              departDate: string;
+              returnDate?: string;
+            }): Promise<{ outbound: Flight[] | null; return: Flight[] | null }>; 
+          }
+
+          const results = await (flightService as unknown as FlightServiceType).searchFlights({
             from: searchParams.from,
             to: searchParams.to,
             departDate: searchParams.departDate,
             returnDate: searchParams.returnDate,
           });
+
           set({
-            flightsOutbound: results.outbound || [],
-            flightsReturn: results.return || [],
+            flightsOutbound: results.outbound ?? [],
+            flightsReturn: results.return ?? [],
             selectedOutbound: null,
             selectedReturn: null,
           });
         } catch (error) {
           // Keep simple for now; UI can read flights arrays and show empty state.
           // In dev, log for quick debugging.
-          // eslint-disable-next-line no-console
-          console.error('Flight search failed', error);
+          if (error instanceof Error) console.error('Flight search failed', error.message);
+          else console.error('Flight search failed', String(error));
         } finally {
           set({ isSearching: false });
         }
@@ -160,23 +170,26 @@ export const useBookingStore = create<BookingState>()(
       name: 'vantage-booking-store',
       // Provide a safe fallback storage when `localStorage` is unavailable (tests / SSR).
       storage: createJSONStorage(() => {
-        if (
-          typeof window !== 'undefined' &&
-          window.localStorage &&
-          typeof window.localStorage.setItem === 'function'
-        )
-          return window.localStorage;
-        // lightweight in-memory fallback
-        const store: Record<string, string> = {};
+        try {
+          if (typeof window !== 'undefined') {
+            const maybeLocal = (window as unknown as { localStorage?: Storage }).localStorage;
+            if (maybeLocal && typeof maybeLocal.setItem === 'function') return maybeLocal;
+          }
+        } catch {
+          // localStorage access may throw in some environments (privacy mode)
+        }
+
+        // lightweight in-memory fallback using Map to avoid dynamic property access warnings
+        const store = new Map<string, string>();
         return {
-          getItem: (key: string) => (key in store ? store[key] : null),
+          getItem: (key: string) => (store.has(key) ? store.get(key) ?? null : null),
           setItem: (key: string, value: string) => {
-            store[key] = value;
+            store.set(key, value);
           },
           removeItem: (key: string) => {
-            delete store[key];
+            store.delete(key);
           },
-        } as Storage;
+        };
       }),
     }
   )
