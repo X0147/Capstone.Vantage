@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
 import { useQuery } from '@tanstack/react-query';
 import { fetchFlights, FlightSearchResponse, FlightSearchParams } from '../api/flightApi';
 
@@ -10,9 +11,9 @@ export interface SearchCriteria {
 }
 
 export const useFlightSearch = (criteria: SearchCriteria, isEnabled: boolean) => {
-  return useQuery<FlightSearchResponse, unknown>({
+  return useQuery<FlightSearchResponse, Error>({
     queryKey: ['flightSearch', criteria],
-    queryFn: async () => {
+    queryFn: async (): Promise<FlightSearchResponse> => {
       const params: FlightSearchParams = {
         origin: criteria.origin,
         destination: criteria.destination,
@@ -20,17 +21,8 @@ export const useFlightSearch = (criteria: SearchCriteria, isEnabled: boolean) =>
         passengers: criteria.passengers,
         ...(criteria.returnDate ? { returnDate: criteria.returnDate } : {}),
       };
-      const resp = await fetch(`/api/flights/search?${new URLSearchParams({
-        origin: params.origin,
-        destination: params.destination,
-        departureDate: params.departureDate,
-        passengers: String(params.passengers),
-        ...(params.returnDate ? { returnDate: params.returnDate } : {}),
-      }).toString()}`);
-      if (!resp.ok) throw new Error('Failed to fetch flights');
-      const json = await resp.json();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return json as FlightSearchResponse;
+      const result = await fetchFlights(params);
+      return result;
     },
     enabled: isEnabled && !!criteria.origin && !!criteria.destination && !!criteria.departureDate,
     refetchInterval: 30000,
