@@ -15,27 +15,27 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-## Deploying to GitHub Pages
+## GitHub Pages deployment
 
-This repository includes a GitHub Actions workflow that will build the app and deploy the generated `dist/` folder to the `gh-pages` branch when you push to `main`.
+This repository includes a GitHub Actions workflow that builds the site and publishes the generated `dist/` folder to GitHub Pages automatically when you push to `main`.
 
-Local deploy (one-off)
-
-You can reproduce the deployment steps locally with the convenience npm script added to `package.json`:
+Notes:
+- The CI workflow creates and updates the `gh-pages` branch as part of publishing; you do not need to maintain that branch by hand.
+- If you prefer a manual local build, run:
 
 ```bash
-npm run deploy
+npm run build
 ```
 
-This script runs `npm run build` and then force-pushes the `dist/` folder to the `gh-pages` branch (same steps the CI uses).
+Then inspect the `dist/` folder locally or publish it manually if desired. The previously-provided one-shot `deploy` script (which force-pushed `dist/` to `gh-pages`) has been removed to avoid accidental overwrites.
 
 Verify the published site
 
-1. Wait a minute after pushing to `main` for GitHub Actions to build and deploy.
-2. Visit the Pages URL configured in `package.json` `homepage` (for example):
-	`https://X0147.github.io/Capstone.Vantage/`
+1. After pushing to `main`, wait a minute for the workflow to run and publish.
+2. Visit the Pages URL in your browser, for example:
+   `https://X0147.github.io/Capstone.Vantage/`
 3. If you see stale assets or errors, try a hard refresh (Cmd+Shift+R) or clear the cache.
 
 Repository Pages settings
 
-Ensure your repository's Pages settings (Settings → Pages) point to the `gh-pages` branch. I can check or update this for you if you want (it requires repository admin access).
+The Actions workflow publishes to GitHub Pages; if you want me to confirm or update the Pages settings (Settings → Pages) I can do that — it requires repository admin access.
