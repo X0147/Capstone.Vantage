@@ -10,8 +10,13 @@ import PaymentPage from './pages/PaymentPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 
 function App() {
+  // If the app is served from a subpath (GitHub Pages project site), set the router basename
+  const basename = (typeof window !== 'undefined' && window.location.pathname.startsWith('/Capstone.Vantage'))
+    ? '/Capstone.Vantage'
+    : '/';
+
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased">
         {/* Placeholder Navbar */}
         <header className="p-4 border-b border-white/10 no-print">
