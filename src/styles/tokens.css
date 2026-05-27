@@ -1,0 +1,41 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    /* Premium Midnight & Ink Palette */
+    --color-bg-primary: #070a13;
+    --color-bg-secondary: #0f172a;
+    --color-surface: rgba(30, 41, 59, 0.7);
+    --color-surface-border: rgba(255, 255, 255, 0.08);
+
+    /* Text / Contrast */
+    --color-text-primary: #f8fafc;
+    --color-text-muted: #94a3b8;
+
+    /* Luxury Accent (Electric Slate / Champagne Gold Option) */
+    --color-accent: #38bdf8;
+    --color-accent-hover: #0ea5e9;
+
+    /* Premium Fluid Easing */
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: 'Inter var', -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .premium-glass {
+    background: var(--color-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-surface-border);
+  }
+}
