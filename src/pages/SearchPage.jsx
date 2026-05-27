@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useBookingStore } from '../store/useBookingStore';
+import pilotOfficer from '../assets/pilot-officer.jpg';
+import planeIcon from '../assets/plane-icon.svg';
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -12,7 +14,22 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
+    <div className="max-w-6xl mx-auto mt-10 space-y-8">
+      <section className="relative overflow-hidden rounded-[2rem] shadow-2xl">
+        <img src={pilotOfficer} alt="Pilot officer" className="h-72 w-full object-cover sm:h-[420px]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
+          <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-brand-light shadow-lg shadow-black/10">
+            <img src={planeIcon} alt="Plane icon" className="h-10 w-10" />
+            <span className="text-sm uppercase tracking-[0.3em] text-brand-accent">Fly smarter</span>
+          </div>
+          <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl">Find your next flight in seconds</h1>
+          <p className="mt-4 max-w-2xl text-sm text-white/80 sm:text-base">
+            Compare routes, fares, and seats across top airlines with instant search results.
+          </p>
+        </div>
+      </section>
+
       <div className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-xl">
         <h2 className="text-3xl font-bold mb-6 text-brand-light">Where are you flying?</h2>
         
