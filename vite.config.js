@@ -4,7 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/Capstone.Vantage/', // Adjust base path for GitHub Pages
+  base: './', // Use relative base so assets load correctly when serving `dist/`
   plugins: [react()],
   resolve: {
     alias: {
