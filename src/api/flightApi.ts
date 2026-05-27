@@ -3,26 +3,29 @@ export interface FlightSearchParams {
   origin: string;
   destination: string;
   departureDate: string; // ISO date (YYYY-MM-DD)
-  returnDate?: string; // optional for round‑trip
+  returnDate?: string;
   passengers: number;
 }
 
 export interface Flight {
   id: string;
   airline: string;
-  flightNumber: string;
   origin: string;
   destination: string;
   departureTime: string; // ISO string
   arrivalTime: string;   // ISO string
   price: number;
-  // Add any extra fields needed by UI
+}
+
+export interface FlightSearchResponse {
+  outbound: Flight[];
+  return?: Flight[];
 }
 
 /**
- * Mock API call – replace with real endpoint.
+ * Client for flight search endpoints. Returns unified shape matching mock service.
  */
-export async function fetchFlights(params: FlightSearchParams, signal?: AbortSignal): Promise<Flight[]> {
+export async function fetchFlights(params: FlightSearchParams, signal?: AbortSignal): Promise<FlightSearchResponse> {
   const query = new URLSearchParams({
     origin: params.origin,
     destination: params.destination,
@@ -31,10 +34,10 @@ export async function fetchFlights(params: FlightSearchParams, signal?: AbortSig
     ...(params.returnDate ? { returnDate: params.returnDate } : {}),
   }).toString();
 
-  const response = await fetch(`/api/flights?${query}`, { signal });
+  const response = await fetch(`/api/flights/search?${query}`, { signal });
   if (!response.ok) {
     throw new Error('Failed to fetch flights');
   }
-  const data = (await response.json()) as Flight[];
+  const data = (await response.json()) as FlightSearchResponse;
   return data;
 }

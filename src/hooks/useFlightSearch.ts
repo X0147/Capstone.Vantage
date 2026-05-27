@@ -1,54 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchFlights, FlightSearchResponse, FlightSearchParams } from '../api/flightApi';
 
-export interface SearchCriteria {
+export type SearchCriteria = {
   origin: string;
   destination: string;
   departureDate: string;
-  passengerCount: number;
-}
+  passengers: number;
+  returnDate?: string;
+};
 
-interface Flight {
-  id: string;
-  flightNumber: string;
-  airline: string;
-  origin: string;
-  destination: string;
-  departureTime: string;
-  arrivalTime: string;
-  price: number;
-}
-
-interface FlightAPIResponse {
-  flights: Flight[];
-  lastUpdated: string;
-  status: 'active' | 'complete';
-}
-
-const fetchLiveFlights = async (criteria: SearchCriteria): Promise<FlightAPIResponse> => {
-  const queryParams = new URLSearchParams({
+const fetchLiveFlights = async (criteria: SearchCriteria): Promise<FlightSearchResponse> => {
+  const params: FlightSearchParams = {
     origin: criteria.origin,
     destination: criteria.destination,
     departureDate: criteria.departureDate,
-    passengers: criteria.passengerCount.toString(),
-  });
-
-  const response = await fetch(`/api/flights/search?${queryParams.toString()}`);
-  if (!response.ok) {
-    throw new Error('Failed to retrieve live flight options');
-  }
-  return response.json() as Promise<FlightAPIResponse>;
+    passengers: criteria.passengers,
+    ...(criteria.returnDate ? { returnDate: criteria.returnDate } : {}),
+  };
+  return fetchFlights(params);
 };
 
 export const useFlightSearch = (criteria: SearchCriteria, isEnabled: boolean) => {
-  return useQuery<FlightAPIResponse, Error>({
+  return useQuery<FlightSearchResponse, Error>({
     queryKey: ['flightSearch', criteria],
     queryFn: () => fetchLiveFlights(criteria),
     enabled: isEnabled && !!criteria.origin && !!criteria.destination && !!criteria.departureDate,
-    // Flight rates vary continuously. Force refresh background pools:
-    refetchInterval: 30000, // Background poll every 30 seconds
+    refetchInterval: 30000,
     refetchIntervalInBackground: false,
-    staleTime: 15000, // Data becomes stale after 15 seconds
-    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
+    staleTime: 15000,
+    gcTime: 5 * 60 * 1000,
     retry: 2,
   });
 };
