@@ -13,7 +13,7 @@ export interface Flight {
   origin: string;
   destination: string;
   departureTime: string; // ISO string
-  arrivalTime: string;   // ISO string
+  arrivalTime: string; // ISO string
   price: number;
 }
 
@@ -25,7 +25,10 @@ export interface FlightSearchResponse {
 /**
  * Client for flight search endpoints. Returns unified shape matching mock service.
  */
-export async function fetchFlights(params: FlightSearchParams, signal?: AbortSignal): Promise<FlightSearchResponse> {
+export async function fetchFlights(
+  params: FlightSearchParams,
+  signal?: AbortSignal
+): Promise<FlightSearchResponse> {
   const query = new URLSearchParams({
     origin: params.origin,
     destination: params.destination,

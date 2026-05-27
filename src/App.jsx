@@ -11,9 +11,10 @@ import ConfirmationPage from './pages/ConfirmationPage';
 
 function App() {
   // If the app is served from a subpath (GitHub Pages project site), set the router basename
-  const basename = (typeof window !== 'undefined' && window.location.pathname.startsWith('/Capstone.Vantage'))
-    ? '/Capstone.Vantage'
-    : '/';
+  const basename =
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/Capstone.Vantage')
+      ? '/Capstone.Vantage'
+      : '/';
 
   return (
     <Router basename={basename}>

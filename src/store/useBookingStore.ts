@@ -72,8 +72,15 @@ export const useBookingStore = create<BookingState>()(
       selectedSeats: {},
 
       // Search defaults
-      searchParams: { from: '', to: '', departDate: '', returnDate: '', passengers: { adults: 1, children: 0 } },
-      setSearchParams: (params) => set((state) => ({ searchParams: { ...state.searchParams, ...params } })),
+      searchParams: {
+        from: '',
+        to: '',
+        departDate: '',
+        returnDate: '',
+        passengers: { adults: 1, children: 0 },
+      },
+      setSearchParams: (params) =>
+        set((state) => ({ searchParams: { ...state.searchParams, ...params } })),
 
       flightsOutbound: [],
       flightsReturn: [],
@@ -126,33 +133,49 @@ export const useBookingStore = create<BookingState>()(
         set({ bookingConfirmed: true, bookingReference: ref });
       },
 
-      resetStore: () => set({
-        step: 'search',
-        selectedFlight: null,
-        passengers: [],
-        selectedSeats: {},
-        searchParams: { from: '', to: '', departDate: '', returnDate: '', passengers: { adults: 1, children: 0 } },
-        flightsOutbound: [],
-        flightsReturn: [],
-        selectedOutbound: null,
-        selectedReturn: null,
-        isSearching: false,
-        payment: null,
-        bookingReference: null,
-        bookingConfirmed: false,
-      }),
+      resetStore: () =>
+        set({
+          step: 'search',
+          selectedFlight: null,
+          passengers: [],
+          selectedSeats: {},
+          searchParams: {
+            from: '',
+            to: '',
+            departDate: '',
+            returnDate: '',
+            passengers: { adults: 1, children: 0 },
+          },
+          flightsOutbound: [],
+          flightsReturn: [],
+          selectedOutbound: null,
+          selectedReturn: null,
+          isSearching: false,
+          payment: null,
+          bookingReference: null,
+          bookingConfirmed: false,
+        }),
     }),
     {
       name: 'vantage-booking-store',
       // Provide a safe fallback storage when `localStorage` is unavailable (tests / SSR).
       storage: createJSONStorage(() => {
-        if (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.setItem === 'function') return window.localStorage;
+        if (
+          typeof window !== 'undefined' &&
+          window.localStorage &&
+          typeof window.localStorage.setItem === 'function'
+        )
+          return window.localStorage;
         // lightweight in-memory fallback
         const store: Record<string, string> = {};
         return {
           getItem: (key: string) => (key in store ? store[key] : null),
-          setItem: (key: string, value: string) => { store[key] = value; },
-          removeItem: (key: string) => { delete store[key]; },
+          setItem: (key: string, value: string) => {
+            store[key] = value;
+          },
+          removeItem: (key: string) => {
+            delete store[key];
+          },
         } as Storage;
       }),
     }
