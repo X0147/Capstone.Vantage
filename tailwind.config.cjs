@@ -15,12 +15,16 @@ module.exports = {
       },
       colors: {
         vantage: {
-          dark: '#070a13',
-          surface: '#0f172a',
-          slate: '#1e293b',
+          midnight: '#0B132B',
+          deep: '#1C2541',
+          slate: '#94a3b8',
+          surface: '#ffffff',
           accent: '#38bdf8',
-          muted: '#94a3b8',
+          gold: '#D4AF37',
         },
+        // map common colors for ease of use
+        'bg-primary': '#0B132B',
+        'bg-secondary': '#1C2541',
       },
       transitionTimingFunction: {
         premium: 'cubic-bezier(0.16, 1, 0.3, 1)',
