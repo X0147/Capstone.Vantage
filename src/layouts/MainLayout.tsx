@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 export default function MainLayout() {
   return (
@@ -7,12 +7,12 @@ export default function MainLayout() {
       <nav className="p-4 bg-slate-900 text-white flex justify-between">
         <div className="font-bold">Vantage Flights</div>
         <div className="space-x-4">
-          <a href="/" className="hover:underline">
+          <Link to="/" className="hover:underline">
             Home
-          </a>
-          <a href="/search" className="hover:underline">
+          </Link>
+          <Link to="search" className="hover:underline">
             Search
-          </a>
+          </Link>
         </div>
       </nav>
 

@@ -4,17 +4,24 @@ import Home from '../pages/Home';
 import SearchResults from '../pages/ResultsPage';
 import NotFound from '../pages/NotFound';
 
-const router = createBrowserRouter([
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <MainLayout />,
+      children: [
+        { path: '/', element: <Home /> },
+        { path: 'search', element: <SearchResults /> },
+        { path: '*', element: <NotFound /> },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      { path: '/', element: <Home /> },
-      { path: 'search', element: <SearchResults /> },
-      { path: '*', element: <NotFound /> },
-    ],
-  },
-]);
+    basename,
+  }
+);
 
 export default function AppRoutes() {
   return <RouterProvider router={router} />;
