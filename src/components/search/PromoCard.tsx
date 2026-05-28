@@ -12,10 +12,20 @@ interface PromoCardProps {
   onSelect: (iata: string) => void;
 }
 
-export const PromoCard: React.FC<PromoCardProps> = ({ city, iata, price, duration, image, tag, onSelect }) => (
+export const PromoCard: React.FC<PromoCardProps> = ({
+  city,
+  iata,
+  price,
+  duration,
+  image,
+  tag,
+  onSelect,
+}) => (
   <motion.div
     whileHover={{ y: -6, scale: 1.02 }}
-    onClick={() => onSelect(iata)}
+    onClick={() => {
+      onSelect(iata);
+    }}
     className="group relative h-72 rounded-2xl overflow-hidden border border-white/5 bg-black cursor-pointer shadow-lg transition-all"
     role="button"
     aria-label={`Select flight to ${city} (${iata})`}

@@ -104,7 +104,9 @@ export const ResultsPage: React.FC = () => {
               setSelectedReturn(null);
             }}
             className={`flex items-center gap-2xs rounded-lg px-sm py-2xs transition-all ${
-              currentStep === 'outbound' ? 'bg-vantage-accent text-vantage-dark' : 'text-vantage-muted'
+              currentStep === 'outbound'
+                ? 'bg-vantage-accent text-vantage-dark'
+                : 'text-vantage-muted'
             }`}
           >
             <Plane className="h-3.5 w-3.5" /> Outbound Flight
@@ -112,7 +114,9 @@ export const ResultsPage: React.FC = () => {
           <div className="mx-2xs h-px flex-1 bg-white/10" />
           <div
             className={`flex items-center gap-2xs rounded-lg px-sm py-2xs ${
-              currentStep === 'return' ? 'bg-vantage-accent text-vantage-dark' : 'text-vantage-muted'
+              currentStep === 'return'
+                ? 'bg-vantage-accent text-vantage-dark'
+                : 'text-vantage-muted'
             }`}
           >
             <Plane className="h-3.5 w-3.5 rotate-90" /> Return Flight
@@ -162,7 +166,9 @@ export const ResultsPage: React.FC = () => {
                     key={flight.id}
                     flight={flight}
                     isSelected={
-                      currentStep === 'outbound' ? selectedOutbound?.id === flight.id : selectedReturn?.id === flight.id
+                      currentStep === 'outbound'
+                        ? selectedOutbound?.id === flight.id
+                        : selectedReturn?.id === flight.id
                     }
                     isExpanded={expandedCardId === flight.id}
                     onToggleExpand={() => {

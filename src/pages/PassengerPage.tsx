@@ -33,7 +33,9 @@ export default function PassengerPage() {
                 type="text"
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, firstName: e.target.value });
+                }}
               />
             </div>
             <div>
@@ -43,7 +45,9 @@ export default function PassengerPage() {
                 type="text"
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, lastName: e.target.value });
+                }}
               />
             </div>
           </div>
@@ -54,7 +58,9 @@ export default function PassengerPage() {
               type="email"
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value });
+              }}
             />
           </div>
           <div>
@@ -64,7 +70,9 @@ export default function PassengerPage() {
               type="tel"
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, phone: e.target.value });
+              }}
             />
           </div>
 

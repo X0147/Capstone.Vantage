@@ -6,7 +6,11 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'ghost';
 };
 
-export const ButtonPrimary: React.FC<ButtonProps> = ({ children, variant = 'primary', ...rest }) => {
+export const ButtonPrimary: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  ...rest
+}) => {
   const base =
     'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-transform focus:outline-none focus:ring-2 focus:ring-offset-2';
 

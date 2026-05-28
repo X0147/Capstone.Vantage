@@ -42,12 +42,17 @@ const toFlightOption = (flight: FlightSearchResult): FlightOption => ({
   amenities: {
     wifi: flight.stops === 0,
     power: true,
-    seatPitch: flight.cabinClass === 'first' ? '43 in' : flight.cabinClass === 'business' ? '38 in' : '31 in',
+    seatPitch:
+      flight.cabinClass === 'first'
+        ? '43 in'
+        : flight.cabinClass === 'business'
+          ? '38 in'
+          : '31 in',
     baggage: flight.stops === 0 ? '2 checked bags' : '1 checked bag',
   },
 });
 
-const useDebouncedValue = <T,>(value: T, delayMs: number) => {
+const useDebouncedValue = <T>(value: T, delayMs: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -55,7 +60,9 @@ const useDebouncedValue = <T,>(value: T, delayMs: number) => {
       setDebouncedValue(value);
     }, delayMs);
 
-    return () => window.clearTimeout(timeoutId);
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [value, delayMs]);
 
   return debouncedValue;
@@ -70,7 +77,7 @@ export const useFlightsQuery = () => {
     debouncedSearchParams.to.trim().length > 0 &&
     debouncedSearchParams.departDate.trim().length > 0;
 
-  return useQuery<FlightOption[], Error>({
+  return useQuery<FlightOption[]>({
     queryKey: ['flights', debouncedSearchParams],
     enabled: hasRequiredInputs,
     queryFn: async ({ signal }) => {

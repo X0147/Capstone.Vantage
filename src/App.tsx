@@ -1,11 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, useInRouterContext } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  useInRouterContext,
+} from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 
 // Provide a simple fallback for the suspense since ResultsSkeleton is missing or needs import
-const ResultsSkeleton = () => <div className="animate-pulse space-y-4 p-4"><div className="h-12 bg-white/5 rounded-xl"></div><div className="h-32 bg-white/5 rounded-xl"></div></div>;
+const ResultsSkeleton = () => (
+  <div className="animate-pulse space-y-4 p-4">
+    <div className="h-12 bg-white/5 rounded-xl"></div>
+    <div className="h-32 bg-white/5 rounded-xl"></div>
+  </div>
+);
 
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ResultsPage = lazy(() => import('./pages/ResultsPage'));
@@ -46,7 +57,13 @@ function AppShell() {
       <EnterpriseNavigationBar />
 
       <main className="flex-1 container mx-auto p-4">
-        <Suspense fallback={<div className="p-6"><ResultsSkeleton /></div>}>
+        <Suspense
+          fallback={
+            <div className="p-6">
+              <ResultsSkeleton />
+            </div>
+          }
+        >
           <AnimatedRoutes />
         </Suspense>
       </main>
@@ -66,14 +83,56 @@ function AnimatedRoutes() {
         <Route path="/passenger-info" element={<PassengerPage />} />
         <Route path="/seat-selection" element={<SeatSelectionPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/tracker" element={<Suspense fallback={<ResultsSkeleton />}><FlightTrackerPage /></Suspense>} />
-        <Route path="/manage-booking" element={<Suspense fallback={<ResultsSkeleton />}><ManageBookingPage /></Suspense>} />
-        <Route path="/dashboard" element={<Suspense fallback={<ResultsSkeleton />}><DashboardPage /></Suspense>} />
+        <Route
+          path="/tracker"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <FlightTrackerPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/manage-booking"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <ManageBookingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <DashboardPage />
+            </Suspense>
+          }
+        />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
-        <Route path="/trips" element={<Suspense fallback={<ResultsSkeleton />}><TripsPage /></Suspense>} />
-        <Route path="/profile/edit" element={<Suspense fallback={<ResultsSkeleton />}><ProfileEditPage /></Suspense>} />
-        <Route path="/tickets" element={<Suspense fallback={<ResultsSkeleton />}><TicketTrackingPage /></Suspense>} />
+        <Route
+          path="/trips"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <TripsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <ProfileEditPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/tickets"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <TicketTrackingPage />
+            </Suspense>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );

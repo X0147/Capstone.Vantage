@@ -61,14 +61,21 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
         </div>
 
         <div className="space-y-xs">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">Stops</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">
+            Stops
+          </h4>
           <div className="space-y-2xs">
             {[0, 1, 2].map((stop) => (
-              <label key={stop} className="flex cursor-pointer items-center gap-xs text-sm text-white">
+              <label
+                key={stop}
+                className="flex cursor-pointer items-center gap-xs text-sm text-white"
+              >
                 <input
                   type="checkbox"
                   checked={filters.stops.includes(stop)}
-                  onChange={() => handleStopToggle(stop)}
+                  onChange={() => {
+                    handleStopToggle(stop);
+                  }}
                   className="h-4 w-4 rounded border-white/10 bg-vantage-dark text-vantage-accent focus:ring-0"
                 />
                 <span>{stop === 0 ? 'Non-stop' : `${stop} stop${stop > 1 ? 's' : ''}`}</span>
@@ -78,15 +85,22 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
         </div>
 
         <div className="space-y-xs">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">Airlines</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">
+            Airlines
+          </h4>
           <div className="max-h-48 space-y-2xs overflow-y-auto pr-2xs">
             {Object.entries(airlineStats).map(([name, count]) => (
-              <label key={name} className="flex cursor-pointer items-center justify-between text-sm text-white">
+              <label
+                key={name}
+                className="flex cursor-pointer items-center justify-between text-sm text-white"
+              >
                 <div className="flex items-center gap-xs">
                   <input
                     type="checkbox"
                     checked={filters.airlines.includes(name)}
-                    onChange={() => handleAirlineToggle(name)}
+                    onChange={() => {
+                      handleAirlineToggle(name);
+                    }}
                     className="h-4 w-4 rounded border-white/10 bg-vantage-dark text-vantage-accent focus:ring-0"
                   />
                   <span>{name}</span>

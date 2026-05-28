@@ -12,12 +12,13 @@ export default function TicketTrackingPage() {
         <p className="text-vantage-muted">
           Access your cryptographic ticket ledger and boarding passes.
         </p>
-        
+
         <div className="premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-center items-center h-64 text-center">
           <Ticket className="h-12 w-12 text-vantage-muted mb-4 opacity-50" />
           <h2 className="text-xl font-bold text-white mb-2">Ledger Empty</h2>
           <p className="text-sm text-vantage-muted max-w-md">
-            No smart tickets have been issued to your current identifier. Retrieve a booking using your PNR to generate a boarding pass.
+            No smart tickets have been issued to your current identifier. Retrieve a booking using
+            your PNR to generate a boarding pass.
           </p>
         </div>
       </div>

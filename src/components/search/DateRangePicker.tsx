@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSearchStore from '../../store/useSearchStore';
 
-type Props = {};
+interface Props {}
 
 export const DateRangePicker: React.FC<Props> = () => {
   const { searchParams, setSearchParams } = useSearchStore();
@@ -14,7 +14,9 @@ export const DateRangePicker: React.FC<Props> = () => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener('click', onDoc);
-    return () => document.removeEventListener('click', onDoc);
+    return () => {
+      document.removeEventListener('click', onDoc);
+    };
   }, []);
 
   return (
@@ -24,16 +26,24 @@ export const DateRangePicker: React.FC<Props> = () => {
         <input
           aria-label="Departure date"
           value={searchParams.departDate}
-          onFocus={() => setOpen(true)}
-          onChange={(e) => setSearchParams({ departDate: e.target.value })}
+          onFocus={() => {
+            setOpen(true);
+          }}
+          onChange={(e) => {
+            setSearchParams({ departDate: e.target.value });
+          }}
           className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none"
           type="date"
         />
         <input
           aria-label="Return date"
           value={searchParams.returnDate || ''}
-          onFocus={() => setOpen(true)}
-          onChange={(e) => setSearchParams({ returnDate: e.target.value })}
+          onFocus={() => {
+            setOpen(true);
+          }}
+          onChange={(e) => {
+            setSearchParams({ returnDate: e.target.value });
+          }}
           className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none"
           type="date"
         />
@@ -49,7 +59,10 @@ export const DateRangePicker: React.FC<Props> = () => {
             className="mt-2 w-full bg-white/6 backdrop-blur-md border border-white/10 rounded-lg p-4 shadow-lg z-50 absolute"
           >
             <div className="text-sm text-white/80">Pick departure and return dates</div>
-            <div className="mt-3 text-xs text-white/60">(Inline calendar UI can be implemented here — placeholder uses native date inputs for accessibility.)</div>
+            <div className="mt-3 text-xs text-white/60">
+              (Inline calendar UI can be implemented here — placeholder uses native date inputs for
+              accessibility.)
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

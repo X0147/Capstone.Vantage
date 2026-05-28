@@ -1,83 +1,91 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react'
-import { GLOBAL_AIRPORTS } from '../data/globalAviation'
-import { Plane, MapPin } from 'lucide-react'
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { GLOBAL_AIRPORTS } from '../data/globalAviation';
+import { Plane, MapPin } from 'lucide-react';
 
 interface LocationInputProps {
-  label: string
-  placeholder: string
-  value: string
-  onChange: (airportCode: string) => void
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (airportCode: string) => void;
 }
 
-export const GlobalLocationInput: React.FC<LocationInputProps> = ({ label, placeholder, value, onChange }) => {
+export const GlobalLocationInput: React.FC<LocationInputProps> = ({
+  label,
+  placeholder,
+  value,
+  onChange,
+}) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const listboxId = useMemo(() => `location-listbox-${label.replace(/\s+/g, '-').toLowerCase()}`, [label]);
+  const listboxId = useMemo(
+    () => `location-listbox-${label.replace(/\s+/g, '-').toLowerCase()}`,
+    [label]
+  );
 
   const suggestions = useMemo(() => {
-    if (!query.trim()) return []
-    const cleanQuery = query.toLowerCase().trim()
+    if (!query.trim()) return [];
+    const cleanQuery = query.toLowerCase().trim();
     return GLOBAL_AIRPORTS.filter(
       (airport) =>
         airport.code.toLowerCase().includes(cleanQuery) ||
         airport.city.toLowerCase().includes(cleanQuery) ||
         airport.country.toLowerCase().includes(cleanQuery)
-    ).slice(0, 5)
-  }, [query])
+    ).slice(0, 5);
+  }, [query]);
 
-  const selectedAirport = GLOBAL_AIRPORTS.find((a) => a.code === value)
+  const selectedAirport = GLOBAL_AIRPORTS.find((a) => a.code === value);
 
   useEffect(() => {
-    if (!isOpen) setActiveIndex(-1)
-  }, [isOpen])
+    if (!isOpen) setActiveIndex(-1);
+  }, [isOpen]);
 
   useEffect(() => {
     // Reset active index when suggestions change
-    setActiveIndex(-1)
-  }, [suggestions.length])
+    setActiveIndex(-1);
+  }, [suggestions.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen || suggestions.length === 0) return
+    if (!isOpen || suggestions.length === 0) return;
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault()
-        setActiveIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0))
-        break
+        e.preventDefault();
+        setActiveIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
+        break;
       case 'ArrowUp':
-        e.preventDefault()
-        setActiveIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1))
-        break
+        e.preventDefault();
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
+        break;
       case 'Enter':
         if (activeIndex >= 0 && activeIndex < suggestions.length) {
-          e.preventDefault()
-          const selected = suggestions[activeIndex]
-          onChange(selected.code)
-          setQuery(`${selected.city} (${selected.code})`)
-          setIsOpen(false)
-          setActiveIndex(-1)
+          e.preventDefault();
+          const selected = suggestions[activeIndex];
+          onChange(selected.code);
+          setQuery(`${selected.city} (${selected.code})`);
+          setIsOpen(false);
+          setActiveIndex(-1);
         }
-        break
+        break;
       case 'Escape':
-        setIsOpen(false)
-        setActiveIndex(-1)
-        break
-        case 'Tab':
-          if (activeIndex >= 0 && activeIndex < suggestions.length) {
-            const targetAirport = suggestions[activeIndex]
-            onChange(targetAirport.code)
-          }
-          setIsOpen(false)
-          setActiveIndex(-1)
-          break
+        setIsOpen(false);
+        setActiveIndex(-1);
+        break;
+      case 'Tab':
+        if (activeIndex >= 0 && activeIndex < suggestions.length) {
+          const targetAirport = suggestions[activeIndex];
+          onChange(targetAirport.code);
+        }
+        setIsOpen(false);
+        setActiveIndex(-1);
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   return (
     <div className="relative flex-1">
@@ -93,21 +101,35 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({ label, place
           aria-expanded={isOpen}
           aria-controls={isOpen ? listboxId : undefined}
           aria-autocomplete="list"
-          aria-activedescendant={activeIndex >= 0 && suggestions[activeIndex] ? `global-loc-suggestion-${suggestions[activeIndex].code}` : undefined}
-          value={isOpen ? query : selectedAirport ? `${selectedAirport.city} (${selectedAirport.code})` : query}
+          aria-activedescendant={
+            activeIndex >= 0 && suggestions[activeIndex]
+              ? `global-loc-suggestion-${suggestions[activeIndex].code}`
+              : undefined
+          }
+          value={
+            isOpen
+              ? query
+              : selectedAirport
+                ? `${selectedAirport.city} (${selectedAirport.code})`
+                : query
+          }
           placeholder={placeholder}
           onFocus={() => {
-            setIsOpen(true)
-            setQuery('')
+            setIsOpen(true);
+            setQuery('');
           }}
-          onBlur={() => setTimeout(() => {
-            if (activeIndex >= 0 && suggestions[activeIndex]) {
-              onChange(suggestions[activeIndex].code)
-            }
-            setIsOpen(false)
-            setActiveIndex(-1)
-          }, 150)}
-          onChange={(e) => setQuery(e.target.value)}
+          onBlur={() =>
+            setTimeout(() => {
+              if (activeIndex >= 0 && suggestions[activeIndex]) {
+                onChange(suggestions[activeIndex].code);
+              }
+              setIsOpen(false);
+              setActiveIndex(-1);
+            }, 150)
+          }
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
           onKeyDown={handleKeyDown}
           className="w-full bg-black/20 border border-white/10 rounded-xl pl-md pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent transition-colors"
         />
@@ -127,13 +149,15 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({ label, place
               role="option"
               aria-selected={activeIndex === i}
               onMouseDown={(e) => {
-                e.preventDefault()
-                onChange(airport.code)
-                setQuery(`${airport.city} (${airport.code})`)
-                setIsOpen(false)
-                setActiveIndex(-1)
+                e.preventDefault();
+                onChange(airport.code);
+                setQuery(`${airport.city} (${airport.code})`);
+                setIsOpen(false);
+                setActiveIndex(-1);
               }}
-              onMouseEnter={() => setActiveIndex(i)}
+              onMouseEnter={() => {
+                setActiveIndex(i);
+              }}
               className={`px-xs py-xs cursor-pointer flex items-center justify-between text-xs transition-colors group ${
                 activeIndex === i ? 'bg-white/5' : 'hover:bg-white/5'
               }`}
@@ -153,7 +177,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({ label, place
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default GlobalLocationInput;

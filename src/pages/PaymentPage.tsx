@@ -53,7 +53,9 @@ export default function PaymentPage() {
               type="text"
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, name: e.target.value });
+              }}
             />
           </div>
           <div>
@@ -64,7 +66,9 @@ export default function PaymentPage() {
               maxLength={16}
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
               value={formData.card}
-              onChange={(e) => setFormData({ ...formData, card: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, card: e.target.value });
+              }}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -76,7 +80,9 @@ export default function PaymentPage() {
                 maxLength={5}
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.exp}
-                onChange={(e) => setFormData({ ...formData, exp: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, exp: e.target.value });
+                }}
               />
             </div>
             <div>
@@ -87,7 +93,9 @@ export default function PaymentPage() {
                 maxLength={4}
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.cvv}
-                onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, cvv: e.target.value });
+                }}
               />
             </div>
           </div>

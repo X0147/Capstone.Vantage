@@ -96,7 +96,16 @@ const VESSELS = [
   'Airbus A321neo',
 ];
 
-const HEADINGS = ['Northwest', 'Northeast', 'Southwest', 'Southeast', 'East', 'West', 'North', 'South'];
+const HEADINGS = [
+  'Northwest',
+  'Northeast',
+  'Southwest',
+  'Southeast',
+  'East',
+  'West',
+  'North',
+  'South',
+];
 
 function generateDynamicFlight(flightNo: string): TrackedFlight {
   const upper = flightNo.trim().toUpperCase();
@@ -111,15 +120,22 @@ function generateDynamicFlight(flightNo: string): TrackedFlight {
   const originIndex = seed % AIRPORTS.length;
   const destIndex = (seed + 5) % AIRPORTS.length;
   const origin = AIRPORTS[originIndex];
-  const destination = AIRPORTS[destIndex === originIndex ? (destIndex + 1) % AIRPORTS.length : destIndex];
+  const destination =
+    AIRPORTS[destIndex === originIndex ? (destIndex + 1) % AIRPORTS.length : destIndex];
 
-  const statuses: ('In-Flight' | 'On-Time' | 'Delayed' | 'Landed')[] = ['In-Flight', 'In-Flight', 'In-Flight', 'Delayed', 'On-Time'];
+  const statuses: ('In-Flight' | 'On-Time' | 'Delayed' | 'Landed')[] = [
+    'In-Flight',
+    'In-Flight',
+    'In-Flight',
+    'Delayed',
+    'On-Time',
+  ];
   const status = statuses[seed % statuses.length];
 
   const progress = 10 + (seed % 75); // 10% to 85%
   const altitudeVal = 30000 + (seed % 12) * 1000;
   const speedVal = 490 + (seed % 8) * 10;
-  
+
   const depHour = (8 + (seed % 12)) % 12 || 12;
   const depMin = (seed % 4) * 15;
   const isPM = seed % 2 === 0;
@@ -131,7 +147,9 @@ function generateDynamicFlight(flightNo: string): TrackedFlight {
   const arrivalTime = `${String(arrHour).padStart(2, '0')}:${String(arrMin).padStart(2, '0')} ${!isPM ? 'PM' : 'AM'}`;
 
   const remainingHours = Math.max(1, Math.floor((durationHours * (100 - progress)) / 100));
-  const remainingMins = Math.floor(((durationHours * (100 - progress)) / 100 - remainingHours) * 60);
+  const remainingMins = Math.floor(
+    ((durationHours * (100 - progress)) / 100 - remainingHours) * 60
+  );
 
   const vessel = VESSELS[seed % VESSELS.length];
   const headingVal = `${seed % 360}° ${HEADINGS[seed % HEADINGS.length]}`;
@@ -155,9 +173,9 @@ function generateDynamicFlight(flightNo: string): TrackedFlight {
   };
 }
 
-type TrackerLocationState = {
+interface TrackerLocationState {
   flightNumber?: string;
-};
+}
 
 export const FlightTrackerPage: React.FC = () => {
   const location = useLocation();
@@ -179,7 +197,7 @@ export const FlightTrackerPage: React.FC = () => {
   const triggerTracking = (flightNo: string) => {
     setIsConnecting(true);
     setErrorMsg('');
-    
+
     // Simulate high-tech latency to scan satellites
     setTimeout(() => {
       if (MOCK_TRACK_DATA[flightNo]) {
@@ -209,7 +227,8 @@ export const FlightTrackerPage: React.FC = () => {
         </div>
         <h1 className="text-2xl font-black tracking-tight text-white">Global Flight Tracker</h1>
         <p className="mx-auto max-w-md text-xs text-vantage-muted">
-          Intercept and monitor live airspace positions, vector velocities, and arrival horizons across any international carrier.
+          Intercept and monitor live airspace positions, vector velocities, and arrival horizons
+          across any international carrier.
         </p>
       </div>
 
@@ -217,7 +236,9 @@ export const FlightTrackerPage: React.FC = () => {
         <input
           type="text"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+          }}
           placeholder="Enter Flight Designation (e.g., EK201, AA100, UA902)"
           className="w-full rounded-2xl border border-white/10 bg-vantage-surface/40 py-xs pl-md pr-xl text-sm text-white shadow-inner backdrop-blur-md transition-all placeholder-vantage-muted focus:border-vantage-accent focus:outline-none"
         />
@@ -229,7 +250,9 @@ export const FlightTrackerPage: React.FC = () => {
         </button>
       </form>
 
-      {errorMsg && <p className="text-center text-xs font-medium text-red-400 animate-pulse">{errorMsg}</p>}
+      {errorMsg && (
+        <p className="text-center text-xs font-medium text-red-400 animate-pulse">{errorMsg}</p>
+      )}
 
       {isConnecting && (
         <div className="flex flex-col items-center justify-center py-xl space-y-sm">
@@ -251,7 +274,9 @@ export const FlightTrackerPage: React.FC = () => {
             <div className="relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-3xl border border-white/5 p-md premium-glass lg:col-span-2">
               <div className="z-10 flex items-center justify-between">
                 <div>
-                  <span className="mb-3xs block text-[10px] uppercase text-vantage-muted font-mono">Active Segment</span>
+                  <span className="mb-3xs block text-[10px] uppercase text-vantage-muted font-mono">
+                    Active Segment
+                  </span>
                   <h2 className="text-md font-black tracking-wide text-white">
                     {activeFlight.airline} {activeFlight.flightNumber}
                   </h2>
@@ -273,11 +298,18 @@ export const FlightTrackerPage: React.FC = () => {
 
                 <div className="relative z-10 flex items-center justify-between">
                   <div className="rounded-xl border border-white/10 bg-vantage-dark p-sm text-center min-w-[90px]">
-                    <div className="text-md font-black text-white">{activeFlight.origin.split(' ')[0]}</div>
-                    <div className="text-[10px] font-mono text-vantage-muted">{activeFlight.departureTime}</div>
+                    <div className="text-md font-black text-white">
+                      {activeFlight.origin.split(' ')[0]}
+                    </div>
+                    <div className="text-[10px] font-mono text-vantage-muted">
+                      {activeFlight.departureTime}
+                    </div>
                   </div>
 
-                  <div className="absolute top-1/2 flex -translate-y-1/2 flex-col items-center" style={{ left: `calc(${activeFlight.progress}% - 16px)` }}>
+                  <div
+                    className="absolute top-1/2 flex -translate-y-1/2 flex-col items-center"
+                    style={{ left: `calc(${activeFlight.progress}% - 16px)` }}
+                  >
                     <div className="relative">
                       <Navigation className="h-6 w-6 rotate-90 text-vantage-accent drop-shadow-[0_0_8px_#38bdf8]" />
                       <span className="pointer-events-none absolute -left-1 -top-1 h-8 w-8 animate-ping rounded-full border border-vantage-accent/40" />
@@ -288,8 +320,12 @@ export const FlightTrackerPage: React.FC = () => {
                   </div>
 
                   <div className="rounded-xl border border-white/10 bg-vantage-dark p-sm text-center min-w-[90px]">
-                    <div className="text-md font-black text-white">{activeFlight.destination.split(' ')[0]}</div>
-                    <div className="text-[10px] font-mono text-vantage-muted">{activeFlight.arrivalTime}</div>
+                    <div className="text-md font-black text-white">
+                      {activeFlight.destination.split(' ')[0]}
+                    </div>
+                    <div className="text-[10px] font-mono text-vantage-muted">
+                      {activeFlight.arrivalTime}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -324,7 +360,9 @@ export const FlightTrackerPage: React.FC = () => {
 
             <div className="flex flex-col justify-between space-y-sm rounded-3xl border border-white/5 p-sm premium-glass">
               <div className="space-y-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">Atmospheric Overview</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">
+                  Atmospheric Overview
+                </h3>
 
                 <div className="space-y-xs">
                   <div className="flex items-center justify-between rounded-xl border border-white/5 bg-black/20 p-xs text-xs">
@@ -344,7 +382,10 @@ export const FlightTrackerPage: React.FC = () => {
 
               <div className="flex items-start gap-2xs rounded-2xl border border-vantage-accent/20 bg-vantage-accent/5 p-xs text-[11px] text-vantage-muted">
                 <ShieldAlert className="h-4 w-4 shrink-0 text-vantage-accent" />
-                <p>Tracking paths are derived from transponder signals via automated ADS-B receiver constellations. Subject to atmospheric ion conditions.</p>
+                <p>
+                  Tracking paths are derived from transponder signals via automated ADS-B receiver
+                  constellations. Subject to atmospheric ion conditions.
+                </p>
               </div>
             </div>
           </motion.div>

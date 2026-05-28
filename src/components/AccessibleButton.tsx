@@ -16,11 +16,7 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
 }) => {
   const combinedClass = `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vantage-accent transition-colors ${className}`;
   return (
-    <button
-      aria-label={ariaLabel}
-      className={combinedClass}
-      {...rest}
-    >
+    <button aria-label={ariaLabel} className={combinedClass} {...rest}>
       {children}
     </button>
   );

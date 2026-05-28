@@ -16,6 +16,7 @@ Welcome to the **Capstone.Vantage** flight booking and telemetry matrix platform
 ## Component Architecture
 
 Key UI components have been abstracted for modularity and high reusability:
+
 - **HeroHeader** & **PromoCard**: For the premium search funnel.
 - **LoyaltyBanner**: Showcasing Vantage Gold Privileges.
 - **TechFeaturesGrid**: Highlighting platform capabilities (Vault, Airspace Radar, Smart Tickets).
@@ -25,12 +26,14 @@ Key UI components have been abstracted for modularity and high reusability:
 ## Styling & Design System
 
 The platform leverages a robust dark-mode CSS variables framework defined in `src/index.css`.
+
 - **Technologies:** React, TailwindCSS, Framer Motion, Lucide-React.
 - **Color Palette:** Deep HSL gradients and glassmorphic translucent panels (using `.premium-glass`).
 
 ## GitHub Actions CI/CD Pipeline
 
 The `.github/workflows/ci.yml` file dictates the end-to-end integration:
+
 1. **Linting** to ensure code quality.
 2. **Testing** with Vitest for integration functionality matrices.
 3. **Building** using Vite.
@@ -39,17 +42,20 @@ The `.github/workflows/ci.yml` file dictates the end-to-end integration:
 ## Local Development
 
 Run the following commands to initialize the node environment:
+
 ```bash
 npm install
 npm run dev
 ```
 
 To run tests:
+
 ```bash
 npm run test
 ```
 
 To build locally:
+
 ```bash
 npm run build
 ```

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
 import { useQuery } from '@tanstack/react-query';
 import { fetchFlights, FlightSearchResponse, FlightSearchParams } from '../api/flightApi';
 
@@ -11,7 +10,7 @@ export interface SearchCriteria {
 }
 
 export const useFlightSearch = (criteria: SearchCriteria, isEnabled: boolean) => {
-  return useQuery<FlightSearchResponse, Error>({
+  return useQuery<FlightSearchResponse>({
     queryKey: ['flightSearch', criteria],
     queryFn: async (): Promise<FlightSearchResponse> => {
       const params: FlightSearchParams = {

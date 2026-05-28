@@ -1,28 +1,31 @@
-import React from 'react'
-import { ArrowRight, CheckCircle2, Wifi, BatteryCharging, Suitcase } from 'lucide-react'
-import type { FlightOption } from '../types/flight'
+import React from 'react';
+import { ArrowRight, CheckCircle2, Wifi, BatteryCharging, Suitcase } from 'lucide-react';
+import type { FlightOption } from '../types/flight';
 
 interface PremiumTicketCardProps {
-  flightData: FlightOption
-  onSelect?: () => void
+  flightData: FlightOption;
+  onSelect?: () => void;
 }
 
 function formatDuration(minutes: number) {
-  const hrs = Math.floor(minutes / 60)
-  const mins = minutes % 60
-  return `${hrs}h ${mins.toString().padStart(2, '0')}m`
+  const hrs = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hrs}h ${mins.toString().padStart(2, '0')}m`;
 }
 
 function formatSegmentLabel(segmentCount: number) {
-  if (segmentCount === 1) return 'nonstop'
-  return `${segmentCount} stops`
+  if (segmentCount === 1) return 'nonstop';
+  return `${segmentCount} stops`;
 }
 
 export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardProps) {
-  const outboundLeg = flightData.outbound[0]
-  const outboundLast = flightData.outbound[flightData.outbound.length - 1]
-  const totalOutboundDuration = flightData.outbound.reduce((sum, segment) => sum + segment.duration, 0)
-  const segmentLabel = formatSegmentLabel(flightData.outbound.length - 1)
+  const outboundLeg = flightData.outbound[0];
+  const outboundLast = flightData.outbound[flightData.outbound.length - 1];
+  const totalOutboundDuration = flightData.outbound.reduce(
+    (sum, segment) => sum + segment.duration,
+    0
+  );
+  const segmentLabel = formatSegmentLabel(flightData.outbound.length - 1);
   const amenities = [
     {
       available: flightData.amenities.wifi,
@@ -39,21 +42,25 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
       label: `Carry-on: ${flightData.amenities.baggage}`,
       icon: Suitcase,
     },
-  ]
+  ];
 
-  const gradientId = `flight-curve-grad-${flightData.id || 'default'}`
-  const glowId = `flight-node-glow-${flightData.id || 'default'}`
+  const gradientId = `flight-curve-grad-${flightData.id || 'default'}`;
+  const glowId = `flight-node-glow-${flightData.id || 'default'}`;
 
   return (
     <article className="premium-glass border border-white/10 rounded-[28px] p-6 shadow-[0_40px_120px_rgba(0,0,0,0.18)] max-w-3xl">
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.32em] text-vantage-accent font-semibold">Premium experience</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-vantage-accent font-semibold">
+            Premium experience
+          </p>
           <h2 className="mt-3 text-2xl font-bold text-white tracking-tight">
-            {outboundLeg.origin} <span className="text-vantage-accent">→</span> {outboundLast.destination}
+            {outboundLeg.origin} <span className="text-vantage-accent">→</span>{' '}
+            {outboundLast.destination}
           </h2>
           <p className="mt-2 text-sm text-vantage-muted">
-            {outboundLeg.airline} • {outboundLeg.flightNumber} • {flightData.cabinClass.charAt(0).toUpperCase() + flightData.cabinClass.slice(1)} cabin
+            {outboundLeg.airline} • {outboundLeg.flightNumber} •{' '}
+            {flightData.cabinClass.charAt(0).toUpperCase() + flightData.cabinClass.slice(1)} cabin
           </p>
         </div>
 
@@ -76,7 +83,12 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
           </div>
 
           <div className="mt-4 flex items-center justify-center group">
-            <svg className="w-full h-12 overflow-visible [will-change:transform] [transform:translateZ(0)]" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="w-full h-12 overflow-visible [will-change:transform] [transform:translateZ(0)]"
+              viewBox="0 0 200 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <defs>
                 <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#6366f1" />
@@ -110,15 +122,21 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
 
           <div className="mt-4 grid gap-3 text-white">
             <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">Departure</span>
+              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">
+                Departure
+              </span>
               <span className="font-semibold">{outboundLeg.departureTime}</span>
             </div>
             <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">Arrival</span>
+              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">
+                Arrival
+              </span>
               <span className="font-semibold">{outboundLast.arrivalTime}</span>
             </div>
             <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">Total duration</span>
+              <span className="text-xs uppercase tracking-[0.24em] text-vantage-muted">
+                Total duration
+              </span>
               <span className="font-semibold">{formatDuration(totalOutboundDuration)}</span>
             </div>
           </div>
@@ -135,12 +153,16 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
           <ul className="mt-4 space-y-3">
             {amenities.map(({ available, label, icon: Icon }) => (
               <li key={label} className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3">
-                <span className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${available ? 'bg-vantage-accent/10 text-vantage-accent' : 'bg-white/5 text-vantage-muted'}`}>
+                <span
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${available ? 'bg-vantage-accent/10 text-vantage-accent' : 'bg-white/5 text-vantage-muted'}`}
+                >
                   <Icon className="w-4 h-4" aria-hidden="true" />
                 </span>
                 <div>
                   <p className="text-sm text-white">{label}</p>
-                  <p className="text-[11px] text-vantage-muted">{available ? 'Comfort guaranteed' : 'Standard cabin feature'}</p>
+                  <p className="text-[11px] text-vantage-muted">
+                    {available ? 'Comfort guaranteed' : 'Standard cabin feature'}
+                  </p>
                 </div>
               </li>
             ))}
@@ -162,5 +184,5 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
         </div>
       )}
     </article>
-  )
+  );
 }

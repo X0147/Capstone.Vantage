@@ -3,30 +3,30 @@ import { useUserStore } from '../store/useUserStore';
 import { useBookingStore } from '../store/useBookingStore';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  User, 
-  Plane, 
-  MapPin, 
-  CreditCard, 
-  Award, 
-  Clock, 
-  Calendar, 
-  ShieldCheck, 
-  Ticket, 
-  TrendingUp, 
-  Compass, 
-  CheckCircle2, 
+import {
+  User,
+  Plane,
+  MapPin,
+  CreditCard,
+  Award,
+  Clock,
+  Calendar,
+  ShieldCheck,
+  Ticket,
+  TrendingUp,
+  Compass,
+  CheckCircle2,
   Settings2,
-  Lock
+  Lock,
 } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { profile, updateProfile } = useUserStore();
-  const pastBookings = useBookingStore(state => state.pastBookings);
-  
+  const pastBookings = useBookingStore((state) => state.pastBookings);
+
   const [activeTab, setActiveTab] = useState<'overview' | 'trips' | 'profile'>('overview');
-  
+
   // States for profile editing
   const [firstName, setFirstName] = useState(profile.firstName);
   const [lastName, setLastName] = useState(profile.lastName);
@@ -49,42 +49,53 @@ export const DashboardPage: React.FC = () => {
       dietaryPreference,
     });
     setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 3000);
   };
 
   // Split bookings into upcoming vs past (simulated based on status/date)
-  const upcomingBookings = pastBookings.filter(b => {
+  const upcomingBookings = pastBookings.filter((b) => {
     // In our simplified logic, all persistent bookings are upcoming unless marked otherwise
-    return b.pnr; 
+    return b.pnr;
   });
 
   return (
     <div className="mx-auto max-w-7xl space-y-md px-sm py-lg">
-      
       {/* Top Banner Signifier */}
       <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-r from-vantage-dark to-[#0f172a] p-lg shadow-2xl">
         <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-vantage-accent via-blue-600 to-transparent pointer-events-none" />
-        
+
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-md">
           <div className="space-y-2xs">
             <span className="inline-flex items-center gap-3xs rounded-full border border-vantage-accent/20 bg-vantage-accent/10 px-xs py-3xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent">
               <Award className="h-3 w-3" /> Vantage Gold Privilege Club
             </span>
-            <h1 className="text-3xl font-black tracking-tight text-white">Welcome back, {profile.firstName}</h1>
+            <h1 className="text-3xl font-black tracking-tight text-white">
+              Welcome back, {profile.firstName}
+            </h1>
             <p className="text-xs text-vantage-muted">
               Configure your preferences, monitor active routes, and track elite mileage.
             </p>
           </div>
-          
+
           <div className="flex items-center gap-sm">
             <div className="premium-glass rounded-2xl border border-white/5 p-xs text-center min-w-[120px]">
-              <span className="block text-[9px] uppercase tracking-wider text-vantage-muted">Loyalty Balance</span>
-              <span className="text-lg font-black text-vantage-accent font-mono">{profile.milesBalance.toLocaleString()}</span>
-              <span className="block text-[8px] text-emerald-400 font-bold mt-3xs">↑ Gold Tier Tier</span>
+              <span className="block text-[9px] uppercase tracking-wider text-vantage-muted">
+                Loyalty Balance
+              </span>
+              <span className="text-lg font-black text-vantage-accent font-mono">
+                {profile.milesBalance.toLocaleString()}
+              </span>
+              <span className="block text-[8px] text-emerald-400 font-bold mt-3xs">
+                ↑ Gold Tier Tier
+              </span>
             </div>
-            
+
             <div className="premium-glass rounded-2xl border border-white/5 p-xs text-center min-w-[120px]">
-              <span className="block text-[9px] uppercase tracking-wider text-vantage-muted">Elite Tier</span>
+              <span className="block text-[9px] uppercase tracking-wider text-vantage-muted">
+                Elite Tier
+              </span>
               <span className="text-lg font-black text-white">{profile.tier}</span>
               <span className="block text-[8px] text-vantage-muted mt-3xs">Expires: Oct 2026</span>
             </div>
@@ -94,26 +105,38 @@ export const DashboardPage: React.FC = () => {
 
       {/* Tabs Switcher */}
       <div className="flex border-b border-white/5 gap-xs">
-        <button 
-          onClick={() => setActiveTab('overview')} 
+        <button
+          onClick={() => {
+            setActiveTab('overview');
+          }}
           className={`pb-xs text-xs font-bold uppercase tracking-wider border-b-2 px-xs transition-all ${
-            activeTab === 'overview' ? 'border-vantage-accent text-vantage-accent' : 'border-transparent text-vantage-muted hover:text-white'
+            activeTab === 'overview'
+              ? 'border-vantage-accent text-vantage-accent'
+              : 'border-transparent text-vantage-muted hover:text-white'
           }`}
         >
           Overview
         </button>
-        <button 
-          onClick={() => setActiveTab('trips')} 
+        <button
+          onClick={() => {
+            setActiveTab('trips');
+          }}
           className={`pb-xs text-xs font-bold uppercase tracking-wider border-b-2 px-xs transition-all ${
-            activeTab === 'trips' ? 'border-vantage-accent text-vantage-accent' : 'border-transparent text-vantage-muted hover:text-white'
+            activeTab === 'trips'
+              ? 'border-vantage-accent text-vantage-accent'
+              : 'border-transparent text-vantage-muted hover:text-white'
           }`}
         >
           My Trips ({upcomingBookings.length})
         </button>
-        <button 
-          onClick={() => setActiveTab('profile')} 
+        <button
+          onClick={() => {
+            setActiveTab('profile');
+          }}
           className={`pb-xs text-xs font-bold uppercase tracking-wider border-b-2 px-xs transition-all ${
-            activeTab === 'profile' ? 'border-vantage-accent text-vantage-accent' : 'border-transparent text-vantage-muted hover:text-white'
+            activeTab === 'profile'
+              ? 'border-vantage-accent text-vantage-accent'
+              : 'border-transparent text-vantage-muted hover:text-white'
           }`}
         >
           Profile & Documents
@@ -131,20 +154,25 @@ export const DashboardPage: React.FC = () => {
         >
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
-              
               {/* Miles Progress & Promotion */}
               <div className="md:col-span-2 space-y-md">
-                
                 <div className="premium-glass rounded-3xl border border-white/5 p-md space-y-sm">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-white">Tier Progress</h3>
-                    <span className="text-[10px] font-mono text-vantage-accent">15,750 miles to Platinum</span>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                      Tier Progress
+                    </h3>
+                    <span className="text-[10px] font-mono text-vantage-accent">
+                      15,750 miles to Platinum
+                    </span>
                   </div>
-                  
+
                   <div className="relative h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className="absolute left-0 top-0 h-full bg-gradient-to-r from-vantage-accent to-blue-500 rounded-full" style={{ width: '84%' }} />
+                    <div
+                      className="absolute left-0 top-0 h-full bg-gradient-to-r from-vantage-accent to-blue-500 rounded-full"
+                      style={{ width: '84%' }}
+                    />
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-xs pt-xs text-center font-mono text-[10px]">
                     <div className="bg-black/20 rounded-xl p-3xs border border-white/5">
                       <span className="block text-vantage-muted">Points Earned YTD</span>
@@ -159,41 +187,65 @@ export const DashboardPage: React.FC = () => {
 
                 {/* Upcoming Flights Module */}
                 <div className="space-y-sm">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">Active Flight Segments</h3>
-                  
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">
+                    Active Flight Segments
+                  </h3>
+
                   {upcomingBookings.length === 0 ? (
                     <div className="premium-glass rounded-3xl border border-white/5 p-lg text-center space-y-xs">
                       <Plane className="h-8 w-8 text-vantage-muted mx-auto animate-pulse" />
                       <p className="text-xs text-white font-bold">No active segments detected.</p>
-                      <p className="text-[11px] text-vantage-muted">Book a flight now to unlock dynamic tracking coordinates.</p>
-                      <button onClick={() => navigate('/')} className="mt-xs text-xs font-bold text-vantage-accent hover:underline">
+                      <p className="text-[11px] text-vantage-muted">
+                        Book a flight now to unlock dynamic tracking coordinates.
+                      </p>
+                      <button
+                        onClick={() => navigate('/')}
+                        className="mt-xs text-xs font-bold text-vantage-accent hover:underline"
+                      >
                         Start Booking Flow →
                       </button>
                     </div>
                   ) : (
                     <div className="space-y-xs">
                       {upcomingBookings.map((booking, idx) => (
-                        <div key={idx} className="premium-glass rounded-3xl border border-white/10 p-md flex flex-col md:flex-row justify-between items-start md:items-center gap-xs hover:border-vantage-accent/30 transition-all">
+                        <div
+                          key={idx}
+                          className="premium-glass rounded-3xl border border-white/10 p-md flex flex-col md:flex-row justify-between items-start md:items-center gap-xs hover:border-vantage-accent/30 transition-all"
+                        >
                           <div className="space-y-3xs">
-                            <span className="font-mono text-[10px] text-vantage-accent uppercase tracking-wider font-bold">PNR: {booking.pnr}</span>
+                            <span className="font-mono text-[10px] text-vantage-accent uppercase tracking-wider font-bold">
+                              PNR: {booking.pnr}
+                            </span>
                             <div className="flex items-center gap-xs">
-                              <span className="text-md font-black text-white">{booking.outbound?.departure.iata}</span>
+                              <span className="text-md font-black text-white">
+                                {booking.outbound?.departure.iata}
+                              </span>
                               <span className="text-vantage-muted text-xs">→</span>
-                              <span className="text-md font-black text-white">{booking.outbound?.arrival.iata}</span>
+                              <span className="text-md font-black text-white">
+                                {booking.outbound?.arrival.iata}
+                              </span>
                             </div>
-                            <span className="block text-[10px] text-vantage-muted font-mono">{booking.dateBooked.slice(0,10)}</span>
+                            <span className="block text-[10px] text-vantage-muted font-mono">
+                              {booking.dateBooked.slice(0, 10)}
+                            </span>
                           </div>
-                          
+
                           <div className="flex items-center gap-xs">
-                            <button 
-                              onClick={() => navigate('/manage-booking')} 
+                            <button
+                              onClick={() => navigate('/manage-booking')}
                               className="px-sm py-2xs bg-white/5 border border-white/10 rounded-lg text-[11px] font-bold text-white hover:bg-white/10 transition-all"
                             >
                               Manage Itinerary
                             </button>
-                            
-                            <button 
-                              onClick={() => navigate('/tracker', { state: { flightNumber: booking.outbound?.id.split('-')[3] || 'EK201' }})}
+
+                            <button
+                              onClick={() =>
+                                navigate('/tracker', {
+                                  state: {
+                                    flightNumber: booking.outbound?.id.split('-')[3] || 'EK201',
+                                  },
+                                })
+                              }
                               className="px-sm py-2xs bg-vantage-accent text-vantage-dark rounded-lg text-[11px] font-bold hover:bg-vantage-accent/80 transition-all flex items-center gap-3xs"
                             >
                               <Compass className="h-3 w-3" /> Radar Track
@@ -204,23 +256,25 @@ export const DashboardPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-
               </div>
 
               {/* Sidebar Quick Card */}
               <div className="space-y-md">
-                
                 {/* Security Pass Card */}
                 <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-vantage-dark/80 to-black p-md shadow-lg space-y-sm">
                   <div className="flex justify-between items-center border-b border-white/5 pb-xs">
-                    <span className="text-[10px] font-mono text-vantage-muted">TRAVEL CREDENTIALS</span>
+                    <span className="text-[10px] font-mono text-vantage-muted">
+                      TRAVEL CREDENTIALS
+                    </span>
                     <ShieldCheck className="h-4 w-4 text-emerald-400" />
                   </div>
-                  
+
                   <div className="space-y-xs text-xs font-mono">
                     <div className="flex justify-between">
                       <span className="text-vantage-muted">Passport</span>
-                      <span className="text-white font-bold">{profile.passportNumber || 'None'}</span>
+                      <span className="text-white font-bold">
+                        {profile.passportNumber || 'None'}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-vantage-muted">TSA Pre</span>
@@ -231,7 +285,7 @@ export const DashboardPage: React.FC = () => {
                       <span className="text-white font-bold">{profile.frequentFlyerNumber}</span>
                     </div>
                   </div>
-                  
+
                   <div className="rounded-xl bg-vantage-accent/5 border border-vantage-accent/20 p-xs text-center text-[10px] text-vantage-muted">
                     🔐 Encrypted Node Vault Storage
                   </div>
@@ -239,40 +293,54 @@ export const DashboardPage: React.FC = () => {
 
                 {/* Dietary preference info */}
                 <div className="premium-glass rounded-3xl border border-white/5 p-md space-y-xs">
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-vantage-accent">Dietary Preference</h4>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-vantage-accent">
+                    Dietary Preference
+                  </h4>
                   <p className="text-xs text-white font-medium">{profile.dietaryPreference}</p>
-                  <p className="text-[10px] text-vantage-muted">Autoselected for all confirmed bookings.</p>
+                  <p className="text-[10px] text-vantage-muted">
+                    Autoselected for all confirmed bookings.
+                  </p>
                 </div>
               </div>
-
             </div>
           )}
 
           {activeTab === 'trips' && (
             <div className="space-y-md">
               <h3 className="text-md font-black text-white">Full Flight History & Trips</h3>
-              
+
               {upcomingBookings.length === 0 ? (
                 <div className="premium-glass rounded-3xl border border-white/5 p-xl text-center space-y-xs">
                   <Ticket className="h-10 w-10 text-vantage-muted mx-auto animate-pulse" />
-                  <p className="text-sm text-white font-bold">No registered trips found in your account.</p>
-                  <p className="text-xs text-vantage-muted max-w-sm mx-auto">
-                    Any flights booked using Capstone.Vantage will dynamically sync and load into your trip portal.
+                  <p className="text-sm text-white font-bold">
+                    No registered trips found in your account.
                   </p>
-                  <button onClick={() => navigate('/')} className="mt-sm px-md py-sm bg-vantage-accent text-vantage-dark rounded-xl text-xs font-bold hover:bg-vantage-accent/80 transition-all">
+                  <p className="text-xs text-vantage-muted max-w-sm mx-auto">
+                    Any flights booked using Capstone.Vantage will dynamically sync and load into
+                    your trip portal.
+                  </p>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="mt-sm px-md py-sm bg-vantage-accent text-vantage-dark rounded-xl text-xs font-bold hover:bg-vantage-accent/80 transition-all"
+                  >
                     Book Flight Now
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-sm">
                   {upcomingBookings.map((booking, idx) => (
-                    <div key={idx} className="premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-between space-y-md hover:border-white/15 transition-all">
+                    <div
+                      key={idx}
+                      className="premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-between space-y-md hover:border-white/15 transition-all"
+                    >
                       <div className="flex justify-between items-start border-b border-white/5 pb-xs">
                         <div>
                           <span className="inline-block rounded-md bg-vantage-accent/10 border border-vantage-accent/20 text-vantage-accent font-mono text-[10px] px-2xs py-3xs font-bold uppercase">
                             PNR: {booking.pnr}
                           </span>
-                          <span className="block text-[9px] text-vantage-muted mt-2xs">Booked on {booking.dateBooked.slice(0, 10)}</span>
+                          <span className="block text-[9px] text-vantage-muted mt-2xs">
+                            Booked on {booking.dateBooked.slice(0, 10)}
+                          </span>
                         </div>
                         <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-xs py-3xs rounded-full border border-emerald-500/20">
                           CONFIRMED
@@ -286,7 +354,8 @@ export const DashboardPage: React.FC = () => {
                               <Plane className="h-3 w-3" /> Outbound
                             </span>
                             <span className="font-bold text-white">
-                              {booking.outbound.departure.iata} → {booking.outbound.arrival.iata} ({booking.outbound.airline.name})
+                              {booking.outbound.departure.iata} → {booking.outbound.arrival.iata} (
+                              {booking.outbound.airline.name})
                             </span>
                           </div>
                         )}
@@ -296,25 +365,35 @@ export const DashboardPage: React.FC = () => {
                               <Plane className="h-3 w-3 rotate-180" /> Return
                             </span>
                             <span className="font-bold text-white">
-                              {booking.returnFlight.departure.iata} → {booking.returnFlight.arrival.iata} ({booking.returnFlight.airline.name})
+                              {booking.returnFlight.departure.iata} →{' '}
+                              {booking.returnFlight.arrival.iata} (
+                              {booking.returnFlight.airline.name})
                             </span>
                           </div>
                         )}
                         <div className="flex justify-between items-center text-xs border-t border-white/5 pt-xs">
                           <span className="text-vantage-muted">Total Price Paid</span>
-                          <span className="font-mono font-bold text-vantage-accent">${booking.totalPrice}</span>
+                          <span className="font-mono font-bold text-vantage-accent">
+                            ${booking.totalPrice}
+                          </span>
                         </div>
                       </div>
 
                       <div className="flex gap-xs pt-xs">
-                        <button 
-                          onClick={() => navigate('/manage-booking')} 
+                        <button
+                          onClick={() => navigate('/manage-booking')}
                           className="flex-1 py-sm bg-white/5 border border-white/10 text-xs font-bold text-white rounded-xl hover:bg-white/10 transition-colors"
                         >
                           Modify Flight
                         </button>
-                        <button 
-                          onClick={() => navigate('/tracker', { state: { flightNumber: booking.outbound?.id.split('-')[3] || 'EK201' }})}
+                        <button
+                          onClick={() =>
+                            navigate('/tracker', {
+                              state: {
+                                flightNumber: booking.outbound?.id.split('-')[3] || 'EK201',
+                              },
+                            })
+                          }
                           className="flex-1 py-sm bg-vantage-accent text-vantage-dark text-xs font-bold rounded-xl hover:bg-vantage-accent/80 transition-colors"
                         >
                           Satellite Radar Track
@@ -329,77 +408,107 @@ export const DashboardPage: React.FC = () => {
 
           {activeTab === 'profile' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
-              
               {/* Profile form */}
-              <form onSubmit={handleSaveProfile} className="md:col-span-2 premium-glass rounded-3xl border border-white/5 p-lg space-y-md">
+              <form
+                onSubmit={handleSaveProfile}
+                className="md:col-span-2 premium-glass rounded-3xl border border-white/5 p-lg space-y-md"
+              >
                 <h3 className="text-md font-black text-white">Traveler Profile & Preferences</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-sm">
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">First Name</label>
-                    <input 
-                      type="text" 
-                      value={firstName} 
-                      onChange={(e) => setFirstName(e.target.value)} 
-                      className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Last Name</label>
-                    <input 
-                      type="text" 
-                      value={lastName} 
-                      onChange={(e) => setLastName(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Email</label>
-                    <input 
-                      type="email" 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Phone</label>
-                    <input 
-                      type="text" 
-                      value={phone} 
-                      onChange={(e) => setPhone(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Passport Number</label>
-                    <input 
-                      type="text" 
-                      value={passportNumber} 
-                      onChange={(e) => setPassportNumber(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                      }}
+                      className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      Passport Number
+                    </label>
+                    <input
+                      type="text"
+                      value={passportNumber}
+                      onChange={(e) => {
+                        setPassportNumber(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent font-mono"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">TSA PreCheck ID</label>
-                    <input 
-                      type="text" 
-                      value={tsaPreCheck} 
-                      onChange={(e) => setTsaPreCheck(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      TSA PreCheck ID
+                    </label>
+                    <input
+                      type="text"
+                      value={tsaPreCheck}
+                      onChange={(e) => {
+                        setTsaPreCheck(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent font-mono"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Dietary Preference</label>
-                    <select 
-                      value={dietaryPreference} 
-                      onChange={(e) => setDietaryPreference(e.target.value)} 
+                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                      Dietary Preference
+                    </label>
+                    <select
+                      value={dietaryPreference}
+                      onChange={(e) => {
+                        setDietaryPreference(e.target.value);
+                      }}
                       className="w-full bg-vantage-dark border border-white/10 rounded-xl px-sm py-sm text-xs text-white focus:outline-none focus:border-vantage-accent"
                     >
                       <option value="None">No Dietary Preference</option>
@@ -417,8 +526,8 @@ export const DashboardPage: React.FC = () => {
                   </p>
                 )}
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="px-md py-sm bg-vantage-accent text-vantage-dark rounded-xl text-xs font-bold hover:bg-vantage-accent/80 transition-all"
                 >
                   Save Profile Settings
@@ -428,19 +537,23 @@ export const DashboardPage: React.FC = () => {
               {/* Saved Card widget */}
               <div className="space-y-md">
                 <div className="premium-glass rounded-3xl border border-white/5 p-md space-y-sm">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">Saved Payment Methods</h4>
-                  
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">
+                    Saved Payment Methods
+                  </h4>
+
                   {profile.savedCard ? (
                     <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-tr from-[#1e293b] to-black p-sm space-y-md text-white">
                       <div className="flex justify-between items-center">
                         <CreditCard className="h-6 w-6 text-vantage-accent" />
-                        <span className="text-[10px] font-mono text-vantage-muted">{profile.savedCard.brand}</span>
+                        <span className="text-[10px] font-mono text-vantage-muted">
+                          {profile.savedCard.brand}
+                        </span>
                       </div>
-                      
+
                       <div className="font-mono text-sm tracking-wider">
                         •••• •••• •••• {profile.savedCard.last4}
                       </div>
-                      
+
                       <div className="flex justify-between items-center font-mono text-[9px] text-vantage-muted">
                         <span>LAURENCE VANTAGE</span>
                         <span>EXP: {profile.savedCard.expiry}</span>
@@ -455,7 +568,6 @@ export const DashboardPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           )}
         </motion.div>

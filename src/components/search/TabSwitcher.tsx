@@ -1,6 +1,9 @@
 import React from 'react';
 
-export type Tab = { id: 'oneway' | 'roundtrip' | 'multicity'; label: string };
+export interface Tab {
+  id: 'oneway' | 'roundtrip' | 'multicity';
+  label: string;
+}
 
 const tabs: Tab[] = [
   { id: 'oneway', label: 'One-way' },
@@ -8,10 +11,10 @@ const tabs: Tab[] = [
   { id: 'multicity', label: 'Multi-city' },
 ];
 
-type Props = {
+interface Props {
   value: string;
   onChange: (id: Tab['id']) => void;
-};
+}
 
 export const TabSwitcher: React.FC<Props> = ({ value, onChange }) => {
   return (
@@ -20,7 +23,9 @@ export const TabSwitcher: React.FC<Props> = ({ value, onChange }) => {
         <button
           key={t.id}
           aria-pressed={value === t.id}
-          onClick={() => onChange(t.id)}
+          onClick={() => {
+            onChange(t.id);
+          }}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             value === t.id ? 'bg-white/10 shadow-sm' : 'hover:bg-white/5'
           }`}

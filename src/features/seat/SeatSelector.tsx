@@ -22,7 +22,7 @@ const GENERATED_SEATS: Seat[] = Array.from({ length: 12 }, (_, rowIndex) => {
   const row = rowIndex + 1;
   const cabinClass = row <= 3 ? 'first' : row <= 6 ? 'premium' : 'economy';
   const letters = cabinClass === 'first' ? ['A', 'C', 'D', 'F'] : ['A', 'B', 'C', 'D', 'E', 'F'];
-  
+
   return letters.map((letter) => ({
     id: `${row}${letter}`,
     row,
@@ -83,8 +83,12 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
                     <button
                       key={seat.id}
                       disabled={seat.status === 'occupied'}
-                      onClick={() => handleSeatClick(seat.id)}
-                      onKeyDown={(e) => handleKeyDown(e, seat.id)}
+                      onClick={() => {
+                        handleSeatClick(seat.id);
+                      }}
+                      onKeyDown={(e) => {
+                        handleKeyDown(e, seat.id);
+                      }}
                       role="checkbox"
                       aria-checked={seat.status === 'selected'}
                       aria-label={`Seat ${seat.id}, ${seat.class} class, ${seat.status}, price option plus ${seat.priceModifier} dollars`}
@@ -92,12 +96,12 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
                         seat.status === 'occupied'
                           ? 'bg-white/5 border-white/5 text-white/10 cursor-not-allowed'
                           : seat.status === 'selected'
-                          ? 'bg-vantage-accent border-vantage-accent text-vantage-dark font-bold scale-95 shadow-[0_0_12px_rgba(56,189,248,0.3)]'
-                          : seat.class === 'first'
-                          ? 'border-amber-500/40 hover:border-amber-400 bg-amber-500/5 text-amber-400'
-                          : seat.class === 'premium'
-                          ? 'border-vantage-accent/40 hover:border-vantage-accent bg-vantage-accent/5 text-vantage-accent'
-                          : 'border-white/10 hover:border-white/30 bg-white/5 text-vantage-muted'
+                            ? 'bg-vantage-accent border-vantage-accent text-vantage-dark font-bold scale-95 shadow-[0_0_12px_rgba(56,189,248,0.3)]'
+                            : seat.class === 'first'
+                              ? 'border-amber-500/40 hover:border-amber-400 bg-amber-500/5 text-amber-400'
+                              : seat.class === 'premium'
+                                ? 'border-vantage-accent/40 hover:border-vantage-accent bg-vantage-accent/5 text-vantage-accent'
+                                : 'border-white/10 hover:border-white/30 bg-white/5 text-vantage-muted'
                       }`}
                     >
                       <Armchair className="w-4 h-4" />
@@ -116,8 +120,12 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
                     <button
                       key={seat.id}
                       disabled={seat.status === 'occupied'}
-                      onClick={() => handleSeatClick(seat.id)}
-                      onKeyDown={(e) => handleKeyDown(e, seat.id)}
+                      onClick={() => {
+                        handleSeatClick(seat.id);
+                      }}
+                      onKeyDown={(e) => {
+                        handleKeyDown(e, seat.id);
+                      }}
                       role="checkbox"
                       aria-checked={seat.status === 'selected'}
                       aria-label={`Seat ${seat.id}, ${seat.class} class, ${seat.status}`}
@@ -125,12 +133,12 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
                         seat.status === 'occupied'
                           ? 'bg-white/5 border-white/5 text-white/10 cursor-not-allowed'
                           : seat.status === 'selected'
-                          ? 'bg-vantage-accent border-vantage-accent text-vantage-dark font-bold scale-95 shadow-[0_0_12px_rgba(56,189,248,0.3)]'
-                          : seat.class === 'first'
-                          ? 'border-amber-500/40 hover:border-amber-400 bg-amber-500/5 text-amber-400'
-                          : seat.class === 'premium'
-                          ? 'border-vantage-accent/40 hover:border-vantage-accent bg-vantage-accent/5 text-vantage-accent'
-                          : 'border-white/10 hover:border-white/30 bg-white/5 text-vantage-muted'
+                            ? 'bg-vantage-accent border-vantage-accent text-vantage-dark font-bold scale-95 shadow-[0_0_12px_rgba(56,189,248,0.3)]'
+                            : seat.class === 'first'
+                              ? 'border-amber-500/40 hover:border-amber-400 bg-amber-500/5 text-amber-400'
+                              : seat.class === 'premium'
+                                ? 'border-vantage-accent/40 hover:border-vantage-accent bg-vantage-accent/5 text-vantage-accent'
+                                : 'border-white/10 hover:border-white/30 bg-white/5 text-vantage-muted'
                       }`}
                     >
                       <Armchair className="w-4 h-4" />
@@ -145,15 +153,22 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
 
       {/* Dynamic Floating Panel Summary */}
       <div className="premium-glass rounded-2xl p-sm border border-white/5 space-y-sm sticky top-24">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">Manifest Summary</h4>
-        
+        <h4 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">
+          Manifest Summary
+        </h4>
+
         {selectedSeats.length === 0 ? (
-          <p className="text-xs text-vantage-muted">Please tap or select an open cabin seat to allocate your arrangement coordinates.</p>
+          <p className="text-xs text-vantage-muted">
+            Please tap or select an open cabin seat to allocate your arrangement coordinates.
+          </p>
         ) : (
           <div className="space-y-xs">
             <div className="flex flex-wrap gap-2xs">
               {selectedSeats.map((s) => (
-                <span key={s.id} className="px-xs py-2xs rounded bg-white/5 text-xs text-white border border-white/10 font-mono">
+                <span
+                  key={s.id}
+                  className="px-xs py-2xs rounded bg-white/5 text-xs text-white border border-white/10 font-mono"
+                >
                   {s.id} ({s.class[0].toUpperCase()})
                 </span>
               ))}
@@ -180,7 +195,10 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
           onClick={() => {
             const setSeats = useBookingStore.getState().setSeats;
             // persist seat ids and price to the booking store
-            setSeats(selectedSeats.map((s) => s.id), additivePrice);
+            setSeats(
+              selectedSeats.map((s) => s.id),
+              additivePrice
+            );
             // advance to payment step
             useBookingStore.getState().setStep(3);
             onSelectionComplete(selectedSeats);

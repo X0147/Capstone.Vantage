@@ -23,7 +23,8 @@
 }
 .text-primary {
   color: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
-}@media print {
+}
+@media print {
   body {
     background-color: #ffffff;
     color: #000000;

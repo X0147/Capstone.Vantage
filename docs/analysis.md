@@ -7,6 +7,7 @@ This document summarizes the analysis of the reference repositories (Tripma, Tra
 ## 1. Repository Breakdown
 
 ### A. Tripma (Existing Root Template)
+
 - **Role**: Serves as the UI style baseline.
 - **Key UX Elements**:
   - Clean flight search inputs (origin, destination, dates, traveler counts).
@@ -19,6 +20,7 @@ This document summarizes the analysis of the reference repositories (Tripma, Tra
 - **Key Architecture**: Uses standard CSS files and React-Router-DOM (v6).
 
 ### B. TravelGrid (MERN Application)
+
 - **Role**: Inspiration for component structures, state reducers, and the interactive seat booking grid.
 - **Key UX Elements**:
   - Card-based layouts with rich gradient styling and glassmorphism.
@@ -26,6 +28,7 @@ This document summarizes the analysis of the reference repositories (Tripma, Tra
 - **Key Architecture**: Tailwind CSS configuration, detailed grid alignment, state transitions.
 
 ### C. Amadeus Django (Python Backend API Integration)
+
 - **Role**: Reference for flight data structures and calculation helper functions.
 - **Key UI/API Logic**:
   - Standardized JSON responses for flight itineraries.

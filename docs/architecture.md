@@ -7,6 +7,7 @@ This document describes the directory structure, routing, components, store layo
 ## 1. Directory Structure
 
 Inside `capstone-app/src/`:
+
 ```text
 src/
 ├── assets/          # Static images, SVGs, logos
@@ -38,6 +39,7 @@ src/
 ## 2. Zustand Store Design (`useBookingStore.js`)
 
 The global state will manage:
+
 - **Search Parameters**:
   - `searchParams`: `{ from, to, departDate, returnDate, passengers: { adults, children } }`
 - **Flight Options & Selections**:
@@ -69,6 +71,7 @@ graph TD
 ---
 
 ## 4. Visual Styling & Design System
+
 - **Theme**: Premium dark mode base with harmony colors (indigo/violet gradients, emerald accent colors for selections, rose for unavailable seats).
 - **Glassmorphism**: Elegant transparent cards with subtle white borders (`backdrop-blur-md bg-white/10 border border-white/20`).
 - **Interactive States**: Smooth hover transitions, scaling transitions on CTA buttons, and state indicators.

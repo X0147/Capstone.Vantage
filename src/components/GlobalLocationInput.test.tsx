@@ -14,7 +14,7 @@ describe('GlobalLocationInput Accessibility & Keyboard Navigation Suite', () => 
   it('establishes the baseline structural ARIA tree for a WCAG-compliant combobox', () => {
     render(<GlobalLocationInput {...defaultProps} />);
     const input = screen.getByRole('combobox');
-    
+
     expect(input).toHaveAttribute('aria-autocomplete', 'list');
     expect(input).toHaveAttribute('aria-expanded', 'false');
   });
@@ -22,7 +22,7 @@ describe('GlobalLocationInput Accessibility & Keyboard Navigation Suite', () => 
   it('navigates the suggestion index sequentially via ArrowDown and ArrowUp events', async () => {
     const user = userEvent.setup();
     render(<GlobalLocationInput {...defaultProps} />);
-    
+
     const input = screen.getByRole('combobox');
     await user.click(input);
     await user.type(input, 'a');
@@ -47,11 +47,11 @@ describe('GlobalLocationInput Accessibility & Keyboard Navigation Suite', () => 
   it('collapses the dropdown instantly and clears state flags when Escape key is pressed', async () => {
     const user = userEvent.setup();
     render(<GlobalLocationInput {...defaultProps} />);
-    
+
     const input = screen.getByRole('combobox');
     await user.click(input);
     await user.type(input, 'a');
-    
+
     expect(screen.getByRole('listbox')).toBeInTheDocument();
 
     await user.keyboard('{Escape}');

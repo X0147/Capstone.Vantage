@@ -11,14 +11,14 @@ export default function SeatSelectionPage() {
         <h1 className="text-xl font-bold text-white">Select Your Seat</h1>
         <p className="text-xs text-vantage-muted">Configure your premium cabin layout parameters</p>
       </div>
-      
-      <SeatSelector 
-        baseFare={450} 
+
+      <SeatSelector
+        baseFare={450}
         onSelectionComplete={() => {
-          // The selector already advanced the step in the store; 
+          // The selector already advanced the step in the store;
           // now we advance the actual window location.
           navigate('/checkout');
-        }} 
+        }}
       />
     </div>
   );

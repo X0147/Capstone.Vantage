@@ -96,7 +96,10 @@ const generateLayovers = (seed: string, stops: number, departureIso: string) => 
   }
 
   return Array.from({ length: stops }, (_, index) => {
-    const option = STOP_OPTIONS[(seededIndex(`${seed}:${index}`, STOP_OPTIONS.length) + index) % STOP_OPTIONS.length];
+    const option =
+      STOP_OPTIONS[
+        (seededIndex(`${seed}:${index}`, STOP_OPTIONS.length) + index) % STOP_OPTIONS.length
+      ];
     return {
       airportCode: option.airportCode,
       airportName: option.airportName,
@@ -113,7 +116,8 @@ const buildResult = (
   const airline = AIRLINES[offset % AIRLINES.length];
   const seed = `${request.origin}:${request.destination}:${request.date}:${request.tripType}:${request.cabinClass}:${leg}:${offset}`;
   const stops = offset === 1 ? 1 : 0;
-  const durationMinutes = leg === 'outbound' ? [910, 985, 1120][offset % 3] : [905, 975, 1105][offset % 3];
+  const durationMinutes =
+    leg === 'outbound' ? [910, 985, 1120][offset % 3] : [905, 975, 1105][offset % 3];
   const departureBase = toUtcMidday(request.date);
   const departureIso = addMinutes(departureBase, offset * 120 + (leg === 'return' ? 180 : 0));
   const arrivalIso = addMinutes(departureIso, durationMinutes);

@@ -41,7 +41,13 @@ export interface SearchParams {
   passengers: { adults: number; children: number };
 }
 
-export type BookingFlowStep = 'search' | 'selection' | 'passengers' | 'seats' | 'checkout' | 'confirmation';
+export type BookingFlowStep =
+  | 'search'
+  | 'selection'
+  | 'passengers'
+  | 'seats'
+  | 'checkout'
+  | 'confirmation';
 
 export interface BookingState {
   // Wizard-style step tracker (Flow 1)
@@ -181,7 +187,7 @@ export const useBookingStore = create<BookingState>()(
           await new Promise((resolve) => setTimeout(resolve, 1000));
           const state = get();
           const ref = Math.random().toString(36).substring(2, 8).toUpperCase();
-          
+
           const newBooking: BookingRecord = {
             pnr: ref,
             lastName: state.passengers[0]?.lastName || '',
@@ -189,16 +195,19 @@ export const useBookingStore = create<BookingState>()(
             returnFlight: state.selectedReturn,
             passengers: state.passengers,
             seats: state.selectedSeats,
-            totalPrice: (state.selectedOutbound?.price || 0) + (state.selectedReturn?.price || 0) + state.seatPriceTotal,
-            dateBooked: new Date().toISOString()
+            totalPrice:
+              (state.selectedOutbound?.price || 0) +
+              (state.selectedReturn?.price || 0) +
+              state.seatPriceTotal,
+            dateBooked: new Date().toISOString(),
           };
 
-          set((prev) => ({ 
-            bookingConfirmed: true, 
-            bookingReference: ref, 
-            paymentComplete: true, 
+          set((prev) => ({
+            bookingConfirmed: true,
+            bookingReference: ref,
+            paymentComplete: true,
             currentStep: 4,
-            pastBookings: [...prev.pastBookings, newBooking]
+            pastBookings: [...prev.pastBookings, newBooking],
           }));
         } finally {
           set({ isSearching: false });
@@ -220,7 +229,11 @@ export const useBookingStore = create<BookingState>()(
             origin: searchParams.from,
             destination: searchParams.to,
             date: searchParams.departDate,
-            passengers: { adults: searchParams.passengers.adults, children: searchParams.passengers.children, infants: 0 },
+            passengers: {
+              adults: searchParams.passengers.adults,
+              children: searchParams.passengers.children,
+              infants: 0,
+            },
             tripType: searchParams.returnDate ? 'roundtrip' : 'oneway',
             cabinClass: 'economy',
           });
@@ -302,11 +315,17 @@ export const useBookingStore = create<BookingState>()(
       resetBooking: () => {
         get().resetStore();
       },
-      
+
       getBooking: (pnr, lastName) => {
         const bookings = get().pastBookings;
-        return bookings.find(b => b.pnr.toUpperCase() === pnr.toUpperCase() && b.lastName.toLowerCase() === lastName.toLowerCase()) || null;
-      }
+        return (
+          bookings.find(
+            (b) =>
+              b.pnr.toUpperCase() === pnr.toUpperCase() &&
+              b.lastName.toLowerCase() === lastName.toLowerCase()
+          ) || null
+        );
+      },
     }),
     {
       name: 'vantage-booking-store',
@@ -322,7 +341,7 @@ export const useBookingStore = create<BookingState>()(
 
         const store = new Map<string, string>();
         return {
-          getItem: (key: string) => (store.has(key) ? store.get(key) ?? null : null),
+          getItem: (key: string) => (store.has(key) ? (store.get(key) ?? null) : null),
           setItem: (key: string, value: string) => {
             store.set(key, value);
           },

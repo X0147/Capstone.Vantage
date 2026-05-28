@@ -27,7 +27,9 @@ describe('SeatSelector Accessibility & Keyboard Navigation Audit (WCAG 2.2 AA)',
     const user = userEvent.setup();
     render(<SeatSelector {...defaultProps} />);
 
-    const availableSeats = screen.getAllByRole('checkbox').filter((seat) => !seat.hasAttribute('disabled'));
+    const availableSeats = screen
+      .getAllByRole('checkbox')
+      .filter((seat) => !seat.hasAttribute('disabled'));
     const targetSeat = availableSeats[0];
 
     expect(targetSeat).toHaveAttribute('aria-checked', 'false');
@@ -66,7 +68,9 @@ describe('SeatSelector Accessibility & Keyboard Navigation Audit (WCAG 2.2 AA)',
     const user = userEvent.setup();
     render(<SeatSelector {...defaultProps} />);
 
-    const actionableSeats = screen.getAllByRole('checkbox').filter((seat) => !seat.hasAttribute('disabled'));
+    const actionableSeats = screen
+      .getAllByRole('checkbox')
+      .filter((seat) => !seat.hasAttribute('disabled'));
     const targetSeat = actionableSeats[0];
 
     targetSeat.focus();
@@ -80,7 +84,9 @@ describe('SeatSelector Accessibility & Keyboard Navigation Audit (WCAG 2.2 AA)',
     const user = userEvent.setup();
     render(<SeatSelector {...defaultProps} />);
 
-    const actionableSeats = screen.getAllByRole('checkbox').filter((seat) => !seat.hasAttribute('disabled'));
+    const actionableSeats = screen
+      .getAllByRole('checkbox')
+      .filter((seat) => !seat.hasAttribute('disabled'));
     const targetSeat = actionableSeats[1];
 
     targetSeat.focus();

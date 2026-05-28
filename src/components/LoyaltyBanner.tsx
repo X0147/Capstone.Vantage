@@ -18,13 +18,15 @@ export const LoyaltyBanner: React.FC = () => {
             Unlock Elite Status &amp; Accelerate Your Mileage Balance
           </h3>
           <p className="text-xs text-vantage-muted">
-            Join millions of global travelers earning 2x reward miles on all trans‑atlantic flight vectors. Enjoy premium complimentary VIP lounge entry and priority fast‑track security clearances.
+            Join millions of global travelers earning 2x reward miles on all trans‑atlantic flight
+            vectors. Enjoy premium complimentary VIP lounge entry and priority fast‑track security
+            clearances.
           </p>
         </div>
         <AccessibleButton
           ariaLabel="Access Elite Dashboard"
           className="px-md py-sm bg-gradient-to-r from-amber-400 to-amber-500 text-vantage-dark rounded-xl text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2xs whitespace-nowrap"
-          onClick={() => window.location.href = '/dashboard'}
+          onClick={() => (window.location.href = '/dashboard')}
         >
           Access Elite Dashboard <ArrowRight className="h-4 w-4" />
         </AccessibleButton>
