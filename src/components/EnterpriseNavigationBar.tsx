@@ -7,20 +7,20 @@ export const EnterpriseNavigationBar: React.FC = () => {
   const location = useLocation();
 
   return (
-    <header className="w-full border-b border-white/5 bg-vantage-dark/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-sm h-14 flex items-center justify-between">
+    <header className="w-full border-b border-white/5 bg-vantage-deep/80 backdrop-blur-xl sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-lg h-20 flex items-center justify-between">
         {/* Brand Signifier */}
-        <Link to="/" className="flex items-center gap-xs">
-          <BrandLogo showText={true} iconSize="w-6 h-6" textSize="text-xs" />
+        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
+          <BrandLogo iconSize="w-32 h-auto" />
         </Link>
 
         {/* Global Action Anchors */}
-        <nav className="flex items-center gap-sm">
+        <nav className="hidden lg:flex items-center gap-md">
           <Link
             to="/"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+            className={`text-[11px] font-semibold tracking-wider uppercase transition-colors flex items-center gap-3xs ${
               location.pathname === '/'
-                ? 'text-vantage-accent'
+                ? 'text-vantage-accent drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
@@ -29,9 +29,9 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           <Link
             to="/manage-booking"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+            className={`text-[11px] font-semibold tracking-wider uppercase transition-colors flex items-center gap-3xs ${
               location.pathname === '/manage-booking'
-                ? 'text-vantage-accent'
+                ? 'text-vantage-accent drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
@@ -40,9 +40,9 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           <Link
             to="/dashboard"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+            className={`text-[11px] font-semibold tracking-wider uppercase transition-colors flex items-center gap-3xs ${
               location.pathname === '/dashboard'
-                ? 'text-vantage-accent'
+                ? 'text-vantage-accent drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
@@ -51,9 +51,9 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           <Link
             to="/trips"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+            className={`text-[11px] font-semibold tracking-wider uppercase transition-colors flex items-center gap-3xs ${
               location.pathname === '/trips'
-                ? 'text-vantage-accent'
+                ? 'text-vantage-accent drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
@@ -62,48 +62,26 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           <Link
             to="/profile/edit"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+            className={`text-[11px] font-semibold tracking-wider uppercase transition-colors flex items-center gap-3xs ${
               location.pathname === '/profile/edit'
-                ? 'text-vantage-accent'
+                ? 'text-vantage-accent drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
-            <User className="w-3 h-3" /> Edit Profile
-          </Link>
-
-          <Link
-            to="/tickets"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
-              location.pathname === '/tickets'
-                ? 'text-vantage-accent'
-                : 'text-vantage-muted hover:text-white'
-            }`}
-          >
-            <Ticket className="w-3 h-3" /> Tickets
-          </Link>
-
-          <Link
-            to="/track"
-            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
-              location.pathname === '/track'
-                ? 'text-vantage-accent'
-                : 'text-vantage-muted hover:text-white'
-            }`}
-          >
-            <Compass className="w-3 h-3 animate-spin-slow" /> Track Ticket
+            <User className="w-3 h-3" /> Profile
           </Link>
         </nav>
 
-        <div className="flex items-center gap-sm">
+        <div className="flex items-center gap-md">
           {/* Cryptographic Node Signifier */}
-          <div className="hidden md:flex items-center gap-3xs px-2xs py-3xs bg-white/5 border border-white/5 rounded-full text-[10px] font-mono text-vantage-muted">
-            <ShieldCheck className="w-3 h-3 text-vantage-accent" /> Node: Primary-Secure
+          <div className="hidden md:flex items-center gap-2xs px-xs py-2xs bg-black/20 border border-white/5 rounded-full text-[9px] font-mono tracking-widest text-vantage-muted shadow-inner">
+            <ShieldCheck className="w-3 h-3 text-vantage-gold" /> Node: Primary-Secure
           </div>
 
           {/* Gateway Access Link */}
           <Link
             to="/login"
-            className="text-[10px] font-bold tracking-wider uppercase bg-white/5 border border-white/10 rounded-xl px-xs py-2xs text-vantage-accent hover:bg-vantage-accent hover:text-vantage-dark transition-all duration-300 min-h-[32px] flex items-center"
+            className="text-[10px] font-bold tracking-widest uppercase bg-gradient-to-r from-sky-400 to-blue-600 rounded-xl px-md py-xs text-vantage-midnight hover:opacity-95 hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all duration-300 min-h-[36px] flex items-center shadow-md"
           >
             Gateway Access
           </Link>
