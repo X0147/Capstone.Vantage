@@ -5,6 +5,7 @@ import { Sparkles } from 'lucide-react';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
+import { PromoCard } from '../components/search/PromoCard';
 const PROMO_DESTINATIONS = [
   {
     city: 'London',
