@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LayoutGroup } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../store/useSearchStore';

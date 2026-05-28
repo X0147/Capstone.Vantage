@@ -32,7 +32,7 @@ export interface UserStore {
 const DEFAULT_PROFILE: UserProfile = {
   firstName: 'Laurence',
   lastName: 'Vantage',
-  email: 'laurence@vantage.io',
+  email: 'CAPSTONE@CONSULTANT.COM',
   phone: '+1 (555) 019-2834',
   passportNumber: 'P9847120',
   passportExpiry: '2031-10-15',

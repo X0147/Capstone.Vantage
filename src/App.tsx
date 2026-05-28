@@ -2,10 +2,11 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useInRouterContext
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense } from 'react';
-import { ResultsSkeleton } from './features/search/ResultsSkeleton';
 import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 
-// Code-split route-level bundles
+// Provide a simple fallback for the suspense since ResultsSkeleton is missing or needs import
+const ResultsSkeleton = () => <div className="animate-pulse space-y-4 p-4"><div className="h-12 bg-white/5 rounded-xl"></div><div className="h-32 bg-white/5 rounded-xl"></div></div>;
+
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ResultsPage = lazy(() => import('./pages/ResultsPage'));
 const PassengerPage = lazy(() => import('./pages/PassengerPage'));
@@ -16,6 +17,9 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const FlightTrackerPage = lazy(() => import('./pages/FlightTrackerPage'));
 const ManageBookingPage = lazy(() => import('./pages/ManageBookingPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const TripsPage = lazy(() => import('./pages/TripsPage'));
+const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
+const TicketTrackingPage = lazy(() => import('./pages/TicketTrackingPage'));
 
 export function App() {
   // If the app is served from a subpath (GitHub Pages project site), set the router basename
@@ -67,6 +71,9 @@ function AnimatedRoutes() {
         <Route path="/dashboard" element={<Suspense fallback={<ResultsSkeleton />}><DashboardPage /></Suspense>} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
+        <Route path="/trips" element={<Suspense fallback={<ResultsSkeleton />}><TripsPage /></Suspense>} />
+        <Route path="/profile/edit" element={<Suspense fallback={<ResultsSkeleton />}><ProfileEditPage /></Suspense>} />
+        <Route path="/tickets" element={<Suspense fallback={<ResultsSkeleton />}><TicketTrackingPage /></Suspense>} />
       </Routes>
     </AnimatePresence>
   );

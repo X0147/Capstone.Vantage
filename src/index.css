@@ -1,7 +1,29 @@
 @import 'tailwindcss';
 @import './styles/tokens.css';
 
-@media print {
+/* Dark mode custom properties */
+:root {
+  --color-primary-h: 210; /* hue */
+  --color-primary-s: 40%;
+  --color-primary-l: 50%;
+  --color-accent-h: 190;
+  --color-accent-s: 55%;
+  --color-accent-l: 55%;
+  --color-bg-h: 220;
+  --color-bg-s: 15%;
+  --color-bg-l: 10%;
+  --color-text-h: 210;
+  --color-text-s: 10%;
+  --color-text-l: 90%;
+}
+
+/* Helper functions */
+.bg-primary {
+  background-color: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
+}
+.text-primary {
+  color: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
+}@media print {
   body {
     background-color: #ffffff;
     color: #000000;

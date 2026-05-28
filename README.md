@@ -1,41 +1,55 @@
-# React + Vite
+# Capstone.Vantage
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Capstone.Vantage** flight booking and telemetry matrix platform. This premium front-end application offers a seamless and highly aesthetic experience for finding and tracking flights in raw real-time.
 
-Currently, two official plugins are available:
+## New Routes & Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **/** (Search Page): The core landing matrix with hero headers, promotional destinations, cryptographic features grid, and full modular footer.
+- **/search-results**: Advanced flight filtering algorithms and price analysis.
+- **/trips**: Track upcoming and historic itineraries.
+- **/profile/edit**: Manage user identifier details and secure node preferences.
+- **/tickets**: Vault for smart cryptographic boarding passes.
+- **/manage-booking**: PNR retrieval and passenger details management.
+- **/tracker**: ADS-B real-time satellite radar visualization.
+- **/dashboard**: Frequent flyer miles and centralized user metrics.
 
-## React Compiler
+## Component Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Key UI components have been abstracted for modularity and high reusability:
+- **HeroHeader** & **PromoCard**: For the premium search funnel.
+- **LoyaltyBanner**: Showcasing Vantage Gold Privileges.
+- **TechFeaturesGrid**: Highlighting platform capabilities (Vault, Airspace Radar, Smart Tickets).
+- **StructuredFooter**: Comprehensive site-wide modern footer.
+- **AccessibleButton**: Ensuring standard WCAG AA compliance across interactive elements.
 
-## Expanding the ESLint configuration
+## Styling & Design System
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The platform leverages a robust dark-mode CSS variables framework defined in `src/index.css`.
+- **Technologies:** React, TailwindCSS, Framer Motion, Lucide-React.
+- **Color Palette:** Deep HSL gradients and glassmorphic translucent panels (using `.premium-glass`).
 
-## GitHub Pages deployment
+## GitHub Actions CI/CD Pipeline
 
-This repository includes a GitHub Actions workflow that builds the site and publishes the generated `dist/` folder to GitHub Pages automatically when you push to `main`.
+The `.github/workflows/ci.yml` file dictates the end-to-end integration:
+1. **Linting** to ensure code quality.
+2. **Testing** with Vitest for integration functionality matrices.
+3. **Building** using Vite.
+4. **Deploying** directly to GitHub Pages using modern Actions capabilities (bypassing legacy gh-pages branch mutations).
 
-Notes:
-- The CI workflow creates and updates the `gh-pages` branch as part of publishing; you do not need to maintain that branch by hand.
-- If you prefer a manual local build, run:
+## Local Development
 
+Run the following commands to initialize the node environment:
+```bash
+npm install
+npm run dev
+```
+
+To run tests:
+```bash
+npm run test
+```
+
+To build locally:
 ```bash
 npm run build
 ```
-
-Then inspect the `dist/` folder locally or publish it manually if desired. The previously-provided one-shot `deploy` script (which force-pushed `dist/` to `gh-pages`) has been removed to avoid accidental overwrites.
-
-Verify the published site
-
-1. After pushing to `main`, wait a minute for the workflow to run and publish.
-2. Visit the Pages URL in your browser, for example:
-   `https://X0147.github.io/Capstone.Vantage/`
-3. If you see stale assets or errors, try a hard refresh (Cmd+Shift+R) or clear the cache.
-
-Repository Pages settings
-
-The Actions workflow publishes to GitHub Pages; if you want me to confirm or update the Pages settings (Settings → Pages) I can do that — it requires repository admin access.
