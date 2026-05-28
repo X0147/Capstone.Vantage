@@ -1,4 +1,5 @@
 import type { TripType, TravelClass, Passengers } from '../store/useSearchStore';
+import { GLOBAL_AIRLINES } from '../data/globalAviation';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Flight Service — Mock data layer with premium fields
@@ -38,8 +39,8 @@ export interface CarbonFootprint {
 export interface FlightSearchResult {
   id: string;
   leg: 'outbound' | 'return';
-  airlineName: 'Emirates' | 'Qantas' | 'Singapore Airlines' | 'Qatar Airways' | 'Cathay Pacific';
-  airlineIata: 'EK' | 'QF' | 'SQ' | 'QR' | 'CX';
+  airlineName: string;
+  airlineIata: string;
   flightNumber: string;
   origin: string;
   destination: string;
@@ -58,12 +59,13 @@ export interface FlightSearchResult {
   seatsRemaining: number;
 }
 
-const AIRLINES = [
-  { name: 'Emirates' as const, iata: 'EK' as const, aircraft: 'Airbus A380-800' },
-  { name: 'Qantas' as const, iata: 'QF' as const, aircraft: 'Boeing 777-300ER' },
-  { name: 'Singapore Airlines' as const, iata: 'SQ' as const, aircraft: 'Airbus A350-900' },
-  { name: 'Qatar Airways' as const, iata: 'QR' as const, aircraft: 'Boeing 787-9 Dreamliner' },
-  { name: 'Cathay Pacific' as const, iata: 'CX' as const, aircraft: 'Airbus A350-1000' },
+const AIRCRAFT_FLEETS = [
+  'Boeing 777-300ER',
+  'Airbus A350-900',
+  'Boeing 787-9 Dreamliner',
+  'Airbus A380-800',
+  'Airbus A350-1000',
+  'Boeing 787-10 Dreamliner',
 ];
 
 const CABIN_MULTIPLIER: Record<TravelClass, number> = {
@@ -159,7 +161,8 @@ const buildResult = (
   leg: 'outbound' | 'return',
   offset: number
 ): FlightSearchResult => {
-  const airline = AIRLINES[offset % AIRLINES.length];
+  const airline = GLOBAL_AIRLINES[offset % GLOBAL_AIRLINES.length];
+  const aircraft = AIRCRAFT_FLEETS[offset % AIRCRAFT_FLEETS.length];
   const seed = `${request.origin}:${request.destination}:${request.date}:${request.tripType}:${request.cabinClass}:${leg}:${offset}`;
   const stops = offset === 1 ? 1 : 0;
   const durationMinutes =
@@ -176,8 +179,8 @@ const buildResult = (
     id: `${leg}-${request.origin}-${request.destination}-${request.date}-${offset}`,
     leg,
     airlineName: airline.name,
-    airlineIata: airline.iata,
-    flightNumber: `${airline.iata}${180 + seededIndex(seed, 700)}`,
+    airlineIata: airline.code,
+    flightNumber: `${airline.code}${180 + seededIndex(seed, 700)}`,
     origin: leg === 'outbound' ? request.origin : request.destination,
     destination: leg === 'outbound' ? request.destination : request.origin,
     departureIso,
@@ -188,7 +191,7 @@ const buildResult = (
     currency: 'USD',
     stops,
     layovers: generateLayovers(seed, stops, departureIso),
-    aircraft: airline.aircraft,
+    aircraft,
     amenities: CABIN_AMENITIES[request.cabinClass],
     carbon: generateCarbon(durationMinutes, seed),
     onTimePercentage,
