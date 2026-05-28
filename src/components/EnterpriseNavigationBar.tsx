@@ -41,14 +41,14 @@ export const EnterpriseNavigationBar: React.FC = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-md" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-md shrink-0" aria-label="Main navigation">
             {NAV_LINKS.map(({ to, label, icon: Icon }) => {
               const isActive = location.pathname === to;
               return (
                 <Link
                   key={to}
                   to={to}
-                  className={`relative flex items-center gap-2xs px-sm py-2xs rounded-xl text-[11px] font-semibold tracking-widest uppercase transition-all duration-300 group ${
+                  className={`relative flex items-center gap-2xs px-sm py-2xs rounded-xl text-[11px] font-semibold tracking-widest uppercase whitespace-nowrap shrink-0 transition-all duration-300 group ${
                     isActive
                       ? 'text-vantage-accent bg-vantage-accent/8'
                       : 'text-vantage-muted hover:text-white hover:bg-white/5'

@@ -59,11 +59,11 @@ describe('End-to-End Premium Booking Funnel Integration Matrix', () => {
   it('synchronizes state perfectly from flight selection through seat allocation to finalized payment', async () => {
     const user = userEvent.setup();
 
+    window.location.hash = '#/search-results';
+
     render(
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={['/search-results']}>
-          <App />
-        </MemoryRouter>
+        <App />
       </QueryClientProvider>
     );
 
