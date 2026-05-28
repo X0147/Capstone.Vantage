@@ -14,6 +14,8 @@ const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const ConfirmationPage = lazy(() => import('./pages/ConfirmationPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const FlightTrackerPage = lazy(() => import('./pages/FlightTrackerPage'));
+const ManageBookingPage = lazy(() => import('./pages/ManageBookingPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 
 export function App() {
   // If the app is served from a subpath (GitHub Pages project site), set the router basename
@@ -60,14 +62,9 @@ function AnimatedRoutes() {
         <Route path="/passenger-info" element={<PassengerPage />} />
         <Route path="/seat-selection" element={<SeatSelectionPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route
-          path="/tracker"
-          element={
-            <Suspense fallback={<ResultsSkeleton />}>
-              <FlightTrackerPage />
-            </Suspense>
-          }
-        />
+        <Route path="/tracker" element={<Suspense fallback={<ResultsSkeleton />}><FlightTrackerPage /></Suspense>} />
+        <Route path="/manage-booking" element={<Suspense fallback={<ResultsSkeleton />}><ManageBookingPage /></Suspense>} />
+        <Route path="/dashboard" element={<Suspense fallback={<ResultsSkeleton />}><DashboardPage /></Suspense>} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
       </Routes>

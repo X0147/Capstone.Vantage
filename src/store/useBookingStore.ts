@@ -22,6 +22,17 @@ export interface Flight {
   price: number;
 }
 
+export interface BookingRecord {
+  pnr: string;
+  lastName: string;
+  outbound: Flight | null;
+  returnFlight: Flight | null;
+  passengers: Passenger[];
+  seats: string[];
+  totalPrice: number;
+  dateBooked: string;
+}
+
 export interface SearchParams {
   from: string;
   to: string;
@@ -63,6 +74,9 @@ export interface BookingState {
   bookingReference: string | null;
   bookingConfirmed: boolean;
 
+  // Saved Bookings
+  pastBookings: BookingRecord[];
+
   // Core Actions
   setStep: (step: number | BookingFlowStep) => void;
   setPassenger: (details: Passenger) => void;
@@ -79,6 +93,7 @@ export interface BookingState {
   setPayment: (payment: Record<string, unknown>) => void;
   resetStore: () => void;
   resetBooking: () => void;
+  getBooking: (pnr: string, lastName: string) => BookingRecord | null;
 }
 
 export const useBookingStore = create<BookingState>()(
@@ -112,6 +127,7 @@ export const useBookingStore = create<BookingState>()(
       paymentComplete: false,
       bookingReference: null,
       bookingConfirmed: false,
+      pastBookings: [],
 
       // Actions
       setStep: (step) => {
@@ -162,10 +178,28 @@ export const useBookingStore = create<BookingState>()(
       confirmBooking: async () => {
         set({ isSearching: true });
         try {
-          // simulate checkout network call
           await new Promise((resolve) => setTimeout(resolve, 1000));
+          const state = get();
           const ref = Math.random().toString(36).substring(2, 8).toUpperCase();
-          set({ bookingConfirmed: true, bookingReference: ref, paymentComplete: true, currentStep: 4 });
+          
+          const newBooking: BookingRecord = {
+            pnr: ref,
+            lastName: state.passengers[0]?.lastName || '',
+            outbound: state.selectedOutbound,
+            returnFlight: state.selectedReturn,
+            passengers: state.passengers,
+            seats: state.selectedSeats,
+            totalPrice: (state.selectedOutbound?.price || 0) + (state.selectedReturn?.price || 0) + state.seatPriceTotal,
+            dateBooked: new Date().toISOString()
+          };
+
+          set((prev) => ({ 
+            bookingConfirmed: true, 
+            bookingReference: ref, 
+            paymentComplete: true, 
+            currentStep: 4,
+            pastBookings: [...prev.pastBookings, newBooking]
+          }));
         } finally {
           set({ isSearching: false });
         }
@@ -232,7 +266,8 @@ export const useBookingStore = create<BookingState>()(
 
       setPayment: (payment) => set({ payment }),
 
-      resetStore: () =>
+      resetStore: () => {
+        // Do not reset pastBookings when clearing wizard
         set({
           currentStep: 1,
           step: 'search',
@@ -261,11 +296,17 @@ export const useBookingStore = create<BookingState>()(
           paymentComplete: false,
           bookingReference: null,
           bookingConfirmed: false,
-        }),
+        });
+      },
 
       resetBooking: () => {
         get().resetStore();
       },
+      
+      getBooking: (pnr, lastName) => {
+        const bookings = get().pastBookings;
+        return bookings.find(b => b.pnr.toUpperCase() === pnr.toUpperCase() && b.lastName.toLowerCase() === lastName.toLowerCase()) || null;
+      }
     }),
     {
       name: 'vantage-booking-store',

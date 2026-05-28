@@ -14,15 +14,31 @@ export const CheckoutPage: React.FC = () => {
     setSeats,
     completePayment,
     selectedOutbound,
+    setStep,
   } = useBookingStore();
   
+  // --- Step 3: Ancillary Selections State ---
+  const [checkedBags, setCheckedBags] = useState(0);
+  const [mealOption, setMealOption] = useState('None');
+  const [loungeAccess, setLoungeAccess] = useState(false);
+  const [disruptionProtection, setDisruptionProtection] = useState(false);
+
+  const ancillaryPriceTotal = useMemo(() => {
+    let total = 0;
+    total += checkedBags * 40;
+    if (mealOption !== 'None') total += 18;
+    if (loungeAccess) total += 55;
+    if (disruptionProtection) total += 25;
+    return total;
+  }, [checkedBags, mealOption, loungeAccess, disruptionProtection]);
+
   const baseFare = selectedOutbound?.price || 450;
   const taxes = 65;
-  const grandTotal = baseFare + seatPriceTotal + taxes;
+  const grandTotal = baseFare + seatPriceTotal + ancillaryPriceTotal + taxes;
 
   const activeStep = useMemo(() => {
     if (!passenger) return 1;
-    if (selectedSeats && selectedSeats.length > 0 && currentStep < 3) return 3;
+    if (selectedSeats && selectedSeats.length > 0 && currentStep < 3) return 2;
     return currentStep;
   }, [passenger, selectedSeats, currentStep]);
 
@@ -51,7 +67,7 @@ export const CheckoutPage: React.FC = () => {
     }
   };
 
-  // --- Step 3: Payment Brand Matching Logic ---
+  // --- Step 4: Payment Brand Matching Logic ---
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
@@ -76,8 +92,9 @@ export const CheckoutPage: React.FC = () => {
           {[
             { step: 1, label: 'Passenger' },
             { step: 2, label: 'Cabin Seat' },
-            { step: 3, label: 'Payment' },
-            { step: 4, label: 'Confirmation' }
+            { step: 3, label: 'Ancillaries' },
+            { step: 4, label: 'Payment' },
+            { step: 5, label: 'Confirmation' }
           ].map((item) => (
             <div key={item.step} className="flex flex-col items-center flex-1 relative z-10">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
@@ -95,7 +112,7 @@ export const CheckoutPage: React.FC = () => {
           <motion.div 
             className="absolute top-[29px] left-8 h-[1px] bg-vantage-accent -z-0"
             initial={{ width: '0%' }}
-            animate={{ width: `${((activeStep - 1) / 3) * 85}%` }}
+            animate={{ width: `${((activeStep - 1) / 4) * 85}%` }}
             transition={{ ease: 'easeInOut', duration: 0.5 }}
           />
         </div>
@@ -198,6 +215,105 @@ export const CheckoutPage: React.FC = () => {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
+              className="premium-glass rounded-2xl p-md border border-white/5 space-y-md"
+            >
+              <div className="flex items-center gap-2xs border-b border-white/5 pb-xs">
+                <PlaneTakeoff className="w-4 h-4 text-vantage-accent" />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-white">Select Premium Ancillaries</h3>
+              </div>
+
+              <div className="space-y-sm">
+                
+                {/* Baggage Counter */}
+                <div className="flex justify-between items-center bg-black/20 p-sm rounded-xl border border-white/5">
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Checked Baggage ($40 / Bag)</h4>
+                    <p className="text-[10px] text-vantage-muted">Up to 3 checked pieces (50lbs/23kg each)</p>
+                  </div>
+                  <div className="flex items-center gap-xs">
+                    <button 
+                      type="button"
+                      onClick={() => setCheckedBags(Math.max(0, checkedBags - 1))}
+                      className="w-8 h-8 rounded-lg bg-white/5 font-bold hover:bg-white/10"
+                    >
+                      -
+                    </button>
+                    <span className="text-xs font-mono font-bold text-white w-4 text-center">{checkedBags}</span>
+                    <button 
+                      type="button"
+                      onClick={() => setCheckedBags(Math.min(3, checkedBags + 1))}
+                      className="w-8 h-8 rounded-lg bg-white/5 font-bold hover:bg-white/10"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Gourmet Dining */}
+                <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-xs bg-black/20 p-sm rounded-xl border border-white/5">
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Premium In-Flight Dining ($18)</h4>
+                    <p className="text-[10px] text-vantage-muted">Upgrade to our signature chef-curated hot meals</p>
+                  </div>
+                  <select 
+                    value={mealOption}
+                    onChange={(e) => setMealOption(e.target.value)}
+                    className="bg-vantage-dark border border-white/10 text-xs rounded-lg p-2xs text-white focus:outline-none focus:border-vantage-accent"
+                  >
+                    <option value="None">Standard Cabin Snack (Included)</option>
+                    <option value="Vegetarian Wellington">Chef's Vegetarian Wellington ($18)</option>
+                    <option value="Pan-seared Salmon">Pan-seared Atlantic Salmon ($18)</option>
+                    <option value="Filet Mignon">Prime Grilled Filet Mignon ($18)</option>
+                  </select>
+                </div>
+
+                {/* VIP Lounge Pass */}
+                <div className="flex justify-between items-center bg-black/20 p-sm rounded-xl border border-white/5">
+                  <div>
+                    <h4 className="text-xs font-bold text-white">VIP Airspace Lounge Access ($55)</h4>
+                    <p className="text-[10px] text-vantage-muted">Luxury amenities, shower suites, premium buffet & bar</p>
+                  </div>
+                  <input 
+                    type="checkbox"
+                    checked={loungeAccess}
+                    onChange={(e) => setLoungeAccess(e.target.checked)}
+                    className="w-4 h-4 text-vantage-accent bg-black/20 border-white/10 rounded focus:ring-vantage-accent"
+                  />
+                </div>
+
+                {/* Travel Protection */}
+                <div className="flex justify-between items-center bg-black/20 p-sm rounded-xl border border-white/5">
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Flight Disruption Protection ($25)</h4>
+                    <p className="text-[10px] text-vantage-muted">Full cash reimbursement for delays greater than 2 hours</p>
+                  </div>
+                  <input 
+                    type="checkbox"
+                    checked={disruptionProtection}
+                    onChange={(e) => setDisruptionProtection(e.target.checked)}
+                    className="w-4 h-4 text-vantage-accent bg-black/20 border-white/10 rounded focus:ring-vantage-accent"
+                  />
+                </div>
+
+              </div>
+
+              <div className="pt-xs flex justify-end">
+                <button 
+                  onClick={() => setStep(4)} 
+                  className="px-md py-xs rounded-xl bg-vantage-accent text-vantage-dark font-bold text-xs tracking-wide uppercase hover:bg-white transition-colors duration-300"
+                >
+                  Continue to Payment
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {activeStep === 4 && (
+            <motion.div
+              key="step-4"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
               className="grid grid-cols-1 md:grid-cols-5 gap-sm items-start"
             >
               {/* Premium Credit Card Visualization Engine */}
@@ -280,9 +396,9 @@ export const CheckoutPage: React.FC = () => {
             </motion.div>
           )}
 
-          {activeStep === 4 && (
+          {activeStep === 5 && (
             <motion.div
-              key="step-4"
+              key="step-5"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               className="premium-glass rounded-2xl p-lg border border-vantage-accent/30 bg-vantage-surface/40 text-center space-y-sm"
@@ -320,6 +436,12 @@ export const CheckoutPage: React.FC = () => {
             <span>Cabin Seating Upgrades</span>
             <span className="font-medium text-vantage-accent">+${seatPriceTotal}</span>
           </div>
+          {ancillaryPriceTotal > 0 && (
+            <div className="flex justify-between text-vantage-muted">
+              <span>Premium Ancillaries</span>
+              <span className="font-medium text-vantage-accent">+${ancillaryPriceTotal}</span>
+            </div>
+          )}
           <div className="flex justify-between text-vantage-muted">
             <span>International Port Duties</span>
             <span className="font-medium text-white">${taxes}</span>

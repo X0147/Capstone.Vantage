@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Compass, Search, ShieldCheck } from 'lucide-react';
+import { Compass, Search, ShieldCheck, Ticket, User } from 'lucide-react';
 
 export const EnterpriseNavigationBar: React.FC = () => {
   const location = useLocation();
@@ -30,6 +30,24 @@ export const EnterpriseNavigationBar: React.FC = () => {
             <Search className="w-3 h-3" /> Book Flights
           </Link>
           
+          <Link 
+            to="/manage-booking" 
+            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+              location.pathname === '/manage-booking' ? 'text-vantage-accent' : 'text-vantage-muted hover:text-white'
+            }`}
+          >
+            <Ticket className="w-3 h-3" /> Manage Booking
+          </Link>
+
+          <Link 
+            to="/dashboard" 
+            className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
+              location.pathname === '/dashboard' ? 'text-vantage-accent' : 'text-vantage-muted hover:text-white'
+            }`}
+          >
+            <User className="w-3 h-3" /> Dashboard
+          </Link>
+
           <Link 
             to="/tracker" 
             className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
