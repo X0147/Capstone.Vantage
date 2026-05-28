@@ -1,20 +1,19 @@
 import React from 'react';
 import SearchHero from '../components/search/SearchHero';
 import { useSearchStore } from '../store/useSearchStore';
-import { ShieldCheck, Cpu } from 'lucide-react';
-import BrandLogo from '../components/BrandLogo';
+import { ShieldCheck, Zap, BadgeDollarSign, Award, ArrowRight } from 'lucide-react';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
 import { PromoCarousel } from '../components/search/PromoCarousel';
+
 const PROMO_DESTINATIONS = [
   {
     city: 'London',
     iata: 'LHR',
     price: 349,
     duration: '7h 15m',
-    image:
-      'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=85',
     tag: 'Popular',
   },
   {
@@ -22,8 +21,7 @@ const PROMO_DESTINATIONS = [
     iata: 'HND',
     price: 689,
     duration: '12h 45m',
-    image:
-      'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=85',
     tag: 'Trending',
   },
   {
@@ -31,8 +29,7 @@ const PROMO_DESTINATIONS = [
     iata: 'CDG',
     price: 399,
     duration: '6h 30m',
-    image:
-      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=85',
     tag: 'Romantic',
   },
   {
@@ -40,8 +37,7 @@ const PROMO_DESTINATIONS = [
     iata: 'SIN',
     price: 719,
     duration: '14h 10m',
-    image:
-      'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=85',
     tag: 'Futuristic',
   },
   {
@@ -49,21 +45,31 @@ const PROMO_DESTINATIONS = [
     iata: 'CPT',
     price: 829,
     duration: '15h 20m',
-    image:
-      'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=85',
     tag: 'Scenic',
   },
+  {
+    city: 'Dubai',
+    iata: 'DXB',
+    price: 549,
+    duration: '13h 00m',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=85',
+    tag: 'Luxury',
+  },
+];
+
+const TRUST_BADGES = [
+  { icon: ShieldCheck, label: 'AES-256 Encrypted', color: 'text-vantage-accent' },
+  { icon: Zap, label: 'Real-Time Sync', color: 'text-blue-400' },
+  { icon: BadgeDollarSign, label: 'Best Price Guarantee', color: 'text-vantage-gold' },
 ];
 
 export default function SearchPage() {
   const { setOrigin, setDestination } = useSearchStore();
 
   const handleSelectPromo = (iata: string) => {
-    // Populate search inputs
-    setOrigin('JFK'); // Default departure from New York to make search convenient
+    setOrigin('JFK');
     setDestination(iata);
-
-    // Smoothly scroll to the search hero widget
     const element = document.getElementById('search-funnel-container');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -71,95 +77,117 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-xl px-sm py-md">
-      {/* Visual Hero Header Experience */}
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-[#0f172a] via-black to-vantage-dark p-lg shadow-2xl">
-        <div className="absolute right-0 top-0 h-full w-1/2 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-vantage-accent via-blue-600 to-transparent pointer-events-none" />
+    <div className="w-full">
+      {/* ── CINEMATIC HERO ──────────────────────────────────── */}
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden -mt-24 pt-24">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-center relative z-10">
-          {/* Left Column: Heading and Description */}
-          <div className="lg:col-span-7 space-y-sm">
-            <BrandLogo showText={true} textSize="text-xs" iconSize="w-8 h-8" className="mb-sm" />
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.05] font-serif italic">
-              Redefining <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-white to-sky-300 drop-shadow-[0_0_30px_rgba(56,189,248,0.25)]">
-                Air Transportation
-              </span>
+        {/* Ambient video background */}
+        <video
+          src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
+          className="absolute inset-0 w-full h-full object-cover opacity-20 scale-105"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+
+        {/* Deep gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-vantage-midnight/80 via-vantage-midnight/70 to-vantage-midnight" />
+
+        {/* Ambient glow orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-sky-500/8 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/8 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-vantage-accent/3 rounded-full blur-[80px] pointer-events-none" />
+
+        {/* Hero content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-lg flex flex-col items-center text-center space-y-xl pb-xl">
+
+          {/* Eyebrow */}
+          <div className="fade-in-up fade-in-up-delay-1 flex items-center gap-2xs px-sm py-2xs rounded-full bg-vantage-accent/10 border border-vantage-accent/20 text-[10px] font-mono tracking-widest text-vantage-accent uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-vantage-accent animate-pulse" />
+            Capstone.Vantage — Aerospace Booking Matrix
+          </div>
+
+          {/* Main headline */}
+          <div className="fade-in-up fade-in-up-delay-2 space-y-sm max-w-5xl">
+            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.0] tracking-tight">
+              <span className="text-white">Redefining</span>
+              <br />
+              <span className="text-gradient-sky italic">Air Transportation</span>
             </h1>
-            
-            <p className="text-sm md:text-base text-vantage-muted max-w-xl leading-relaxed">
-              Find your next flight in raw real-time. Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and experience premium cabin seat structures in one unified system.
+            <p className="text-vantage-text text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+              Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and experience
+              premium cabin ergonomics — all in one unified intelligence platform.
             </p>
-
-            {/* Micro Trust Indicators */}
-            <div className="flex items-center gap-sm pt-xs border-t border-white/5 max-w-sm">
-              <div className="flex items-center gap-2xs text-[10px] text-vantage-muted font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-4 h-4 text-vantage-accent" /> Secure API
-              </div>
-              <div className="flex items-center gap-2xs text-[10px] text-vantage-muted font-bold uppercase tracking-wider">
-                <Cpu className="w-4 h-4 text-blue-400" /> Real-time Sync
-              </div>
-            </div>
           </div>
 
-          {/* Right Column: Premium Video Preview Frame */}
-          <div className="lg:col-span-5 w-full flex justify-center lg:justify-end">
-            <div className="relative group w-full max-w-md aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(56,189,248,0.15)] bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-vantage-accent/30 hover:shadow-[0_0_50px_rgba(56,189,248,0.25)]">
-              <video
-                src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
-                className="w-full h-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-              {/* Premium overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              
-              {/* Meta information overlay */}
-              <div className="absolute bottom-xs left-xs right-xs flex justify-between items-center text-[10px] font-mono text-vantage-muted bg-black/55 backdrop-blur-md px-sm py-2xs rounded-lg border border-white/5">
-                <span className="flex items-center gap-3xs font-semibold text-white">
-                  <span className="h-1.5 w-1.5 rounded-full bg-vantage-accent animate-pulse" />
-                  DEMO.PAYMENT_FLOW
-                </span>
-                <span className="text-vantage-accent">LIVE_PREVIEW</span>
+          {/* Trust badges */}
+          <div className="fade-in-up fade-in-up-delay-3 flex flex-wrap justify-center gap-xs">
+            {TRUST_BADGES.map(({ icon: Icon, label, color }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2xs px-sm py-2xs rounded-full bg-white/5 border border-white/10 text-[11px] font-medium text-vantage-text backdrop-blur-sm"
+              >
+                <Icon className={`w-3.5 h-3.5 ${color} shrink-0`} />
+                {label}
               </div>
-            </div>
+            ))}
+          </div>
+
+          {/* Search widget */}
+          <div id="search-funnel-container" className="w-full fade-in-up scroll-mt-32">
+            <SearchHero />
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-vantage-midnight to-transparent pointer-events-none" />
       </section>
 
-      {/* Search Funnel Widget Section with Anchor ID */}
-      <div id="search-funnel-container" className="scroll-mt-24">
-        <SearchHero />
-      </div>
+      {/* ── BELOW FOLD CONTENT ───────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-lg space-y-3xl py-3xl">
 
-      {/* Promotional & Featured Destinations Grid */}
-      <section className="space-y-sm">
-        <div className="flex justify-between items-baseline">
-          <div className="space-y-3xs">
-            <h2 className="text-xl font-black text-white tracking-tight">
-              Popular Staralliance Routes
-            </h2>
-            <p className="text-xs text-vantage-muted">
-              Quick-lock curated premium flight vectors starting from lowest monthly matrix rates.
-            </p>
+        {/* Popular Destinations */}
+        <section className="space-y-lg">
+          <div className="flex justify-between items-end">
+            <div className="space-y-2xs">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-vantage-accent">
+                Curated Routes
+              </p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white italic">
+                Popular Destinations
+              </h2>
+              <p className="text-sm text-vantage-muted max-w-md">
+                Premium flight vectors from New York — lowest monthly matrix rates, updated live.
+              </p>
+            </div>
+            <span className="hidden sm:flex items-center gap-2xs font-mono text-[10px] text-vantage-emerald font-bold uppercase tracking-wider bg-vantage-emerald/10 px-sm py-2xs rounded-full border border-vantage-emerald/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-vantage-emerald inline-block animate-pulse" />
+              Live Pricing
+            </span>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-3xs font-mono text-[10px] text-vantage-accent font-bold uppercase tracking-wider">
-            Updated live{' '}
-            <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
-          </span>
-        </div>
+          <PromoCarousel destinations={PROMO_DESTINATIONS} onSelect={handleSelectPromo} />
+        </section>
 
-        <PromoCarousel destinations={PROMO_DESTINATIONS} onSelect={handleSelectPromo} />
+        {/* Loyalty Banner */}
         <LoyaltyBanner />
-      </section>
 
-      <TechFeaturesGrid />
+        {/* Platform Features */}
+        <section className="space-y-lg">
+          <div className="text-center space-y-2xs">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-vantage-accent">
+              Enterprise Infrastructure
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white italic">
+              Platform Intelligence
+            </h2>
+          </div>
+          <TechFeaturesGrid />
+        </section>
 
-      {/* Structured Modern Footer Section */}
-      <StructuredFooter />
+        {/* Footer */}
+        <StructuredFooter />
+      </div>
     </div>
   );
 }

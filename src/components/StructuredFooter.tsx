@@ -1,119 +1,103 @@
 import React from 'react';
-import AccessibleButton from './AccessibleButton';
 import { useNavigate } from 'react-router-dom';
+import { ShieldCheck, Globe, Mail } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-/**
- * Multi‑column modern footer with company info, destinations, legal, help, and status.
- */
+const FOOTER_LINKS = {
+  'Book Flights': [
+    { label: 'New York → London', path: '/' },
+    { label: 'New York → Tokyo', path: '/' },
+    { label: 'New York → Paris', path: '/' },
+    { label: 'New York → Dubai', path: '/' },
+  ],
+  'Airspace Tools': [
+    { label: 'ADS-B Radar', path: '/tracker' },
+    { label: 'Itinerary Retrieval', path: '/manage-booking' },
+    { label: 'Frequent Flyer Miles', path: '/dashboard' },
+    { label: 'Seat Selection', path: '/' },
+  ],
+  'Platform': [
+    { label: 'Privacy Policy', path: '#' },
+    { label: 'Terms of Service', path: '#' },
+    { label: 'Cookie Preferences', path: '#' },
+    { label: 'Accessibility', path: '#' },
+  ],
+};
+
 export const StructuredFooter: React.FC = () => {
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/5 pt-md pb-sm space-y-md">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-md">
-        {/* Brand */}
-        <div className="col-span-2 space-y-xs">
-          <div className="flex items-center gap-xs">
-            <BrandLogo showText={true} iconSize="w-6 h-6" textSize="text-xs" />
-          </div>
-          <p className="text-[11px] text-vantage-muted max-w-sm">
-            Capstone.Vantage operates an encrypted aerospace booking matrix, enabling flight
-            dispatching, PNR generation, and telemetry interception.
+    <footer className="border-t border-white/5 space-y-xl pt-xl">
+      {/* Newsletter strip */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-md premium-glass rounded-4xl p-lg border border-white/6">
+        <div className="space-y-2xs">
+          <h4 className="font-display text-xl font-bold text-white italic">Stay in the Vector</h4>
+          <p className="text-xs text-vantage-muted max-w-sm">
+            Get curated flight deals, airspace intelligence, and Vantage Privilege updates delivered weekly.
           </p>
         </div>
-        {/* Navigation columns */}
-        <div className="space-y-xs text-xs">
-          <h5 className="font-bold uppercase tracking-wider text-white">Book Flights</h5>
-          <ul className="space-y-2xs font-mono text-[10px] text-vantage-muted">
-            <li>
-              <AccessibleButton
-                ariaLabel="New York → London"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/')}
-              >
-                New York → London
-              </AccessibleButton>
-            </li>
-            <li>
-              <AccessibleButton
-                ariaLabel="New York → Tokyo"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/')}
-              >
-                New York → Tokyo
-              </AccessibleButton>
-            </li>
-            <li>
-              <AccessibleButton
-                ariaLabel="New York → Paris"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/')}
-              >
-                New York → Paris
-              </AccessibleButton>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-xs text-xs">
-          <h5 className="font-bold uppercase tracking-wider text-white">Airspace Utilities</h5>
-          <ul className="space-y-2xs font-mono text-[10px] text-vantage-muted">
-            <li>
-              <AccessibleButton
-                ariaLabel="ADS‑B Telemetry Radar"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/tracker')}
-              >
-                ADS‑B Telemetry Radar
-              </AccessibleButton>
-            </li>
-            <li>
-              <AccessibleButton
-                ariaLabel="Itinerary Retrieval"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/manage-booking')}
-              >
-                Itinerary Retrieval
-              </AccessibleButton>
-            </li>
-            <li>
-              <AccessibleButton
-                ariaLabel="Frequent Flyer Miles"
-                className="hover:text-white transition-colors"
-                onClick={() => navigate('/dashboard')}
-              >
-                Frequent Flyer Miles
-              </AccessibleButton>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-xs text-xs">
-          <h5 className="font-bold uppercase tracking-wider text-white">Platform Services</h5>
-          <ul className="space-y-2xs font-mono text-[10px] text-vantage-muted">
-            <li>
-              <a href="#" className="hover:text-white transition-colors">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-white transition-colors">
-                Terms of Vector Service
-              </a>
-            </li>
-            <li>
-              <span className="text-emerald-400">Node: Secure-Active</span>
-            </li>
-          </ul>
+        <div className="flex gap-xs w-full md:w-auto">
+          <div className="relative flex-1 md:w-64">
+            <Mail className="absolute left-sm top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted" />
+            <input
+              type="email"
+              placeholder="you@vantage.aero"
+              className="w-full bg-black/40 border border-white/10 rounded-2xl pl-10 pr-sm py-sm text-xs text-white placeholder:text-vantage-muted focus:outline-none focus:border-vantage-accent/60 transition-all"
+            />
+          </div>
+          <button className="shrink-0 px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-xs uppercase tracking-wider transition-all hover:shadow-glow-accent hover:scale-[1.02] active:scale-[0.98]">
+            Subscribe
+          </button>
         </div>
       </div>
-      <div className="border-t border-white/5 pt-xs flex flex-col md:flex-row justify-between items-center gap-xs font-mono text-[9px] text-vantage-muted">
-        <span>© {currentYear} Capstone.Vantage Airspace LLC. All flight parameters encrypted.</span>
-        <div className="flex items-center gap-3xs">
-          <svg className="h-3 w-3 text-vantage-accent" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11h-2v2H7v2h2v2h2v-2h2V9h-2V7z" />
-          </svg>
-          <span>Connection Latency: 12ms (Optimized)</span>
+
+      {/* Link columns */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-xl">
+        {/* Brand column */}
+        <div className="col-span-2 space-y-md">
+          <BrandLogo iconSize="w-40 h-auto" />
+          <p className="text-[11px] text-vantage-muted leading-relaxed max-w-xs">
+            Capstone.Vantage operates an encrypted aerospace booking matrix, enabling global flight
+            dispatching, PNR generation, and real-time telemetry interception.
+          </p>
+          <div className="flex items-center gap-2xs text-[9px] font-mono text-vantage-muted">
+            <Globe className="w-3 h-3 text-vantage-accent" />
+            <span>Global coverage — 195 countries, 900+ airports</span>
+          </div>
+        </div>
+
+        {/* Link columns */}
+        {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
+          <div key={heading} className="space-y-sm">
+            <h5 className="text-[10px] font-bold uppercase tracking-widest text-white">{heading}</h5>
+            <ul className="space-y-xs">
+              {links.map(({ label, path }) => (
+                <li key={label}>
+                  <button
+                    onClick={() => navigate(path)}
+                    className="text-[11px] text-vantage-muted hover:text-vantage-accent transition-colors duration-200 text-left font-mono"
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/5 pt-md flex flex-col md:flex-row justify-between items-center gap-xs">
+        <span className="font-mono text-[9px] text-vantage-muted">
+          © {currentYear} Capstone.Vantage Airspace LLC. All flight parameters encrypted. All rights reserved.
+        </span>
+        <div className="flex items-center gap-2xs font-mono text-[9px] text-vantage-muted">
+          <ShieldCheck className="w-3 h-3 text-vantage-gold" />
+          <span>Node: Secure-Active</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-vantage-emerald animate-pulse" />
+          <span className="text-vantage-emerald">Latency: 12ms</span>
         </div>
       </div>
     </footer>

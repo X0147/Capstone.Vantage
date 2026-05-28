@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, Fingerprint, RefreshCw, CheckCircle } from 'lucide-react';
+import { Lock, Mail, Fingerprint, RefreshCw, CheckCircle, ArrowRight } from 'lucide-react';
 import BrandLogo from '../components/BrandLogo';
 
 export const LoginPage: React.FC = () => {
@@ -13,162 +13,172 @@ export const LoginPage: React.FC = () => {
   const handleAuthentication = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
-
     setIsLoading(true);
-    // Simulate high-performance token security validation delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsLoading(false);
-    
     navigate('/');
   };
 
   const handleBiometricAuth = async () => {
     if (biometricStatus !== 'idle') return;
-    
     setBiometricStatus('scanning');
-    // Simulate hardware key verification
     await new Promise((resolve) => setTimeout(resolve, 1800));
     setBiometricStatus('success');
-    
     await new Promise((resolve) => setTimeout(resolve, 800));
     navigate('/');
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center px-sm py-lg relative overflow-hidden -mt-20">
-      {/* Full screen video background */}
+    <div className="w-full min-h-screen flex flex-col items-center justify-center px-sm py-lg relative overflow-hidden -mt-24 pt-24">
+      {/* Full-screen video background */}
       <video
         src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105"
         autoPlay
         loop
         muted
         playsInline
       />
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] z-0" />
-      
-      {/* Dynamic ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-vantage-accent/10 rounded-full blur-3xl pointer-events-none z-0" />
-      
-      <div className="w-full max-w-md premium-glass rounded-[2rem] p-md border border-white/10 shadow-2xl space-y-md relative z-10 backdrop-blur-xl bg-black/40">
-        
-        {/* Branding Signifier */}
-        <div className="flex flex-col items-center space-y-xs text-center border-b border-white/10 pb-sm">
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-vantage-midnight/70 via-vantage-midnight/80 to-vantage-midnight/95" />
+
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-vantage-accent/8 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Login card */}
+      <div className="relative z-10 w-full max-w-lg premium-glass-strong rounded-4xl p-xl border border-white/8 shadow-[0_32px_80px_rgba(0,0,0,0.6)] space-y-lg">
+
+        {/* Brand */}
+        <div className="flex flex-col items-center text-center space-y-sm pb-lg border-b border-white/8">
           <BrandLogo iconSize="w-48 h-auto" />
-          <p className="text-[10px] uppercase font-mono tracking-widest text-vantage-accent mt-2">
-            Gateway Access Control
-          </p>
-        </div>
-
-        {/* Informational Header */}
-        <div className="space-y-3xs text-center">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-            Secure Credentials Validation
-          </h3>
-          <p className="text-xs text-vantage-muted">
-            Authenticate secure identity parameters to unlock your passenger vector matrix.
-          </p>
-        </div>
-
-        {/* Credentials Form */}
-        <form onSubmit={handleAuthentication} className="space-y-sm">
-          {/* Email Input Field */}
           <div className="space-y-2xs">
-            <label htmlFor="corporate-email" className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold">
-              Corporate Email Address
+            <p className="text-[9px] uppercase font-mono tracking-widest text-vantage-accent">
+              Secure Gateway Access
+            </p>
+            <h1 className="font-display text-2xl font-bold text-white italic">
+              Welcome Back
+            </h1>
+            <p className="text-xs text-vantage-muted max-w-xs">
+              Authenticate to access your passenger vector matrix and booking history.
+            </p>
+          </div>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleAuthentication} className="space-y-md">
+          <div className="space-y-2xs">
+            <label htmlFor="login-email" className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold">
+              Email Address
             </label>
             <div className="relative group">
+              <Mail className="w-4 h-4 text-vantage-muted absolute left-md top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors duration-200" />
               <input
-                id="corporate-email"
+                id="login-email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="laurence@vantage.aero"
-                className="w-full bg-black/50 border border-white/20 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent focus:bg-black/70 transition-all placeholder:text-white/30"
+                placeholder="you@vantage.aero"
+                className="w-full bg-black/40 border border-white/10 rounded-2xl pl-11 pr-md py-sm text-sm text-white focus:outline-none focus:border-vantage-accent/60 focus:bg-black/60 transition-all placeholder:text-vantage-muted/50"
               />
-              <Mail className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors" />
             </div>
           </div>
 
-          {/* Password Input Field */}
           <div className="space-y-2xs">
             <div className="flex justify-between items-center">
-              <label htmlFor="security-passcode" className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold">
-                Security Passcode
+              <label htmlFor="login-password" className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold">
+                Password
               </label>
-              <a href="#/forgot" className="text-[9px] text-vantage-accent hover:underline font-mono uppercase tracking-wider font-semibold">
-                Reset Key?
+              <a href="#/forgot" className="text-[9px] text-vantage-accent hover:text-vantage-accent-dark font-mono uppercase tracking-wider transition-colors">
+                Reset Key
               </a>
             </div>
             <div className="relative group">
+              <Lock className="w-4 h-4 text-vantage-muted absolute left-md top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors duration-200" />
               <input
-                id="security-passcode"
+                id="login-password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-black/50 border border-white/20 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent focus:bg-black/70 transition-all placeholder:text-white/30"
+                className="w-full bg-black/40 border border-white/10 rounded-2xl pl-11 pr-md py-sm text-sm text-white focus:outline-none focus:border-vantage-accent/60 focus:bg-black/60 transition-all placeholder:text-vantage-muted/50"
               />
-              <Lock className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors" />
             </div>
           </div>
 
-          {/* Action Trigger Button */}
           <button
             type="submit"
             disabled={isLoading || biometricStatus !== 'idle'}
-            className="w-full py-sm mt-xs rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-dark font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2xs transition-all active:scale-[0.98] disabled:opacity-50 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] cursor-pointer"
+            className="w-full group flex items-center justify-center gap-sm py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:shadow-glow-accent hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
-                <RefreshCw className="w-4 h-4 animate-spin" /> Validate Authorization Token
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                Validating...
               </>
             ) : (
-              'Initialize Gateway Handshake'
+              <>
+                Access Vantage
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </>
             )}
           </button>
         </form>
 
-        {/* Biometrics Integration Layout */}
-        <div className="border-t border-white/10 pt-sm flex flex-col items-center gap-xs text-center">
+        {/* Biometrics */}
+        <div className="flex flex-col items-center gap-md text-center border-t border-white/8 pt-lg">
+          <p className="text-[10px] uppercase tracking-widest text-vantage-muted font-mono">
+            Or use biometric verification
+          </p>
           <div className="relative">
-            {/* Pulsing indicator when scanning */}
             {biometricStatus === 'scanning' && (
-              <span className="absolute -inset-2 rounded-full border border-vantage-accent/40 animate-ping pointer-events-none" />
+              <span className="absolute -inset-3 rounded-full border border-vantage-accent/40 animate-ping pointer-events-none" />
             )}
-            
-            <button 
+            <button
               type="button"
               onClick={handleBiometricAuth}
               disabled={isLoading || biometricStatus === 'success'}
-              className={`p-sm rounded-full border transition-all active:scale-90 group cursor-pointer ${
+              className={`p-lg rounded-full border-2 transition-all duration-300 active:scale-90 group ${
                 biometricStatus === 'scanning'
-                  ? 'bg-vantage-accent/20 border-vantage-accent text-vantage-accent animate-pulse'
+                  ? 'bg-vantage-accent/20 border-vantage-accent text-vantage-accent animate-glow-pulse'
                   : biometricStatus === 'success'
-                    ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                    : 'bg-white/5 border-white/20 hover:bg-white/10 hover:border-vantage-accent/60 text-vantage-muted hover:text-white shadow-lg'
+                    ? 'bg-vantage-emerald/20 border-vantage-emerald text-vantage-emerald'
+                    : 'bg-white/5 border-white/15 hover:bg-white/10 hover:border-vantage-accent/50 text-vantage-muted hover:text-vantage-accent'
               }`}
-              title="Authenticate via Biometrics"
+              title="Authenticate via biometrics"
             >
               {biometricStatus === 'success' ? (
-                <CheckCircle className="w-7 h-7" />
+                <CheckCircle className="w-8 h-8" />
               ) : biometricStatus === 'scanning' ? (
-                <RefreshCw className="w-7 h-7 animate-spin" />
+                <RefreshCw className="w-8 h-8 animate-spin" />
               ) : (
-                <Fingerprint className="w-7 h-7 group-hover:scale-105 transition-transform" />
+                <Fingerprint className="w-8 h-8 group-hover:scale-110 transition-transform" />
               )}
             </button>
           </div>
-          
-          <span className="text-[10px] text-vantage-muted font-mono uppercase tracking-wider">
+          <span className="text-[10px] text-vantage-muted font-mono">
             {biometricStatus === 'scanning'
               ? 'Reading hardware security enclave...'
               : biometricStatus === 'success'
-                ? 'Handshake Approved. Access Granted.'
-                : 'Initialize Hardware Biometric Verification'}
+                ? '✓ Handshake approved. Access granted.'
+                : 'Touch to verify biometric identity'}
           </span>
+        </div>
+
+        {/* Register link */}
+        <div className="text-center pt-xs border-t border-white/5">
+          <p className="text-xs text-vantage-muted">
+            New to Vantage?{' '}
+            <button
+              onClick={() => navigate('/')}
+              className="text-vantage-accent hover:text-vantage-accent-dark font-semibold transition-colors"
+            >
+              Create an account →
+            </button>
+          </p>
         </div>
       </div>
     </div>
