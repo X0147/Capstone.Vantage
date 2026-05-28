@@ -75,20 +75,48 @@ export default function SearchPage() {
       <section className="relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-[#0f172a] via-black to-vantage-dark p-lg shadow-2xl">
         <div className="absolute right-0 top-0 h-full w-1/2 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-vantage-accent via-blue-600 to-transparent pointer-events-none" />
 
-        <div className="max-w-3xl space-y-sm relative z-10">
-          <span className="inline-flex items-center gap-3xs rounded-full border border-vantage-accent/20 bg-vantage-accent/10 px-xs py-3xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent">
-            <Sparkles className="h-3 w-3" /> Redefining Air Transportation
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-none">
-            Find your next flight <br />
-            <span className="bg-gradient-to-r from-vantage-accent to-blue-500 bg-clip-text text-transparent">
-              in raw real-time
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-center relative z-10">
+          {/* Left Column: Heading and Description */}
+          <div className="lg:col-span-7 space-y-sm">
+            <span className="inline-flex items-center gap-3xs rounded-full border border-vantage-accent/20 bg-vantage-accent/10 px-xs py-3xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent">
+              <Sparkles className="h-3 w-3" /> Redefining Air Transportation
             </span>
-          </h1>
-          <p className="text-sm md:text-base text-vantage-muted max-w-xl">
-            Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and
-            experience premium cabin seat structures in one unified system.
-          </p>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-none">
+              Find your next flight <br />
+              <span className="bg-gradient-to-r from-vantage-accent to-blue-500 bg-clip-text text-transparent">
+                in raw real-time
+              </span>
+            </h1>
+            <p className="text-sm md:text-base text-vantage-muted max-w-xl">
+              Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and
+              experience premium cabin seat structures in one unified system.
+            </p>
+          </div>
+
+          {/* Right Column: Premium Video Preview Frame */}
+          <div className="lg:col-span-5 w-full flex justify-center lg:justify-end">
+            <div className="relative group w-full max-w-md aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(56,189,248,0.15)] bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-vantage-accent/30 hover:shadow-[0_0_50px_rgba(56,189,248,0.25)]">
+              <video
+                src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+              {/* Premium overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              
+              {/* Meta information overlay */}
+              <div className="absolute bottom-xs left-xs right-xs flex justify-between items-center text-[10px] font-mono text-vantage-muted bg-black/55 backdrop-blur-md px-sm py-2xs rounded-lg border border-white/5">
+                <span className="flex items-center gap-3xs font-semibold text-white">
+                  <span className="h-1.5 w-1.5 rounded-full bg-vantage-accent animate-pulse" />
+                  DEMO.PAYMENT_FLOW
+                </span>
+                <span className="text-vantage-accent">LIVE_PREVIEW</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
