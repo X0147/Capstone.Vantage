@@ -30,14 +30,11 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center px-sm py-lg relative overflow-hidden -mt-24 pt-24">
-      {/* Full-screen video background */}
-      <video
-        src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
-        className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105"
-        autoPlay
-        loop
-        muted
-        playsInline
+      {/* Full-screen image background */}
+      <img
+        src={`${import.meta.env.BASE_URL || '/'}images/20_sunset_flight.jpg`}
+        alt="Sunset Flight"
+        className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105"
       />
 
       {/* Dark overlay */}
@@ -48,7 +45,7 @@ export const LoginPage: React.FC = () => {
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Login card */}
-      <div className="relative z-10 w-full max-w-lg premium-glass-strong rounded-4xl p-xl border border-white/8 shadow-[0_32px_80px_rgba(0,0,0,0.6)] space-y-lg">
+      <div className="relative z-10 w-full max-w-[512px] premium-glass-strong rounded-4xl p-xl border border-white/8 shadow-[0_32px_80px_rgba(0,0,0,0.6)] space-y-lg">
 
         {/* Brand */}
         <div className="flex flex-col items-center text-center space-y-sm pb-lg border-b border-white/8">
@@ -60,7 +57,7 @@ export const LoginPage: React.FC = () => {
             <h1 className="font-display text-2xl font-bold text-white italic">
               Welcome Back
             </h1>
-            <p className="text-xs text-vantage-muted max-w-xs">
+            <p className="text-xs text-vantage-muted max-w-[320px]">
               Authenticate to access your passenger vector matrix and booking history.
             </p>
           </div>

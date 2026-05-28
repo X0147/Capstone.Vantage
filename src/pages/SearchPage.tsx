@@ -157,7 +157,7 @@ export default function SearchPage() {
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white italic">
                 Signature Destinations
               </h2>
-              <p className="text-sm text-vantage-muted max-w-md">
+              <p className="text-sm text-vantage-muted max-w-[448px]">
                 Discover handpicked, luxury global itineraries departing from New York—curated dynamically for the discerning traveler.
               </p>
             </div>
