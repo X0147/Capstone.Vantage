@@ -1,13 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, useInRouterContext } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AnimatePresence } from 'framer-motion';
+import React, { lazy, Suspense } from 'react';
+import { ResultsSkeleton } from './features/search/ResultsSkeleton';
 
-// Placeholder imports for pages
-import SearchPage from './pages/SearchPage';
-import ResultsPage from './pages/ResultsPage';
-import PassengerPage from './pages/PassengerPage';
-import SeatSelectionPage from './pages/SeatSelectionPage';
-import PaymentPage from './pages/PaymentPage';
-import ConfirmationPage from './pages/ConfirmationPage';
+// Code-split route-level bundles
+const SearchPage = lazy(() => import('./pages/SearchPage'));
+const ResultsPage = lazy(() => import('./pages/ResultsPage'));
+const PassengerPage = lazy(() => import('./pages/PassengerPage'));
+const SeatSelectionPage = lazy(() => import('./pages/SeatSelectionPage'));
+const PaymentPage = lazy(() => import('./pages/PaymentPage'));
+const ConfirmationPage = lazy(() => import('./pages/ConfirmationPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const FlightTrackerPage = lazy(() => import('./pages/FlightTrackerPage'));
+import useBookingWizardStore from './store/useBookingWizardStore';
+import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 
 function App() {
   // If the app is served from a subpath (GitHub Pages project site), set the router basename
@@ -16,31 +23,63 @@ function App() {
       ? '/Capstone.Vantage'
       : '/';
 
+  if (useInRouterContext()) {
+    return <AppShell />;
+  }
+
   return (
     <Router basename={basename}>
-      <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased">
-        {/* Placeholder Navbar */}
-        <header className="p-4 border-b border-white/10 no-print">
-          <div className="container mx-auto flex items-center justify-between">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-emerald">
-              CapstoneFlight
-            </h1>
-          </div>
-        </header>
-
-        <main className="flex-1 container mx-auto p-4">
-          <Routes>
-            <Route path="/" element={<SearchPage />} />
-            <Route path="/results" element={<ResultsPage />} />
-            <Route path="/passenger-info" element={<PassengerPage />} />
-            <Route path="/seat-selection" element={<SeatSelectionPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/confirmation" element={<ConfirmationPage />} />
-          </Routes>
-        </main>
-      </div>
+      <AppShell />
       <Toaster position="top-right" />
     </Router>
+  );
+}
+
+function AppShell() {
+  return (
+    <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased">
+      <EnterpriseNavigationBar />
+
+      <main className="flex-1 container mx-auto p-4">
+        <Suspense fallback={<div className="p-6"><ResultsSkeleton /></div>}>
+          <AnimatedRoutes />
+        </Suspense>
+      </main>
+    </div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  const passenger = useBookingWizardStore((s) => s.passenger);
+
+  // Guard component for checkout path
+  const CheckoutGuard = ({ children }) => {
+    if (!passenger) return <Navigate to="/passenger-info" replace />;
+    return children;
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<SearchPage />} />
+        <Route path="/search-results" element={<ResultsPage />} />
+        <Route path="/results" element={<ResultsPage />} />
+        <Route path="/passenger-info" element={<PassengerPage />} />
+        <Route path="/seat-selection" element={<SeatSelectionPage />} />
+        <Route path="/checkout" element={<CheckoutGuard><CheckoutPage /></CheckoutGuard>} />
+        <Route
+          path="/tracker"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <FlightTrackerPage />
+            </Suspense>
+          }
+        />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 

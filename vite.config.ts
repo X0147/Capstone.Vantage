@@ -5,7 +5,8 @@ import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './', // Use relative base so assets load correctly when serving `dist/`
+  // GitHub Pages base path for repository pages. Set to '/Capstone.Vantage/' for this repo.
+  base: '/Capstone.Vantage/',
   plugins: [react(), svgr()],
   resolve: {
     alias: {
@@ -30,5 +31,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
   }
 });

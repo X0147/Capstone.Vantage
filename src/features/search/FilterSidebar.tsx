@@ -1,121 +1,106 @@
-import React from 'react';
-import type { FlightSearchResult } from '../../services/flightService.ts';
+import React, { useMemo } from 'react';
+import { SlidersHorizontal } from 'lucide-react';
+import type { FlightOption, FilterState } from './types';
 
-export interface FlightFilters {
-  minPrice: number;
-  maxPrice: number;
-  stops: Array<0 | 1 | '2+'>;
-  airlines: string[];
+interface FilterSidebarProps {
+  filters: FilterState;
+  onFilterChange: (filters: FilterState) => void;
+  rawFlights: FlightOption[];
+  maxAvailablePrice: number;
 }
 
-export interface FilterSidebarProps {
-  flights: FlightSearchResult[];
-  filters: FlightFilters;
-  onChange: (filters: FlightFilters) => void;
-}
+export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
+  ({ filters, onFilterChange, rawFlights, maxAvailablePrice }) => {
+    const airlineStats = useMemo(() => {
+      const stats: Record<string, number> = {};
+      rawFlights.forEach((flight) => {
+        const name = flight.outbound[0]?.airline;
+        if (name) stats[name] = (stats[name] || 0) + 1;
+      });
+      return stats;
+    }, [rawFlights]);
 
-const STOP_OPTIONS: Array<0 | 1 | '2+'> = [0, 1, '2+'];
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onFilterChange({ ...filters, maxPrice: Number(e.target.value) });
+    };
 
-export function FilterSidebar({ flights, filters, onChange }: FilterSidebarProps) {
-  const priceValues = flights.map((flight) => flight.price);
-  const minFlightPrice = priceValues.length > 0 ? Math.min(...priceValues) : 0;
-  const maxFlightPrice = priceValues.length > 0 ? Math.max(...priceValues) : 0;
+    const handleStopToggle = (stop: number) => {
+      const updatedStops = filters.stops.includes(stop)
+        ? filters.stops.filter((s) => s !== stop)
+        : [...filters.stops, stop];
+      onFilterChange({ ...filters, stops: updatedStops });
+    };
 
-  const airlineCounts = flights.reduce<Record<string, number>>((accumulator, flight) => {
-    accumulator[flight.airlineName] = (accumulator[flight.airlineName] ?? 0) + 1;
-    return accumulator;
-  }, {});
+    const handleAirlineToggle = (airline: string) => {
+      const updatedAirlines = filters.airlines.includes(airline)
+        ? filters.airlines.filter((a) => a !== airline)
+        : [...filters.airlines, airline];
+      onFilterChange({ ...filters, airlines: updatedAirlines });
+    };
 
-  const toggleStop = (stop: 0 | 1 | '2+') => {
-    const isSelected = filters.stops.includes(stop);
-    onChange({
-      ...filters,
-      stops: isSelected ? filters.stops.filter((item) => item !== stop) : [...filters.stops, stop],
-    });
-  };
-
-  const toggleAirline = (airlineName: string) => {
-    const isSelected = filters.airlines.includes(airlineName);
-    onChange({
-      ...filters,
-      airlines: isSelected ? filters.airlines.filter((item) => item !== airlineName) : [...filters.airlines, airlineName],
-    });
-  };
-
-  return (
-    <aside className="sticky top-24 hidden h-[calc(100vh-7rem)] w-[300px] shrink-0 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-md lg:block">
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Filters</h2>
-          <p className="mt-1 text-sm text-white/60">Refine results instantly without breaking flow.</p>
+    return (
+      <aside className="sticky top-24 hidden h-[calc(100vh-7rem)] w-[300px] shrink-0 space-y-md self-start overflow-y-auto rounded-xl border border-white/10 bg-white/5 p-sm backdrop-blur-md lg:block premium-glass">
+        <div className="flex items-center gap-2xs border-b border-white/10 pb-2xs">
+          <SlidersHorizontal className="h-4 w-4 text-vantage-accent" />
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Filters</h3>
         </div>
 
-        <section className="space-y-3">
-          <div className="flex items-center justify-between text-sm text-white/75">
-            <span>Price range</span>
-            <span>${filters.minPrice} - ${filters.maxPrice}</span>
+        <div className="space-y-2xs">
+          <div className="flex justify-between text-xs font-medium">
+            <span className="text-vantage-muted">Max Price</span>
+            <span className="text-white">${filters.maxPrice}</span>
           </div>
-          <div className="space-y-3">
-            <label className="block text-xs uppercase tracking-[0.2em] text-white/50">Minimum</label>
-            <input
-              type="range"
-              min={minFlightPrice}
-              max={maxFlightPrice}
-              value={filters.minPrice}
-              onChange={(event) => onChange({ ...filters, minPrice: Number(event.target.value) })}
-              className="w-full accent-vantage-accent"
-            />
-            <label className="block text-xs uppercase tracking-[0.2em] text-white/50">Maximum</label>
-            <input
-              type="range"
-              min={minFlightPrice}
-              max={maxFlightPrice}
-              value={filters.maxPrice}
-              onChange={(event) => onChange({ ...filters, maxPrice: Number(event.target.value) })}
-              className="w-full accent-vantage-accent"
-            />
-          </div>
-        </section>
+          <input
+            type="range"
+            min={0}
+            max={maxAvailablePrice || 2000}
+            value={filters.maxPrice}
+            onChange={handlePriceChange}
+            className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/10 accent-vantage-accent"
+          />
+        </div>
 
-        <section className="space-y-3">
-          <h3 className="text-sm font-medium uppercase tracking-[0.2em] text-white/50">Stops</h3>
-          <div className="space-y-2">
-            {STOP_OPTIONS.map((stop) => (
-              <label key={String(stop)} className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/10 px-3 py-2 text-sm text-white/80">
+        <div className="space-y-xs">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">Stops</h4>
+          <div className="space-y-2xs">
+            {[0, 1, 2].map((stop) => (
+              <label key={stop} className="flex cursor-pointer items-center gap-xs text-sm text-white">
                 <input
                   type="checkbox"
                   checked={filters.stops.includes(stop)}
-                  onChange={() => toggleStop(stop)}
-                  className="h-4 w-4 rounded border-white/20 bg-transparent text-vantage-accent focus:ring-vantage-accent"
+                  onChange={() => handleStopToggle(stop)}
+                  className="h-4 w-4 rounded border-white/10 bg-vantage-dark text-vantage-accent focus:ring-0"
                 />
-                {stop === 0 ? 'Non-stop' : stop === 1 ? '1 stop' : '2+ stops'}
+                <span>{stop === 0 ? 'Non-stop' : `${stop} stop${stop > 1 ? 's' : ''}`}</span>
               </label>
             ))}
           </div>
-        </section>
+        </div>
 
-        <section className="space-y-3">
-          <h3 className="text-sm font-medium uppercase tracking-[0.2em] text-white/50">Airlines</h3>
-          <div className="space-y-2">
-            {Object.entries(airlineCounts).map(([airlineName, count]) => (
-              <label key={airlineName} className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/10 px-3 py-2 text-sm text-white/80">
-                <span className="flex items-center gap-3">
+        <div className="space-y-xs">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-vantage-muted">Airlines</h4>
+          <div className="max-h-48 space-y-2xs overflow-y-auto pr-2xs">
+            {Object.entries(airlineStats).map(([name, count]) => (
+              <label key={name} className="flex cursor-pointer items-center justify-between text-sm text-white">
+                <div className="flex items-center gap-xs">
                   <input
                     type="checkbox"
-                    checked={filters.airlines.includes(airlineName)}
-                    onChange={() => toggleAirline(airlineName)}
-                    className="h-4 w-4 rounded border-white/20 bg-transparent text-vantage-accent focus:ring-vantage-accent"
+                    checked={filters.airlines.includes(name)}
+                    onChange={() => handleAirlineToggle(name)}
+                    className="h-4 w-4 rounded border-white/10 bg-vantage-dark text-vantage-accent focus:ring-0"
                   />
-                  <span>{airlineName}</span>
-                </span>
-                <span className="text-white/45">({count})</span>
+                  <span>{name}</span>
+                </div>
+                <span className="text-xs text-vantage-muted">({count})</span>
               </label>
             ))}
           </div>
-        </section>
-      </div>
-    </aside>
-  );
-}
+        </div>
+      </aside>
+    );
+  }
+);
+
+FilterSidebar.displayName = 'FilterSidebar';
 
 export default FilterSidebar;

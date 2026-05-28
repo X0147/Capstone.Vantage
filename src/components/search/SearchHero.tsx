@@ -1,51 +1,74 @@
-import React from 'react';
-import TabSwitcher from './TabSwitcher';
-import LocationInput from './LocationInput';
-import DateRangePicker from './DateRangePicker';
-import PassengersSelector from './PassengersSelector';
-import ButtonPrimary from '../ui/ButtonPrimary';
-import useSearchStore from '../../store/useSearchStore';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useSearchStore } from '../../store/useSearchStore';
+import { GlobalLocationInput } from '../GlobalLocationInput';
+import { AlertCircle, PlaneTakeoff } from 'lucide-react';
 
 export const SearchHero: React.FC = () => {
-  const { searchParams, setSearchParams, addRecentSearch } = useSearchStore();
-  const navigate = useNavigate();
+  const { origin, destination, setOrigin, setDestination, executeSearch } = useSearchStore();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addRecentSearch(searchParams);
-    // In a real app we would trigger the query (React Query) and navigate to results
-    navigate('/search');
+
+    // Invariant Check 01: Mandatory Fields
+    if (!origin || !destination) {
+      setError('Please select both a departure and arrival airport.');
+      return;
+    }
+
+    // Invariant Check 02: Duplicate Prevention Guard
+    if (origin.toUpperCase() === destination.toUpperCase()) {
+      setError('Departure and arrival airports cannot be identical.');
+      return;
+    }
+
+    setError(null);
+    executeSearch();
   };
 
   return (
-    <section className="bg-white/6 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-xl">
-      <form onSubmit={handleSearch} className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold">Find flights</h3>
-          <TabSwitcher value={searchParams.tripType} onChange={(t) => setSearchParams({ tripType: t as any })} />
+    <div className="w-full max-w-4xl mx-auto premium-glass rounded-3xl p-md border border-white/5 space-y-sm">
+      <form onSubmit={handleSubmit} className="space-y-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-sm">
+          <GlobalLocationInput 
+            label="Departure Airport"
+            placeholder="From where?"
+            value={origin}
+            onChange={(code) => {
+              setOrigin(code);
+              if (error) setError(null); // Real-time UX clearance
+            }}
+          />
+
+          <GlobalLocationInput 
+            label="Arrival Destination"
+            placeholder="Going where?"
+            value={destination}
+            onChange={(code) => {
+              setDestination(code);
+              if (error) setError(null);
+            }}
+          />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="md:col-span-1">
-            <LocationInput label="From" field="from" />
+        {/* Dynamic Error Messaging Plane */}
+        {error && (
+          <div className="flex items-center gap-2xs p-xs rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium animate-pulse">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
           </div>
-          <div className="md:col-span-1">
-            <LocationInput label="To" field="to" />
-          </div>
-          <div className="md:col-span-1">
-            <DateRangePicker />
-          </div>
-          <div className="md:col-span-1">
-            <PassengersSelector />
-          </div>
-        </div>
+        )}
 
-        <div className="flex items-center gap-3 justify-end">
-          <ButtonPrimary type="submit">Search Flights</ButtonPrimary>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="px-md py-xs rounded-xl bg-gradient-to-r from-vantage-accent to-blue-500 text-vantage-dark font-black text-xs uppercase tracking-wider flex items-center gap-2xs transition-all hover:opacity-90 active:scale-[0.98]"
+          >
+            <PlaneTakeoff className="w-4 h-4" /> Search Availability
+          </button>
         </div>
       </form>
-    </section>
+    </div>
   );
 };
 

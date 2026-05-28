@@ -1,210 +1,164 @@
-import { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import useSearchStore from '../store/useSearchStore';
-import useFlightsQuery from '../hooks/useFlightsQuery';
-import FilterSidebar, { type FlightFilters } from '../features/search/FilterSidebar';
-import FlightCard from '../features/search/FlightCard';
-import ResultsSkeleton from '../features/search/ResultsSkeleton';
-import ResultsEmptyState from '../features/search/ResultsEmptyState';
-import type { FlightSearchResult } from '../services/flightService.ts';
+import React, { useState, useMemo, useEffect } from 'react';
+import { motion, LayoutGroup } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useSearchStore } from '../store/useSearchStore';
+import { useFlightsQuery } from '../hooks/useFlightsQuery';
+import { FilterSidebar } from '../features/search/FilterSidebar';
+import { FlightCard } from '../features/search/FlightCard';
+import { ResultsSkeleton } from '../features/search/ResultsSkeleton';
+import { FilterState, FlightOption } from '../features/search/types';
+import { ArrowLeft, Plane } from 'lucide-react';
 
-const createDefaultFilters = (flights: FlightSearchResult[]): FlightFilters => {
-  const prices = flights.map((flight) => flight.price);
-  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-  const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
+export const ResultsPage: React.FC = () => {
+  const searchParams = useSearchStore((state) => state.searchParams);
+  const { data: rawFlights, isLoading, isError } = useFlightsQuery();
+  const navigate = useNavigate();
 
-  return {
-    minPrice,
-    maxPrice,
-    stops: [0, 1, '2+'],
+  // Route progression/selection states
+  const [currentStep, setCurrentStep] = useState<'outbound' | 'return'>('outbound');
+  const [selectedOutbound, setSelectedOutbound] = useState<FlightOption | null>(null);
+  const [selectedReturn, setSelectedReturn] = useState<FlightOption | null>(null);
+
+  // Accordion card expanding map
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
+  // Initialize modular client filters
+  const [filters, setFilters] = useState<FilterState>({
+    maxPrice: 2000,
+    stops: [0, 1, 2],
     airlines: [],
+  });
+
+  // Dynamically derive maximal pricing boundaries on initial fetch arrays
+  const maxAvailablePrice = useMemo(() => {
+    if (!rawFlights || rawFlights.length === 0) return 2000;
+    return Math.max(...rawFlights.map((f) => f.price));
+  }, [rawFlights]);
+
+  useEffect(() => {
+    if (maxAvailablePrice) {
+      setFilters((prev) => ({ ...prev, maxPrice: maxAvailablePrice }));
+    }
+  }, [maxAvailablePrice]);
+
+  // Compute filtering mutations strictly
+  const filteredFlights = useMemo(() => {
+    if (!rawFlights) return [];
+    return rawFlights.filter((flight) => {
+      if (flight.price > filters.maxPrice) return false;
+      const stops = flight.outbound.length - 1;
+      if (!filters.stops.includes(stops)) return false;
+      if (filters.airlines.length > 0 && !filters.airlines.includes(flight.outbound[0].airline)) return false;
+      return true;
+    });
+  }, [rawFlights, filters]);
+
+  const handleSelectFlight = (flight: FlightOption) => {
+    if (currentStep === 'outbound') {
+      setSelectedOutbound(flight);
+      if (searchParams.tripType === 'roundtrip') {
+        setCurrentStep('return');
+        setExpandedCardId(null);
+      } else {
+        // Go to seat selection
+        navigate('/seat-selection');
+      }
+    } else {
+      setSelectedReturn(flight);
+      // after return selected for roundtrip, navigate to seat selection
+      navigate('/seat-selection');
+    }
   };
-};
-
-const filterFlights = (flights: FlightSearchResult[], filters: FlightFilters) => {
-  return flights.filter((flight) => {
-    const stopBucket = flight.stops === 0 ? 0 : flight.stops === 1 ? 1 : '2+';
-    const matchesPrice = flight.price >= filters.minPrice && flight.price <= filters.maxPrice;
-    const matchesStops = filters.stops.includes(stopBucket);
-    const matchesAirline = filters.airlines.length === 0 || filters.airlines.includes(flight.airlineName);
-    return matchesPrice && matchesStops && matchesAirline;
-  });
-};
-
-export default function ResultsPage() {
-  const { searchParams } = useSearchStore();
-  const { data, isLoading, isFetching } = useFlightsQuery();
-  const [filters, setFilters] = useState<FlightFilters>({
-    minPrice: 0,
-    maxPrice: 9999,
-    stops: [0, 1, '2+'],
-    airlines: [],
-  });
-  const [selectedOutboundFlight, setSelectedOutboundFlight] = useState<FlightSearchResult | null>(null);
-  const [selectedReturnFlight, setSelectedReturnFlight] = useState<FlightSearchResult | null>(null);
-  const [expandedFlightId, setExpandedFlightId] = useState<string | null>(null);
-
-  const outboundFlights = useMemo(() => data?.filter((flight) => flight.leg === 'outbound') ?? [], [data]);
-  const returnFlights = useMemo(() => data?.filter((flight) => flight.leg === 'return') ?? [], [data]);
-  const isRoundTrip = searchParams.tripType === 'roundtrip';
-
-  const effectiveFilters = useMemo(() => {
-    const base = createDefaultFilters(outboundFlights);
-    return {
-      ...base,
-      ...filters,
-      minPrice: Math.min(filters.minPrice || base.minPrice, filters.maxPrice || base.maxPrice),
-      maxPrice: Math.max(filters.maxPrice || base.maxPrice, filters.minPrice || base.minPrice),
-    };
-  }, [filters, outboundFlights]);
-
-  const visibleOutboundFlights = useMemo(
-    () => filterFlights(outboundFlights, effectiveFilters),
-    [effectiveFilters, outboundFlights]
-  );
-  const visibleReturnFlights = useMemo(
-    () => filterFlights(returnFlights, effectiveFilters),
-    [effectiveFilters, returnFlights]
-  );
-
-  const activeStep: 1 | 2 = isRoundTrip && selectedOutboundFlight ? 2 : 1;
-
-  const visibleFlights = activeStep === 1 || !isRoundTrip ? visibleOutboundFlights : visibleReturnFlights;
-  const emptyState = !isLoading && visibleFlights.length === 0;
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-4 py-6 lg:px-8">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-        <FilterSidebar flights={outboundFlights} filters={effectiveFilters} onChange={setFilters} />
+    <div className="mx-auto max-w-[1200px] space-y-md px-sm py-lg">
+      {/* Wizard Step Progression Indicator for Round Trips */}
+      {searchParams.tripType === 'roundtrip' && (
+        <div className="mx-auto flex max-w-md items-center justify-between rounded-xl border border-white/5 p-xs text-xs font-medium premium-glass w-full">
+          <button
+            disabled={!selectedOutbound}
+            onClick={() => {
+              setCurrentStep('outbound');
+              setSelectedReturn(null);
+            }}
+            className={`flex items-center gap-2xs rounded-lg px-sm py-2xs transition-all ${
+              currentStep === 'outbound' ? 'bg-vantage-accent text-vantage-dark' : 'text-vantage-muted'
+            }`}
+          >
+            <Plane className="h-3.5 w-3.5" /> Outbound Flight
+          </button>
+          <div className="mx-2xs h-px flex-1 bg-white/10" />
+          <div
+            className={`flex items-center gap-2xs rounded-lg px-sm py-2xs ${
+              currentStep === 'return' ? 'bg-vantage-accent text-vantage-dark' : 'text-vantage-muted'
+            }`}
+          >
+            <Plane className="h-3.5 w-3.5 rotate-90" /> Return Flight
+          </div>
+        </div>
+      )}
 
-        <main className="min-w-0 flex-1 space-y-5">
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_16px_50px_rgba(0,0,0,0.18)] backdrop-blur-md lg:p-6">
-            <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.28em] text-white/45">Search results</p>
-                <h1 className="mt-2 text-2xl font-semibold text-white md:text-3xl">
-                  {searchParams.from} → {searchParams.to}
-                </h1>
-                <p className="mt-2 text-sm text-white/60">
-                  {isRoundTrip ? 'Round-trip itinerary with outbound and return options.' : 'One-way results with premium airline options.'}
-                </p>
-              </div>
+      {/* Main Core Dashboard Layout Wrapper */}
+      <div className="flex flex-col items-start gap-sm lg:flex-row">
+        <FilterSidebar
+          filters={filters}
+          onFilterChange={setFilters}
+          rawFlights={rawFlights || []}
+          maxAvailablePrice={maxAvailablePrice}
+        />
 
-              {isRoundTrip && (
-                <motion.div
-                  key={activeStep}
-                  initial={{ opacity: 0, y: 10, x: activeStep === 2 ? 16 : -16 }}
-                  animate={{ opacity: 1, y: 0, x: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3 text-sm text-white/80"
-                >
-                  {activeStep === 1
-                    ? 'Step 1: Select outbound flight'
-                    : 'Step 2: Select return flight'}
-                </motion.div>
-              )}
+        <main className="w-full flex-1 space-y-sm">
+          {currentStep === 'return' && (
+            <button
+              onClick={() => {
+                setCurrentStep('outbound');
+                setSelectedOutbound(null);
+              }}
+              className="mb-2xs flex items-center gap-2xs text-xs font-medium text-vantage-accent hover:underline"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Modify Outbound selection
+            </button>
+          )}
+
+          {isLoading ? (
+            <ResultsSkeleton />
+          ) : isError ? (
+            <div className="rounded-xl border border-red-500/20 p-lg text-center premium-glass">
+              <p className="text-sm font-medium text-red-400">
+                Failed to retrieve real-time flight records. Please adjust filters.
+              </p>
             </div>
-
-            {isRoundTrip && (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeStep}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22 }}
-                  className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70"
-                >
-                  {activeStep === 1
-                    ? 'Choose the outbound itinerary to unlock return options.'
-                    : 'Your outbound selection is locked in. Now choose the matching return option.'}
-                </motion.div>
-              </AnimatePresence>
-            )}
-          </section>
-
-          {isLoading || isFetching ? (
-            <ResultsSkeleton count={6} />
-          ) : emptyState ? (
-            <ResultsEmptyState
-              title="No flights match these filters"
-              description="Try widening the price range, relaxing stop preferences, or removing airline constraints."
-            />
+          ) : filteredFlights.length === 0 ? (
+            <div className="rounded-xl border border-white/5 p-lg text-center text-sm text-vantage-muted premium-glass">
+              No matching flights found matching your current parameters.
+            </div>
           ) : (
-            <div className="space-y-6">
-              <section className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-white/45">
-                    {activeStep === 1 || !isRoundTrip ? 'Outbound' : 'Return'}
-                  </h2>
-                  <p className="text-sm text-white/55">
-                    {activeStep === 1 || !isRoundTrip ? visibleOutboundFlights.length : visibleReturnFlights.length} options
-                  </p>
-                </div>
-                <div className="grid gap-4">
-                  <AnimatePresence initial={false} mode="popLayout">
-                    {visibleFlights
-                      .map((flight) => (
-                        <motion.div
-                          key={flight.id}
-                          layout
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <FlightCard
-                            flight={flight}
-                            expanded={expandedFlightId === flight.id}
-                            selected={selectedOutboundFlight?.id === flight.id}
-                            onSelect={(selectedFlight) => setSelectedOutboundFlight(selectedFlight)}
-                            onToggleExpand={(flightId) =>
-                              setExpandedFlightId((current) => (current === flightId ? null : flightId))
-                            }
-                          />
-                        </motion.div>
-                      ))}
-                  </AnimatePresence>
-                </div>
-              </section>
-
-              {isRoundTrip && activeStep === 2 && (
-                <section className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-white/45">Return</h2>
-                    <p className="text-sm text-white/55">{visibleReturnFlights.length} options</p>
-                  </div>
-                  <div className="grid gap-4">
-                    <AnimatePresence initial={false} mode="popLayout">
-                      {visibleReturnFlights.map((flight) => (
-                        <motion.div
-                          key={flight.id}
-                          layout
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <FlightCard
-                            flight={flight}
-                            expanded={expandedFlightId === flight.id}
-                            selected={selectedReturnFlight?.id === flight.id}
-                            onSelect={(selectedFlight) => setSelectedReturnFlight(selectedFlight)}
-                            onToggleExpand={(flightId) =>
-                              setExpandedFlightId((current) => (current === flightId ? null : flightId))
-                            }
-                          />
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </section>
-              )}
-            </div>
+            <LayoutGroup>
+              <div className="space-y-xs">
+                {filteredFlights.map((flight) => (
+                  <FlightCard
+                    key={flight.id}
+                    flight={flight}
+                    isSelected={
+                      currentStep === 'outbound' ? selectedOutbound?.id === flight.id : selectedReturn?.id === flight.id
+                    }
+                    isExpanded={expandedCardId === flight.id}
+                    onToggleExpand={() => setExpandedCardId(expandedCardId === flight.id ? null : flight.id)}
+                    onSelect={() => handleSelectFlight(flight)}
+                    actionLabel={
+                      currentStep === 'outbound' && searchParams.tripType === 'roundtrip'
+                        ? 'Select Outbound'
+                        : 'Select Flight'
+                    }
+                  />
+                ))}
+              </div>
+            </LayoutGroup>
           )}
         </main>
       </div>
     </div>
   );
-}
+};
+
+export default ResultsPage;
