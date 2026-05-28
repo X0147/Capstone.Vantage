@@ -1,0 +1,147 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { PromoCard } from './PromoCard';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import AccessibleButton from '../AccessibleButton';
+
+interface PromoDestination {
+  city: string;
+  iata: string;
+  price: number;
+  duration: string;
+  image: string;
+  tag: string;
+}
+
+interface PromoCarouselProps {
+  destinations: PromoDestination[];
+  onSelect: (iata: string) => void;
+}
+
+export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSelect }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const checkScrollLimits = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    
+    // Check if we can scroll left/right
+    setShowLeftArrow(el.scrollLeft > 10);
+    setShowRightArrow(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+    
+    // Calculate current visible item index for the indicators
+    const cardWidth = el.scrollWidth / destinations.length;
+    const index = Math.round(el.scrollLeft / cardWidth);
+    if (index >= 0 && index < destinations.length) {
+      setActiveIndex(index);
+    }
+  };
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScrollLimits, { passive: true });
+      // Run once initially
+      checkScrollLimits();
+      // Handle window resize
+      window.addEventListener('resize', checkScrollLimits);
+    }
+    return () => {
+      if (el) {
+        el.removeEventListener('scroll', checkScrollLimits);
+      }
+      window.removeEventListener('resize', checkScrollLimits);
+    };
+  }, [destinations.length]);
+
+  const scrollBy = (direction: 'left' | 'right') => {
+    const el = containerRef.current;
+    if (!el) return;
+    
+    // Scroll amount is 1 card width or slightly less than viewport width
+    const scrollAmount = el.clientWidth * 0.8;
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  const scrollToItem = (idx: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / destinations.length;
+    el.scrollTo({
+      left: idx * cardWidth,
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    <div className="relative group w-full">
+      {/* Navigation Buttons (min-h-[44px] touch target ergonomics) */}
+      {showLeftArrow && (
+        <AccessibleButton
+          ariaLabel="Scroll popular routes left"
+          onClick={() => scrollBy('left')}
+          className="absolute -left-xs lg:-left-md top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full premium-glass text-white flex items-center justify-center border border-white/10 hover:bg-vantage-accent hover:text-vantage-dark hover:border-vantage-accent transition-all shadow-[0_0_15px_rgba(56,189,248,0.2)] focus:outline-none focus:ring-2 focus:ring-vantage-accent"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </AccessibleButton>
+      )}
+
+      {showRightArrow && (
+        <AccessibleButton
+          ariaLabel="Scroll popular routes right"
+          onClick={() => scrollBy('right')}
+          className="absolute -right-xs lg:-right-md top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full premium-glass text-white flex items-center justify-center border border-white/10 hover:bg-vantage-accent hover:text-vantage-dark hover:border-vantage-accent transition-all shadow-[0_0_15px_rgba(56,189,248,0.2)] focus:outline-none focus:ring-2 focus:ring-vantage-accent"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </AccessibleButton>
+      )}
+
+      {/* Carousel scroll container */}
+      <div
+        ref={containerRef}
+        className="flex gap-sm overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none pb-sm -mx-xs px-xs sm:-mx-0 sm:px-0"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {destinations.map((promo) => (
+          <div 
+            key={promo.iata} 
+            className="snap-start shrink-0 w-[280px] sm:w-[320px] md:w-[230px] lg:w-[242px]"
+          >
+            <PromoCard
+              city={promo.city}
+              iata={promo.iata}
+              price={promo.price}
+              duration={promo.duration}
+              image={promo.image}
+              tag={promo.tag}
+              onSelect={onSelect}
+            />
+          </div>
+        ))}
+      </div>
+      
+      {/* Navigation indicators at the bottom */}
+      <div className="flex justify-center gap-xs mt-xs">
+        {destinations.map((_, idx) => (
+          <AccessibleButton
+            key={idx}
+            ariaLabel={`Go to slide ${idx + 1}`}
+            onClick={() => scrollToItem(idx)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              activeIndex === idx 
+                ? 'w-6 bg-vantage-accent' 
+                : 'w-2 bg-white/20 hover:bg-white/40'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PromoCarousel;

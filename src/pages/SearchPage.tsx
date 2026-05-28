@@ -5,7 +5,7 @@ import { Sparkles } from 'lucide-react';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
-import { PromoCard } from '../components/search/PromoCard';
+import { PromoCarousel } from '../components/search/PromoCarousel';
 const PROMO_DESTINATIONS = [
   {
     city: 'London',
@@ -143,20 +143,7 @@ export default function SearchPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-sm">
-          {PROMO_DESTINATIONS.map((promo) => (
-            <PromoCard
-              key={promo.iata}
-              city={promo.city}
-              iata={promo.iata}
-              price={promo.price}
-              duration={promo.duration}
-              image={promo.image}
-              tag={promo.tag}
-              onSelect={handleSelectPromo}
-            />
-          ))}
-        </div>
+        <PromoCarousel destinations={PROMO_DESTINATIONS} onSelect={handleSelectPromo} />
         <LoyaltyBanner />
       </section>
 

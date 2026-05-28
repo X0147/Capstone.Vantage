@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Award, ArrowRight } from 'lucide-react';
+import { Award, ArrowRight } from 'lucide-react';
 import AccessibleButton from './AccessibleButton';
 
 /**

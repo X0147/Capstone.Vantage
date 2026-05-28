@@ -37,25 +37,35 @@ export const TechFeaturesGrid: React.FC = () => {
       {cards.map((card) => (
         <div
           key={card.title}
-          className="premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-between h-56 hover:border-white/10 transition-all"
+          onClick={() => navigate(card.link)}
+          className="group premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-between h-56 hover:border-vantage-accent/30 hover:shadow-[0_0_35px_rgba(56,189,248,0.1)] transition-all duration-300 cursor-pointer active:scale-[0.99]"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              navigate(card.link);
+            }
+          }}
+          aria-label={`Navigate to ${card.title}`}
         >
           <div className="space-y-xs">
-            {card.icon}
+            <div className="transition-transform duration-300 group-hover:scale-110 origin-left w-fit">
+              {card.icon}
+            </div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">{card.title}</h4>
             <p className="text-xs text-vantage-muted">{card.description}</p>
           </div>
-          <AccessibleButton
-            ariaLabel={`Open ${card.title}`}
-            className="text-xs font-bold text-vantage-accent hover:underline flex items-center gap-3xs mt-sm self-start"
-            onClick={() => navigate(card.link)}
-          >
-            {card.title.includes('Radar')
-              ? 'Open Satellite Radar'
-              : card.title.includes('Vault')
-                ? 'Configure Vault Preferences'
-                : 'Retrieve Smart Ticket'}
-            <ArrowRight className="h-4 w-4" />
-          </AccessibleButton>
+          <div className="text-xs font-bold text-vantage-accent flex items-center gap-3xs mt-sm self-start transition-colors">
+            <span>
+              {card.title.includes('Radar')
+                ? 'Open Satellite Radar'
+                : card.title.includes('Vault')
+                  ? 'Configure Vault Preferences'
+                  : 'Retrieve Smart Ticket'}
+            </span>
+            <ArrowRight className="h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+          </div>
         </div>
       ))}
     </div>

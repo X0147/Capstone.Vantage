@@ -73,6 +73,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   trackedTicket: null,
   trackError: null,
   lookupTicket: async (pnr: string, lastName: string) => {
+    await Promise.resolve();
     // Simulated high‑performance lookup – replace with real API call later
     if (pnr.toUpperCase() === 'VNTG6K' && lastName.toLowerCase() === 'laurence') {
       set({
@@ -126,6 +127,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     }));
   },
   executeSearch: async () => {
+    await Promise.resolve();
     // The query is triggered reactively by React Query (useFlightsQuery) when searchParams changes.
     // Navigation is handled inside the submitting form using standard React Router hooks.
   },

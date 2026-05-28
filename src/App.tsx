@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, useLocation, useInRouterContext } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { Toaster } from 'react-hot-toast';
