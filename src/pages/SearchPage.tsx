@@ -144,7 +144,7 @@ export default function SearchPage() {
       </section>
 
       {/* ── BELOW FOLD CONTENT ───────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-lg space-y-3xl py-3xl">
+      <div className="max-w-7xl mx-auto px-lg flex flex-col gap-3xl py-3xl">
 
         {/* Popular Destinations */}
         <section className="space-y-lg">

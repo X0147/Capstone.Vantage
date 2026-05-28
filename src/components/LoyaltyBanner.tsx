@@ -34,7 +34,7 @@ export const LoyaltyBanner: React.FC = () => {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-4xl border border-vantage-gold/15 bg-gradient-to-br from-[#070b12] via-[#120d04] to-[#040810] p-lg shadow-glow-gold transition-all duration-300 hover:border-vantage-gold/25">
+    <section className="relative overflow-hidden rounded-4xl border border-vantage-gold/15 bg-gradient-to-br from-[#070b12] via-[#120d04] to-[#040810] p-xl sm:p-2xl shadow-glow-gold transition-all duration-300 hover:border-vantage-gold/25">
       {/* Shimmer sweep */}
       <div className="absolute inset-0 shimmer-gold pointer-events-none opacity-40" />
 
@@ -42,7 +42,7 @@ export const LoyaltyBanner: React.FC = () => {
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-vantage-gold/10 rounded-full blur-[100px] pointer-events-none -mr-24 -mt-24" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-amber-600/5 rounded-full blur-[80px] pointer-events-none -ml-16 -mb-16" />
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-xl items-center">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-xl">
         {/* Left Side: Program Details */}
         <div className="lg:col-span-7 space-y-lg">
           <div className="space-y-xs">
