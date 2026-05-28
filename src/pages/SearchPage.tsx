@@ -78,18 +78,19 @@ export default function SearchPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-center relative z-10">
           {/* Left Column: Heading and Description */}
           <div className="lg:col-span-7 space-y-sm">
-            <span className="inline-flex items-center gap-3xs rounded-full border border-vantage-accent/20 bg-vantage-accent/10 px-xs py-3xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent">
-              <Sparkles className="h-3 w-3" /> Redefining Air Transportation
+            <span className="inline-flex items-center gap-2xs rounded-full border border-vantage-accent/30 bg-vantage-accent/15 px-xs py-2xs text-[10px] font-black uppercase tracking-widest text-vantage-accent shadow-[0_0_15px_rgba(56,189,248,0.1)]">
+              <Sparkles className="h-3.5 w-3.5 animate-pulse" /> Vantage Flight Intelligence System
             </span>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-none">
-              Find your next flight <br />
-              <span className="bg-gradient-to-r from-vantage-accent to-blue-500 bg-clip-text text-transparent">
-                in raw real-time
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-[1.05]">
+              Chart your next horizon <br />
+              <span className="bg-gradient-to-r from-vantage-accent via-sky-400 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(56,189,248,0.15)]">
+                in real-time precision
               </span>
             </h1>
-            <p className="text-sm md:text-base text-vantage-muted max-w-xl">
-              Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and
-              experience premium cabin seat structures in one unified system.
+            <p className="text-sm md:text-base text-vantage-muted max-w-xl leading-relaxed">
+              Orchestrate your global journeys with satellite-linked vector telemetry, secure 
+              instant PNR ticketing, and custom-tailored cabin ergonomics designed exclusively 
+              for the modern elite traveler.
             </p>
           </div>
 
