@@ -39,11 +39,11 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-  resources,
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+    resources,
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 
 export default i18n;

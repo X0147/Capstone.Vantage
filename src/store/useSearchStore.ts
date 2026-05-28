@@ -66,19 +66,8 @@ export const useSearchStore = create<SearchState>((set, get) => ({
       destination: code,
     })),
   executeSearch: async () => {
-    // Trigger the existing search pipeline and navigate SPA to /search
-    try {
-      await get().searchFlights();
-      // Update history and emit popstate so React Router responds
-      if (typeof window !== 'undefined' && window.history && typeof window.history.pushState === 'function') {
-        window.history.pushState({}, '', '/search');
-        window.dispatchEvent(new PopStateEvent('popstate'));
-      }
-    } catch (err) {
-      // swallow - UI should handle isSearching if needed
-      // eslint-disable-next-line no-console
-      console.error('executeSearch failed', err);
-    }
+    // The query is triggered reactively by React Query (useFlightsQuery) when searchParams changes.
+    // Navigation is handled inside the submitting form using standard React Router hooks.
   },
 }));
 

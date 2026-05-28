@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBookingStore } from '../store/useBookingStore';
-import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -17,17 +17,17 @@ export default function PaymentPage() {
     cvv: '',
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
     setPayment(formData);
 
     try {
       await confirmBooking();
-      toast.success(t('payment.success'));
+      toast.success(t('payment.success') || 'Payment complete!');
       navigate('/confirmation');
     } catch (err) {
-      toast.error(t('payment.failed'));
+      toast.error(t('payment.failed') || 'Payment failed.');
     } finally {
       setIsProcessing(false);
     }
@@ -61,7 +61,7 @@ export default function PaymentPage() {
             <input
               required
               type="text"
-              maxLength="16"
+              maxLength={16}
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
               value={formData.card}
               onChange={(e) => setFormData({ ...formData, card: e.target.value })}
@@ -73,7 +73,7 @@ export default function PaymentPage() {
               <input
                 required
                 type="text"
-                maxLength="5"
+                maxLength={5}
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.exp}
                 onChange={(e) => setFormData({ ...formData, exp: e.target.value })}
@@ -84,7 +84,7 @@ export default function PaymentPage() {
               <input
                 required
                 type="password"
-                maxLength="4"
+                maxLength={4}
                 className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
                 value={formData.cvv}
                 onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}

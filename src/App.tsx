@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, useInRouterContext } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useInRouterContext } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { ResultsSkeleton } from './features/search/ResultsSkeleton';
+import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 
 // Code-split route-level bundles
 const SearchPage = lazy(() => import('./pages/SearchPage'));
@@ -13,10 +14,8 @@ const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const ConfirmationPage = lazy(() => import('./pages/ConfirmationPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const FlightTrackerPage = lazy(() => import('./pages/FlightTrackerPage'));
-import useBookingWizardStore from './store/useBookingWizardStore';
-import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 
-function App() {
+export function App() {
   // If the app is served from a subpath (GitHub Pages project site), set the router basename
   const basename =
     typeof window !== 'undefined' && window.location.pathname.startsWith('/Capstone.Vantage')
@@ -51,13 +50,6 @@ function AppShell() {
 
 function AnimatedRoutes() {
   const location = useLocation();
-  const passenger = useBookingWizardStore((s) => s.passenger);
-
-  // Guard component for checkout path
-  const CheckoutGuard = ({ children }) => {
-    if (!passenger) return <Navigate to="/passenger-info" replace />;
-    return children;
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -67,7 +59,7 @@ function AnimatedRoutes() {
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/passenger-info" element={<PassengerPage />} />
         <Route path="/seat-selection" element={<SeatSelectionPage />} />
-        <Route path="/checkout" element={<CheckoutGuard><CheckoutPage /></CheckoutGuard>} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route
           path="/tracker"
           element={

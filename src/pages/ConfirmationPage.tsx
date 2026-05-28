@@ -1,3 +1,4 @@
+import React from 'react';
 import { useBookingStore } from '../store/useBookingStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +27,7 @@ export default function ConfirmationPage() {
     );
   }
 
-  const pass = passengers[0] || {};
+  const pass = passengers[0] || { firstName: '', lastName: '' };
 
   return (
     <div className="max-w-2xl mx-auto mt-10">
@@ -58,7 +59,7 @@ export default function ConfirmationPage() {
           <div className="text-center">
             <div className="text-3xl font-bold">{selectedOutbound?.departure?.iata}</div>
             <div className="text-sm text-gray-500">
-              {selectedOutbound?.departure?.time?.split('T')[1].substring(0, 5)}
+              {selectedOutbound?.departure?.time?.split('T')[1]?.substring(0, 5)}
             </div>
           </div>
           <div className="flex-1 px-8 text-center text-gray-400">
@@ -71,7 +72,7 @@ export default function ConfirmationPage() {
           <div className="text-center">
             <div className="text-3xl font-bold">{selectedOutbound?.arrival?.iata}</div>
             <div className="text-sm text-gray-500">
-              {selectedOutbound?.arrival?.time?.split('T')[1].substring(0, 5)}
+              {selectedOutbound?.arrival?.time?.split('T')[1]?.substring(0, 5)}
             </div>
           </div>
         </div>

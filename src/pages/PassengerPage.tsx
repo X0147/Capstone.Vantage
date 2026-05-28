@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBookingStore } from '../store/useBookingStore';
 
@@ -14,7 +13,7 @@ export default function PassengerPage() {
     phone: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setPassengers([formData]); // Currently handling single passenger for demo
     navigate('/seat-selection');

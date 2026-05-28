@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Armchair, ShieldCheck } from 'lucide-react';
-import useBookingWizardStore from '../../store/useBookingWizardStore';
+import useBookingStore from '../../store/useBookingStore';
 
 interface Seat {
   id: string;
@@ -178,11 +178,11 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
         <button
           disabled={selectedSeats.length === 0}
           onClick={() => {
-            const setSeats = useBookingWizardStore.getState().setSeats;
-            // persist seat ids and price to the booking wizard store
+            const setSeats = useBookingStore.getState().setSeats;
+            // persist seat ids and price to the booking store
             setSeats(selectedSeats.map((s) => s.id), additivePrice);
             // advance to payment step
-            useBookingWizardStore.getState().setStep(3);
+            useBookingStore.getState().setStep(3);
             onSelectionComplete(selectedSeats);
           }}
           className="w-full py-xs rounded-xl bg-vantage-accent text-vantage-dark font-bold text-xs tracking-wide uppercase shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white transition-colors duration-300"

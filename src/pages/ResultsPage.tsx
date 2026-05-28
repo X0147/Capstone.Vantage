@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion, LayoutGroup } from 'framer-motion';
+import { LayoutGroup } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../store/useSearchStore';
+import { useBookingStore } from '../store/useBookingStore';
 import { useFlightsQuery } from '../hooks/useFlightsQuery';
 import { FilterSidebar } from '../features/search/FilterSidebar';
 import { FlightCard } from '../features/search/FlightCard';
@@ -13,6 +14,8 @@ export const ResultsPage: React.FC = () => {
   const searchParams = useSearchStore((state) => state.searchParams);
   const { data: rawFlights, isLoading, isError } = useFlightsQuery();
   const navigate = useNavigate();
+  const selectOutbound = useBookingStore((state) => state.selectOutbound);
+  const selectReturn = useBookingStore((state) => state.selectReturn);
 
   // Route progression/selection states
   const [currentStep, setCurrentStep] = useState<'outbound' | 'return'>('outbound');
@@ -35,11 +38,11 @@ export const ResultsPage: React.FC = () => {
     return Math.max(...rawFlights.map((f) => f.price));
   }, [rawFlights]);
 
-  useEffect(() => {
-    if (maxAvailablePrice) {
-      setFilters((prev) => ({ ...prev, maxPrice: maxAvailablePrice }));
-    }
-  }, [maxAvailablePrice]);
+  const [prevMaxAvailable, setPrevMaxAvailable] = useState<number | null>(null);
+  if (maxAvailablePrice !== prevMaxAvailable) {
+    setPrevMaxAvailable(maxAvailablePrice);
+    setFilters((prev) => ({ ...prev, maxPrice: maxAvailablePrice }));
+  }
 
   // Compute filtering mutations strictly
   const filteredFlights = useMemo(() => {
@@ -48,25 +51,44 @@ export const ResultsPage: React.FC = () => {
       if (flight.price > filters.maxPrice) return false;
       const stops = flight.outbound.length - 1;
       if (!filters.stops.includes(stops)) return false;
-      if (filters.airlines.length > 0 && !filters.airlines.includes(flight.outbound[0].airline)) return false;
+      if (
+        filters.airlines.length > 0 &&
+        flight.outbound[0] &&
+        !filters.airlines.includes(flight.outbound[0].airline)
+      )
+        return false;
       return true;
     });
   }, [rawFlights, filters]);
 
   const handleSelectFlight = (flight: FlightOption) => {
+    const mainSegment = flight.outbound[0];
+    if (!mainSegment) return;
+    const mappedFlight = {
+      id: flight.id,
+      airline: { name: mainSegment.airline, logo: '' },
+      departure: { iata: mainSegment.origin, time: mainSegment.departureTime },
+      arrival: { iata: mainSegment.destination, time: mainSegment.arrivalTime },
+      duration: `${String(Math.floor(mainSegment.duration / 60))}h ${String(mainSegment.duration % 60)}m`,
+      stops: flight.outbound.length - 1,
+      price: flight.price,
+    };
+
     if (currentStep === 'outbound') {
       setSelectedOutbound(flight);
+      selectOutbound(mappedFlight);
       if (searchParams.tripType === 'roundtrip') {
         setCurrentStep('return');
         setExpandedCardId(null);
       } else {
         // Go to seat selection
-        navigate('/seat-selection');
+        void navigate('/seat-selection');
       }
     } else {
       setSelectedReturn(flight);
+      selectReturn(mappedFlight);
       // after return selected for roundtrip, navigate to seat selection
-      navigate('/seat-selection');
+      void navigate('/seat-selection');
     }
   };
 
@@ -103,7 +125,7 @@ export const ResultsPage: React.FC = () => {
         <FilterSidebar
           filters={filters}
           onFilterChange={setFilters}
-          rawFlights={rawFlights || []}
+          rawFlights={rawFlights ?? []}
           maxAvailablePrice={maxAvailablePrice}
         />
 
@@ -143,8 +165,12 @@ export const ResultsPage: React.FC = () => {
                       currentStep === 'outbound' ? selectedOutbound?.id === flight.id : selectedReturn?.id === flight.id
                     }
                     isExpanded={expandedCardId === flight.id}
-                    onToggleExpand={() => setExpandedCardId(expandedCardId === flight.id ? null : flight.id)}
-                    onSelect={() => handleSelectFlight(flight)}
+                    onToggleExpand={() => {
+                      setExpandedCardId(expandedCardId === flight.id ? null : flight.id);
+                    }}
+                    onSelect={() => {
+                      handleSelectFlight(flight);
+                    }}
                     actionLabel={
                       currentStep === 'outbound' && searchParams.tripType === 'roundtrip'
                         ? 'Select Outbound'

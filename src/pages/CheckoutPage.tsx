@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import useBookingWizardStore, { PassengerDetails } from '../store/useBookingWizardStore';
+import { useBookingStore, Passenger as PassengerDetails } from '../store/useBookingStore';
 import SeatSelector from '../features/seat/SeatSelector';
-import { CreditCard, CheckCircle2, User, Landmark, ShieldCheck, PlaneTakeoff } from 'lucide-react';
+import { CheckCircle2, User, Landmark, ShieldCheck, PlaneTakeoff } from 'lucide-react';
 
 export const CheckoutPage: React.FC = () => {
   const {
@@ -10,16 +10,21 @@ export const CheckoutPage: React.FC = () => {
     passenger,
     selectedSeats,
     seatPriceTotal,
-    paymentComplete,
-    setStep,
     setPassenger,
     setSeats,
     completePayment,
-  } = useBookingWizardStore();
+    selectedOutbound,
+  } = useBookingStore();
   
-  const baseFare = 450; // Sourced from selection state context
+  const baseFare = selectedOutbound?.price || 450;
   const taxes = 65;
   const grandTotal = baseFare + seatPriceTotal + taxes;
+
+  const activeStep = useMemo(() => {
+    if (!passenger) return 1;
+    if (selectedSeats && selectedSeats.length > 0 && currentStep < 3) return 3;
+    return currentStep;
+  }, [passenger, selectedSeats, currentStep]);
 
   // --- Step 1: Passenger Form State ---
   const [formFields, setFormFields] = useState<PassengerDetails>({
@@ -76,11 +81,11 @@ export const CheckoutPage: React.FC = () => {
           ].map((item) => (
             <div key={item.step} className="flex flex-col items-center flex-1 relative z-10">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                currentStep >= item.step ? 'bg-vantage-accent text-vantage-dark shadow-[0_0_10px_rgba(56,189,248,0.4)]' : 'bg-white/5 border border-white/10 text-vantage-muted'
+                activeStep >= item.step ? 'bg-vantage-accent text-vantage-dark shadow-[0_0_10px_rgba(56,189,248,0.4)]' : 'bg-white/5 border border-white/10 text-vantage-muted'
               }`}>
-                {currentStep > item.step ? '✓' : item.step}
+                {activeStep > item.step ? '✓' : item.step}
               </div>
-              <span className={`text-[10px] uppercase tracking-wider mt-2xs font-medium ${currentStep >= item.step ? 'text-white' : 'text-vantage-muted'}`}>
+              <span className={`text-[10px] uppercase tracking-wider mt-2xs font-medium ${activeStep >= item.step ? 'text-white' : 'text-vantage-muted'}`}>
                 {item.label}
               </span>
             </div>
@@ -90,14 +95,14 @@ export const CheckoutPage: React.FC = () => {
           <motion.div 
             className="absolute top-[29px] left-8 h-[1px] bg-vantage-accent -z-0"
             initial={{ width: '0%' }}
-            animate={{ width: `${((currentStep - 1) / 3) * 85}%` }}
+            animate={{ width: `${((activeStep - 1) / 3) * 85}%` }}
             transition={{ ease: 'easeInOut', duration: 0.5 }}
           />
         </div>
 
         {/* Multi-step Display Canvas */}
         <AnimatePresence mode="wait">
-          {currentStep === 1 && (
+          {activeStep === 1 && (
             <motion.form
               key="step-1"
               initial={{ opacity: 0, x: -10 }}
@@ -169,7 +174,7 @@ export const CheckoutPage: React.FC = () => {
             </motion.form>
           )}
 
-          {currentStep === 2 && (
+          {activeStep === 2 && (
             <motion.div
               key="step-2"
               initial={{ opacity: 0, x: -10 }}
@@ -187,7 +192,7 @@ export const CheckoutPage: React.FC = () => {
             </motion.div>
           )}
 
-          {currentStep === 3 && (
+          {activeStep === 3 && (
             <motion.div
               key="step-3"
               initial={{ opacity: 0, x: -10 }}
@@ -275,7 +280,7 @@ export const CheckoutPage: React.FC = () => {
             </motion.div>
           )}
 
-          {currentStep === 4 && (
+          {activeStep === 4 && (
             <motion.div
               key="step-4"
               initial={{ opacity: 0, scale: 0.98 }}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import { useSearchStore } from './store/useSearchStore';
-import { useBookingWizardStore } from './store/useBookingWizardStore';
+import { useBookingStore } from './store/useBookingStore';
 import { queryClient } from './lib/queryClient';
 
 vi.mock('./hooks/useFlightsQuery', () => ({
@@ -46,7 +46,7 @@ vi.mock('./hooks/useFlightsQuery', () => ({
 describe('End-to-End Premium Booking Funnel Integration Matrix', () => {
   beforeEach(() => {
     useSearchStore.getState().reset();
-    useBookingWizardStore.getState().resetBooking();
+    useBookingStore.getState().resetBooking();
 
     useSearchStore.getState().setSearchParams({
       from: 'DXB',

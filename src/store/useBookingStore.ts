@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { flightService } from '../services/flightService';
+import { searchFlights } from '../services/flightService';
 
 export interface Passenger {
   firstName: string;
   lastName: string;
-  dateOfBirth: string;
-  passportNumber: string;
-  email: string;
-  phone: string;
+  dateOfBirth?: string;
+  passportNumber?: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface Flight {
@@ -21,6 +21,7 @@ export interface Flight {
   stopover?: string;
   price: number;
 }
+
 export interface SearchParams {
   from: string;
   to: string;
@@ -29,49 +30,74 @@ export interface SearchParams {
   passengers: { adults: number; children: number };
 }
 
+export type BookingFlowStep = 'search' | 'selection' | 'passengers' | 'seats' | 'checkout' | 'confirmation';
+
 export interface BookingState {
-  // Booking flow
-  step: 'search' | 'selection' | 'passengers' | 'seats' | 'checkout' | 'confirmation';
+  // Wizard-style step tracker (Flow 1)
+  currentStep: number;
+  // Step route tracker (Flow 2)
+  step: BookingFlowStep;
+
+  // Flight Selections
   selectedFlight: Flight | null;
+  selectedOutbound: Flight | null;
+  selectedReturn: Flight | null;
+
+  // Passenger state
+  passenger: Passenger | null;
   passengers: Passenger[];
-  selectedSeats: Record<string, string>;
+
+  // Seating state
+  selectedSeats: string[] & { outbound?: string[] };
+  seatPriceTotal: number;
 
   // Search state
   searchParams: SearchParams;
-  setSearchParams: (params: Partial<SearchParams>) => void;
   flightsOutbound: Flight[];
   flightsReturn: Flight[];
-  selectedOutbound: Flight | null;
-  selectedReturn: Flight | null;
   isSearching: boolean;
-  searchFlights: () => Promise<void>;
-  selectOutbound: (flight: Flight) => void;
-  selectReturn: (flight: Flight) => void;
 
+  // Payment/Confirmation state
   payment: Record<string, unknown> | null;
-  setPayment: (payment: Record<string, unknown>) => void;
+  paymentComplete: boolean;
   bookingReference: string | null;
   bookingConfirmed: boolean;
-  confirmBooking: () => Promise<void>;
 
-  // helpers
-  setStep: (step: BookingState['step']) => void;
-  setSelectedFlight: (flight: Flight | null) => void;
+  // Core Actions
+  setStep: (step: number | BookingFlowStep) => void;
+  setPassenger: (details: Passenger) => void;
   setPassengers: (passengers: Passenger[]) => void;
-  setSelectedSeats: (selectedSeats: Record<string, string>) => void;
+  setSeats: (seatIds: string[], price: number) => void;
+  setSelectedSeats: (selectedSeats: Record<string, string[]>) => void;
+  completePayment: () => void;
+  confirmBooking: () => Promise<void>;
+  setSelectedFlight: (flight: Flight | null) => void;
+  selectOutbound: (flight: Flight) => void;
+  selectReturn: (flight: Flight) => void;
+  setSearchParams: (params: Partial<SearchParams>) => void;
+  searchFlights: () => Promise<void>;
+  setPayment: (payment: Record<string, unknown>) => void;
   resetStore: () => void;
+  resetBooking: () => void;
 }
 
 export const useBookingStore = create<BookingState>()(
   persist(
     (set, get) => ({
-      // Booking flow defaults
+      // Defaults
+      currentStep: 1,
       step: 'search',
       selectedFlight: null,
+      selectedOutbound: null,
+      selectedReturn: null,
+      passenger: null,
       passengers: [],
-      selectedSeats: {},
-
-      // Search defaults
+      selectedSeats: (() => {
+        const arr = [] as string[] & { outbound?: string[] };
+        arr.outbound = [];
+        return arr;
+      })(),
+      seatPriceTotal: 0,
       searchParams: {
         from: '',
         to: '',
@@ -79,76 +105,148 @@ export const useBookingStore = create<BookingState>()(
         returnDate: '',
         passengers: { adults: 1, children: 0 },
       },
+      flightsOutbound: [],
+      flightsReturn: [],
+      isSearching: false,
+      payment: null,
+      paymentComplete: false,
+      bookingReference: null,
+      bookingConfirmed: false,
+
+      // Actions
+      setStep: (step) => {
+        if (typeof step === 'number') {
+          set({ currentStep: step });
+        } else {
+          set({ step });
+        }
+      },
+
+      setPassenger: (passenger) => {
+        set({
+          passenger,
+          passengers: [passenger],
+          currentStep: 2,
+        });
+      },
+
+      setPassengers: (passengers) => {
+        set({
+          passengers,
+          passenger: passengers[0] || null,
+        });
+      },
+
+      setSeats: (seatIds, seatPriceTotal) => {
+        const selectedSeats = [...seatIds] as string[] & { outbound?: string[] };
+        selectedSeats.outbound = seatIds;
+        set({
+          selectedSeats,
+          seatPriceTotal,
+          currentStep: 3,
+        });
+      },
+
+      setSelectedSeats: (seatsRecord) => {
+        // Handle record format (e.g. from tests or flow 2)
+        const outboundSeats = seatsRecord.outbound || [];
+        const selectedSeats = [...outboundSeats] as string[] & { outbound?: string[] };
+        selectedSeats.outbound = outboundSeats;
+        set({ selectedSeats });
+      },
+
+      completePayment: () => {
+        set({ paymentComplete: true, currentStep: 4 });
+      },
+
+      confirmBooking: async () => {
+        set({ isSearching: true });
+        try {
+          // simulate checkout network call
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const ref = Math.random().toString(36).substring(2, 8).toUpperCase();
+          set({ bookingConfirmed: true, bookingReference: ref, paymentComplete: true, currentStep: 4 });
+        } finally {
+          set({ isSearching: false });
+        }
+      },
+
+      setSelectedFlight: (selectedFlight) => set({ selectedFlight }),
+      selectOutbound: (flight) => set({ selectedOutbound: flight, selectedFlight: flight }),
+      selectReturn: (flight) => set({ selectedReturn: flight }),
+
       setSearchParams: (params) =>
         set((state) => ({ searchParams: { ...state.searchParams, ...params } })),
 
-      flightsOutbound: [],
-      flightsReturn: [],
-      selectedOutbound: null,
-      selectedReturn: null,
-      isSearching: false,
       searchFlights: async () => {
         set({ isSearching: true });
         try {
           const { searchParams } = get();
-          interface FlightServiceType {
-            searchFlights(args: {
-              from: string;
-              to: string;
-              departDate: string;
-              returnDate?: string;
-            }): Promise<{ outbound: Flight[] | null; return: Flight[] | null }>; 
-          }
-
-          const results = await (flightService as unknown as FlightServiceType).searchFlights({
-            from: searchParams.from,
-            to: searchParams.to,
-            departDate: searchParams.departDate,
-            returnDate: searchParams.returnDate,
+          const results = await searchFlights({
+            origin: searchParams.from,
+            destination: searchParams.to,
+            date: searchParams.departDate,
+            passengers: { adults: searchParams.passengers.adults, children: searchParams.passengers.children, infants: 0 },
+            tripType: searchParams.returnDate ? 'roundtrip' : 'oneway',
+            cabinClass: 'economy',
           });
 
+          // Map results to Flight type
+          const outbound = results
+            .filter((r) => r.leg === 'outbound')
+            .map((r) => ({
+              id: r.id,
+              airline: { name: r.airlineName, logo: '' },
+              departure: { iata: r.origin, time: r.departureIso },
+              arrival: { iata: r.destination, time: r.arrivalIso },
+              duration: `${Math.floor(r.durationMinutes / 60)}h ${r.durationMinutes % 60}m`,
+              stops: r.stops,
+              price: r.price,
+            }));
+
+          const returnFlights = results
+            .filter((r) => r.leg === 'return')
+            .map((r) => ({
+              id: r.id,
+              airline: { name: r.airlineName, logo: '' },
+              departure: { iata: r.origin, time: r.departureIso },
+              arrival: { iata: r.destination, time: r.arrivalIso },
+              duration: `${Math.floor(r.durationMinutes / 60)}h ${r.durationMinutes % 60}m`,
+              stops: r.stops,
+              price: r.price,
+            }));
+
           set({
-            flightsOutbound: results.outbound ?? [],
-            flightsReturn: results.return ?? [],
+            flightsOutbound: outbound,
+            flightsReturn: returnFlights,
             selectedOutbound: null,
             selectedReturn: null,
           });
         } catch (error) {
-          // Keep simple for now; UI can read flights arrays and show empty state.
-          // In dev, log for quick debugging.
           if (error instanceof Error) console.error('Flight search failed', error.message);
           else console.error('Flight search failed', String(error));
         } finally {
           set({ isSearching: false });
         }
       },
-      selectOutbound: (flight) => set({ selectedOutbound: flight }),
-      selectReturn: (flight) => set({ selectedReturn: flight }),
 
-      // helpers (booking flow)
-      setStep: (step) => set({ step }),
-      setSelectedFlight: (selectedFlight) => set({ selectedFlight }),
-      setPassengers: (passengers) => set({ passengers }),
-      setSelectedSeats: (selectedSeats) => set({ selectedSeats }),
-
-      payment: null,
       setPayment: (payment) => set({ payment }),
-
-      bookingReference: null,
-      bookingConfirmed: false,
-      confirmBooking: async () => {
-        // simulate checkout
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const ref = Math.random().toString(36).substring(2, 8).toUpperCase();
-        set({ bookingConfirmed: true, bookingReference: ref });
-      },
 
       resetStore: () =>
         set({
+          currentStep: 1,
           step: 'search',
           selectedFlight: null,
+          selectedOutbound: null,
+          selectedReturn: null,
+          passenger: null,
           passengers: [],
-          selectedSeats: {},
+          selectedSeats: (() => {
+            const arr = [] as string[] & { outbound?: string[] };
+            arr.outbound = [];
+            return arr;
+          })(),
+          seatPriceTotal: 0,
           searchParams: {
             from: '',
             to: '',
@@ -158,17 +256,19 @@ export const useBookingStore = create<BookingState>()(
           },
           flightsOutbound: [],
           flightsReturn: [],
-          selectedOutbound: null,
-          selectedReturn: null,
           isSearching: false,
           payment: null,
+          paymentComplete: false,
           bookingReference: null,
           bookingConfirmed: false,
         }),
+
+      resetBooking: () => {
+        get().resetStore();
+      },
     }),
     {
       name: 'vantage-booking-store',
-      // Provide a safe fallback storage when `localStorage` is unavailable (tests / SSR).
       storage: createJSONStorage(() => {
         try {
           if (typeof window !== 'undefined') {
@@ -176,10 +276,9 @@ export const useBookingStore = create<BookingState>()(
             if (maybeLocal && typeof maybeLocal.setItem === 'function') return maybeLocal;
           }
         } catch {
-          // localStorage access may throw in some environments (privacy mode)
+          // ignore privacy mode local storage access failure
         }
 
-        // lightweight in-memory fallback using Map to avoid dynamic property access warnings
         const store = new Map<string, string>();
         return {
           getItem: (key: string) => (store.has(key) ? store.get(key) ?? null : null),
@@ -194,3 +293,5 @@ export const useBookingStore = create<BookingState>()(
     }
   )
 );
+
+export default useBookingStore;

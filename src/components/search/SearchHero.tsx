@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../../store/useSearchStore';
 import { GlobalLocationInput } from '../GlobalLocationInput';
 import { AlertCircle, PlaneTakeoff } from 'lucide-react';
 
 export const SearchHero: React.FC = () => {
+  const navigate = useNavigate();
   const { origin, destination, setOrigin, setDestination, executeSearch } = useSearchStore();
   const [error, setError] = useState<string | null>(null);
 
@@ -24,6 +26,7 @@ export const SearchHero: React.FC = () => {
 
     setError(null);
     executeSearch();
+    navigate('/search-results');
   };
 
   return (
