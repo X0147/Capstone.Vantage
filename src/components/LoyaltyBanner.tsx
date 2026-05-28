@@ -5,18 +5,18 @@ import { useNavigate } from 'react-router-dom';
 const BENEFITS = [
   {
     icon: Star,
-    title: '2× Miles',
-    desc: 'On all worldwide vectors',
+    title: 'Accelerated Rewards',
+    desc: 'On all signature global routes',
   },
   {
     icon: Tv2,
-    title: 'VIP Lounge',
-    desc: 'Complimentary global access',
+    title: 'Sanctuary Access',
+    desc: 'Unrestricted access to private global lounges',
   },
   {
     icon: FastForward,
-    title: 'Priority Lane',
-    desc: 'Priority check-in & security',
+    title: 'White-Glove Priority',
+    desc: 'Dedicated VIP check-in & seamless security',
   },
 ];
 
@@ -51,11 +51,10 @@ export const LoyaltyBanner: React.FC = () => {
               Vantage Privilege Club
             </span>
             <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight text-white italic">
-              Unlock Elite Status &amp; Experience True Luxury
+              Command the Ultimate in Travel Prestige
             </h3>
             <p className="text-sm text-vantage-muted leading-relaxed max-w-xl">
-              Join the world's most exclusive travel club. Earn double reward miles, clear security
-              fast-tracks instantly, and access over 1,200 airport VIP lounges globally.
+              Step into a world reserved for the elite. Accrue unparalleled rewards, bypass the crowds with sovereign fast-tracks, and unwind in over 1,200 exclusive sanctuaries worldwide.
             </p>
           </div>
 
@@ -103,7 +102,7 @@ export const LoyaltyBanner: React.FC = () => {
               {/* Card Top */}
               <div className="flex justify-between items-start">
                 <div className="space-y-3xs">
-                  <span className="text-[7px] font-mono uppercase tracking-widest text-vantage-gold">Membership Matrix</span>
+                  <span className="text-[7px] font-mono uppercase tracking-widest text-vantage-gold">Vantage Sovereign Passport</span>
                   <div className="text-sm font-semibold tracking-wider text-white">CAPSTONE VANTAGE</div>
                 </div>
                 <div className="w-7 h-7 rounded-lg bg-vantage-gold/15 flex items-center justify-center border border-vantage-gold/30">

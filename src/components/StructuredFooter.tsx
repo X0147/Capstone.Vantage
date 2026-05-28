@@ -33,9 +33,9 @@ export const StructuredFooter: React.FC = () => {
       {/* Newsletter strip */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-md premium-glass rounded-4xl p-lg border border-white/6">
         <div className="space-y-2xs">
-          <h4 className="font-display text-xl font-bold text-white italic">Stay in the Vector</h4>
+          <h4 className="font-display text-xl font-bold text-white italic">Ascend Your Inbox</h4>
           <p className="text-xs text-vantage-muted max-w-sm">
-            Get curated flight deals, airspace intelligence, and Vantage Privilege updates delivered weekly.
+            Receive curated luxury travel invitations, strategic airspace intelligence, and exclusive Vantage Privilege missives directly to your private channel.
           </p>
         </div>
         <div className="flex gap-xs w-full md:w-auto">
@@ -59,8 +59,7 @@ export const StructuredFooter: React.FC = () => {
         <div className="col-span-2 space-y-md">
           <BrandLogo iconSize="w-40 h-auto" />
           <p className="text-[11px] text-vantage-muted leading-relaxed max-w-xs">
-            Capstone.Vantage operates an encrypted aerospace booking matrix, enabling global flight
-            dispatching, PNR generation, and real-time telemetry interception.
+            Capstone.Vantage represents the zenith of private and commercial aviation, seamlessly blending absolute security with unparalleled luxury travel orchestration.
           </p>
           <div className="flex items-center gap-2xs text-[9px] font-mono text-vantage-muted">
             <Globe className="w-3 h-3 text-vantage-accent" />

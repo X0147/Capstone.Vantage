@@ -105,19 +105,18 @@ export default function SearchPage() {
           {/* Eyebrow */}
           <div className="fade-in-up fade-in-up-delay-1 flex items-center gap-2xs px-sm py-2xs rounded-full bg-vantage-accent/10 border border-vantage-accent/20 text-[10px] font-mono tracking-widest text-vantage-accent uppercase">
             <span className="h-1.5 w-1.5 rounded-full bg-vantage-accent animate-pulse" />
-            Capstone.Vantage — Aerospace Booking Matrix
+            Capstone.Vantage — The Pinnacle of Global Travel
           </div>
 
           {/* Main headline */}
           <div className="fade-in-up fade-in-up-delay-2 space-y-sm max-w-5xl">
             <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.0] tracking-tight">
-              <span className="text-white">Redefining</span>
+              <span className="text-white">The Art of</span>
               <br />
-              <span className="text-gradient-sky italic">Air Transportation</span>
+              <span className="text-gradient-sky italic">Bespoke Aviation</span>
             </h1>
             <p className="text-vantage-text text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
-              Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and experience
-              premium cabin ergonomics — all in one unified intelligence platform.
+              Experience unparalleled exclusivity with real-time fleet intelligence, seamless global reservations, and uncompromising luxury in the skies.
             </p>
           </div>
 
@@ -152,13 +151,13 @@ export default function SearchPage() {
           <div className="flex justify-between items-end">
             <div className="space-y-2xs">
               <p className="text-[10px] font-mono uppercase tracking-widest text-vantage-accent">
-                Curated Routes
+                Exclusive Journeys
               </p>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white italic">
-                Popular Destinations
+                Signature Destinations
               </h2>
               <p className="text-sm text-vantage-muted max-w-md">
-                Premium flight vectors from New York — lowest monthly matrix rates, updated live.
+                Discover handpicked, luxury global itineraries departing from New York—curated dynamically for the discerning traveler.
               </p>
             </div>
             <span className="hidden sm:flex items-center gap-2xs font-mono text-[10px] text-vantage-emerald font-bold uppercase tracking-wider bg-vantage-emerald/10 px-sm py-2xs rounded-full border border-vantage-emerald/20">

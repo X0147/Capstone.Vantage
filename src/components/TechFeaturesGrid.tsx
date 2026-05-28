@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 const CARDS = [
   {
-    title: 'ADS-B Airspace Radar',
+    title: 'Unrivaled Global Telemetry',
     description:
-      'Intercept global carrier transponder paths across active international vectors in absolute real-time. Track any commercial or private aircraft worldwide.',
+      'Command absolute awareness with our real-time global airspace radar. Track elite commercial and private charters with absolute precision.',
     icon: Compass,
     link: '/tracker',
     cta: 'Open Satellite Radar',
@@ -16,9 +16,9 @@ const CARDS = [
     glowColor: 'group-hover:shadow-glow-accent',
   },
   {
-    title: 'Secure Passport Vault',
+    title: 'Impenetrable Digital Enclave',
     description:
-      'Save document credentials, TSA PreCheck, and payment details inside AES-256 encrypted local browser memory. Your data never leaves your device.',
+      'Safeguard your credentials, biometric clearances, and financial assets within an AES-256 encrypted local vault. Supreme privacy, uncompromising security.',
     icon: Lock,
     link: '/dashboard',
     cta: 'Configure Vault',
@@ -28,9 +28,9 @@ const CARDS = [
     glowColor: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.2)]',
   },
   {
-    title: 'Locator Ledger Retrieval',
+    title: 'Bespoke Itinerary Concierge',
     description:
-      'Search, modify, or add baggage services to your confirmed itineraries using booking reference codes. Instant PNR lookup with full modification rights.',
+      'Instantly summon, curate, and elevate your confirmed journeys. Access immediate travel intelligence with absolute modification sovereignty.',
     icon: ShieldCheck,
     link: '/manage-booking',
     cta: 'Retrieve Booking',
