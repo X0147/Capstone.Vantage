@@ -45,7 +45,7 @@ const PROMO_DESTINATIONS = [
     iata: 'CPT',
     price: 829,
     duration: '15h 20m',
-    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=85',
     tag: 'Scenic',
   },
   {

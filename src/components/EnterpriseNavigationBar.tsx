@@ -41,7 +41,7 @@ export const EnterpriseNavigationBar: React.FC = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-xs" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-md" aria-label="Main navigation">
             {NAV_LINKS.map(({ to, label, icon: Icon }) => {
               const isActive = location.pathname === to;
               return (
