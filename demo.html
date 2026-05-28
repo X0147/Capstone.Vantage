@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flight Booking App - Demo Videos</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .demo-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .demo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+      }
+
+      .demo-video {
+        width: 100%;
+        height: 300px;
+        background: #000;
+      }
+
+      .demo-info {
+        padding: 20px;
+      }
+
+      .demo-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      .demo-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .specs {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .spec-item {
+        font-size: 0.85rem;
+        color: #888;
+        margin: 5px 0;
+      }
+
+      .spec-label {
+        font-weight: 600;
+        color: #667eea;
+      }
+
+      footer {
+        text-align: center;
+        color: white;
+        margin-top: 60px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      footer p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .back-link {
+        display: inline-block;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 30px;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        transition: opacity 0.3s;
+      }
+
+      .back-link:hover {
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.8rem;
+          margin-bottom: 30px;
+        }
+
+        .demo-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .demo-video {
+          height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="back-link">← Back to Home</a>
+
+      <h1>✈️ Flight Booking App - Demo Videos</h1>
+
+      <div class="demo-grid">
+        <!-- Demo 1: Booking Flow -->
+        <div class="demo-card">
+          <video
+            class="demo-video"
+            controls
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23667eea' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EBooking Flow Demo%3C/text%3E%3C/svg%3E"
+          >
+            <source src="videos/flight-demo-booking-flow.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="demo-info">
+            <div class="demo-title">📋 Booking Flow</div>
+            <div class="demo-description">
+              See how users navigate through the complete flight booking process from start to
+              finish.
+            </div>
+            <div class="specs">
+              <div class="spec-item"><span class="spec-label">Duration:</span> 8.7 seconds</div>
+              <div class="spec-item"><span class="spec-label">Format:</span> H.264 MP4</div>
+              <div class="spec-item"><span class="spec-label">Size:</span> 2.9 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo 2: Search -->
+        <div class="demo-card">
+          <video
+            class="demo-video"
+            controls
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23667eea' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3ESearch Demo%3C/text%3E%3C/svg%3E"
+          >
+            <source src="videos/flight-demo-search.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="demo-info">
+            <div class="demo-title">🔍 Flight Search</div>
+            <div class="demo-description">
+              Explore the intuitive flight search interface with multiple filter and sorting
+              options.
+            </div>
+            <div class="specs">
+              <div class="spec-item"><span class="spec-label">Duration:</span> 15.8 seconds</div>
+              <div class="spec-item"><span class="spec-label">Format:</span> H.264 MP4</div>
+              <div class="spec-item"><span class="spec-label">Size:</span> 8.4 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo 3: Payment -->
+        <div class="demo-card">
+          <video
+            class="demo-video"
+            controls
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23667eea' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EPayment Demo%3C/text%3E%3C/svg%3E"
+          >
+            <source src="videos/flight-demo-payment.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="demo-info">
+            <div class="demo-title">💳 Payment Processing</div>
+            <div class="demo-description">
+              Watch the secure payment process with multiple payment methods and validation.
+            </div>
+            <div class="specs">
+              <div class="spec-item"><span class="spec-label">Duration:</span> 17.7 seconds</div>
+              <div class="spec-item"><span class="spec-label">Format:</span> H.264 MP4</div>
+              <div class="spec-item"><span class="spec-label">Size:</span> 6.5 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo 4: Confirmation -->
+        <div class="demo-card">
+          <video
+            class="demo-video"
+            controls
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23667eea' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EConfirmation Demo%3C/text%3E%3C/svg%3E"
+          >
+            <source src="videos/flight-demo-confirmation.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="demo-info">
+            <div class="demo-title">✅ Booking Confirmation</div>
+            <div class="demo-description">
+              See the final booking confirmation screen and booking details summary.
+            </div>
+            <div class="specs">
+              <div class="spec-item"><span class="spec-label">Duration:</span> 21.1 seconds</div>
+              <div class="spec-item"><span class="spec-label">Format:</span> H.264 MP4</div>
+              <div class="spec-item"><span class="spec-label">Size:</span> 4.9 MB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>🚀 Flight Booking Application Demo</p>
+        <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.7">
+          All videos are optimized for web playback with H.264 codec
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
