@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from 'node:url';
 // https://vitejs.dev/config/
 export default defineConfig({
   // GitHub Pages base path for repository pages. Set to '/Capstone.Vantage/' for this repo.
-  base: '/Capstone.Vantage/',
+  base: process.env.NODE_ENV === 'production' ? '/Capstone.Vantage/' : '/',
   plugins: [react(), svgr()],
   resolve: {
     alias: {
