@@ -44,7 +44,6 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    // Reset active index when suggestions change
     setActiveIndex(-1);
   }, [suggestions.length]);
 
@@ -88,59 +87,61 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
   };
 
   return (
-    <div className="relative flex-1">
-      <label className="block text-[10px] uppercase tracking-wider text-vantage-muted mb-2xs font-bold">
+    <div className="relative flex-1" ref={containerRef}>
+      <label className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
         {label}
       </label>
 
-      <div className="relative">
-        <input
-          ref={inputRef}
-          type="text"
-          role="combobox"
-          aria-expanded={isOpen}
-          aria-controls={isOpen ? listboxId : undefined}
-          aria-autocomplete="list"
-          aria-activedescendant={
-            activeIndex >= 0 && suggestions[activeIndex]
-              ? `global-loc-suggestion-${suggestions[activeIndex].code}`
-              : undefined
-          }
-          value={
-            isOpen
-              ? query
-              : selectedAirport
-                ? `${selectedAirport.city} (${selectedAirport.code})`
-                : query
-          }
-          placeholder={placeholder}
-          onFocus={() => {
-            setIsOpen(true);
-            setQuery('');
-          }}
-          onBlur={() =>
-            setTimeout(() => {
-              if (activeIndex >= 0 && suggestions[activeIndex]) {
-                onChange(suggestions[activeIndex].code);
-              }
-              setIsOpen(false);
-              setActiveIndex(-1);
-            }, 150)
-          }
-          onChange={(e) => {
-            setQuery(e.target.value);
-          }}
-          onKeyDown={handleKeyDown}
-          className="w-full bg-black/20 border border-white/10 rounded-xl pl-md pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent transition-colors"
-        />
-        <MapPin className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2" />
+      <div className="flex items-center gap-xs mt-0.5">
+        <MapPin className="w-4 h-4 text-vantage-gold/75 shrink-0" />
+        <div className="flex-1">
+          <input
+            ref={inputRef}
+            type="text"
+            role="combobox"
+            aria-expanded={isOpen}
+            aria-controls={isOpen ? listboxId : undefined}
+            aria-autocomplete="list"
+            aria-activedescendant={
+              activeIndex >= 0 && suggestions[activeIndex]
+                ? `global-loc-suggestion-${suggestions[activeIndex].code}`
+                : undefined
+            }
+            value={
+              isOpen
+                ? query
+                : selectedAirport
+                  ? `${selectedAirport.city} (${selectedAirport.code})`
+                  : query
+            }
+            placeholder={placeholder}
+            onFocus={() => {
+              setIsOpen(true);
+              setQuery('');
+            }}
+            onBlur={() =>
+              setTimeout(() => {
+                if (activeIndex >= 0 && suggestions[activeIndex]) {
+                  onChange(suggestions[activeIndex].code);
+                }
+                setIsOpen(false);
+                setActiveIndex(-1);
+              }, 150)
+            }
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            className="w-full bg-transparent border-0 p-0 text-sm font-semibold text-white placeholder-white/20 focus:outline-none focus:ring-0 transition-colors"
+          />
+        </div>
       </div>
 
       {isOpen && suggestions.length > 0 && (
         <ul
           id={`global-loc-list-${label.replace(/\s+/g, '-').toLowerCase()}`}
           role="listbox"
-          className="absolute z-50 w-full mt-2xs premium-glass border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-60"
+          className="absolute z-50 w-full mt-xs premium-glass border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-60"
         >
           {suggestions.map((airport, i) => (
             <li
@@ -158,12 +159,12 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
               onMouseEnter={() => {
                 setActiveIndex(i);
               }}
-              className={`px-xs py-xs cursor-pointer flex items-center justify-between text-xs transition-colors group ${
+              className={`px-sm py-2xs cursor-pointer flex items-center justify-between text-xs transition-colors group ${
                 activeIndex === i ? 'bg-white/5' : 'hover:bg-white/5'
               }`}
             >
               <div className="flex items-center gap-xs">
-                <Plane className="w-3 h-3 text-vantage-muted group-hover:text-vantage-accent transition-colors" />
+                <Plane className="w-3.5 h-3.5 text-vantage-muted group-hover:text-vantage-accent transition-colors" />
                 <div>
                   <span className="text-white font-medium">{airport.city}</span>
                   <span className="text-[10px] text-vantage-muted block">{airport.name}</span>

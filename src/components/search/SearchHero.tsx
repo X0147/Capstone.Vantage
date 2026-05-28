@@ -5,7 +5,7 @@ import { GlobalLocationInput } from '../GlobalLocationInput';
 import { TabSwitcher } from './TabSwitcher';
 import { DateRangePicker } from './DateRangePicker';
 import { PassengersSelector } from './PassengersSelector';
-import { AlertCircle, PlaneTakeoff, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { AlertCircle, PlaneTakeoff, Plus, Trash2, ArrowRight, ArrowLeftRight } from 'lucide-react';
 
 interface MultiCitySegment {
   origin: string;
@@ -30,6 +30,12 @@ export const SearchHero: React.FC = () => {
     { origin: '', destination: '', date: '' },
     { origin: '', destination: '', date: '' },
   ]);
+
+  const handleSwap = () => {
+    const temp = origin;
+    setOrigin(destination);
+    setDestination(temp);
+  };
 
   const handleAddSegment = () => {
     if (multiCitySegments.length >= 4) return;
@@ -155,8 +161,8 @@ export const SearchHero: React.FC = () => {
           </div>
         ) : (
           /* One-way & Round-trip */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-xs">
-            <div className="bg-black/20 rounded-3xl px-sm py-xs border border-white/6 hover:border-white/10 focus-within:border-vantage-accent/40 transition-colors">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-xs md:gap-0 md:divide-x md:divide-white/10 bg-black/35 rounded-3xl border border-white/8 hover:border-white/12 transition-all focus-within:border-vantage-accent/40 overflow-hidden shadow-inner-glow">
+            <div className="px-md py-sm hover:bg-white/[0.01] transition-colors">
               <GlobalLocationInput
                 label="From"
                 placeholder="Departure city or airport"
@@ -164,7 +170,20 @@ export const SearchHero: React.FC = () => {
                 onChange={(code) => { setOrigin(code); if (error) setError(null); }}
               />
             </div>
-            <div className="bg-black/20 rounded-3xl px-sm py-xs border border-white/6 hover:border-white/10 focus-within:border-vantage-accent/40 transition-colors">
+            
+            {/* Swap Button (Circular premium glass button absolute in center) */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 hidden md:block">
+              <button
+                type="button"
+                onClick={handleSwap}
+                className="w-8 h-8 rounded-full bg-vantage-midnight border border-white/10 hover:border-vantage-accent/50 text-vantage-muted hover:text-vantage-accent flex items-center justify-center transition-all duration-300 active:scale-95 shadow-lg group"
+                title="Swap Departure and Arrival"
+              >
+                <ArrowLeftRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+              </button>
+            </div>
+
+            <div className="px-md py-sm hover:bg-white/[0.01] transition-colors">
               <GlobalLocationInput
                 label="To"
                 placeholder="Arrival city or airport"
@@ -176,11 +195,11 @@ export const SearchHero: React.FC = () => {
         )}
 
         {/* Date & Passengers row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-xs">
-          <div className="bg-black/20 rounded-3xl px-sm py-xs border border-white/6 hover:border-white/10 focus-within:border-vantage-accent/40 transition-colors">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xs md:gap-0 md:divide-x md:divide-white/10 bg-black/35 rounded-3xl border border-white/8 hover:border-white/12 transition-all focus-within:border-vantage-accent/40 overflow-hidden shadow-inner-glow">
+          <div className="px-md py-sm hover:bg-white/[0.01] transition-colors">
             <DateRangePicker />
           </div>
-          <div className="bg-black/20 rounded-3xl px-sm py-xs border border-white/6 hover:border-white/10 focus-within:border-vantage-accent/40 transition-colors">
+          <div className="px-md py-sm hover:bg-white/[0.01] transition-colors">
             <PassengersSelector />
           </div>
         </div>

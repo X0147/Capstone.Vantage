@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSearchStore from '../../store/useSearchStore';
+import { Calendar } from 'lucide-react';
 
 interface Props {}
 
@@ -20,33 +21,43 @@ export const DateRangePicker: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className="relative" ref={ref}>
-      <label className="block text-sm text-white/90 mb-1">Dates</label>
-      <div className="flex gap-3">
-        <input
-          aria-label="Departure date"
-          value={searchParams.departDate}
-          onFocus={() => {
-            setOpen(true);
-          }}
-          onChange={(e) => {
-            setSearchParams({ departDate: e.target.value });
-          }}
-          className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none"
-          type="date"
-        />
-        <input
-          aria-label="Return date"
-          value={searchParams.returnDate || ''}
-          onFocus={() => {
-            setOpen(true);
-          }}
-          onChange={(e) => {
-            setSearchParams({ returnDate: e.target.value });
-          }}
-          className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none"
-          type="date"
-        />
+    <div className="relative flex-1" ref={ref}>
+      <label className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
+        Dates
+      </label>
+      <div className="flex items-center gap-xs mt-0.5">
+        <Calendar className="w-4 h-4 text-vantage-gold/75 shrink-0" />
+        <div className="flex-1 flex items-center gap-2">
+          <input
+            aria-label="Departure date"
+            value={searchParams.departDate}
+            onFocus={() => {
+              setOpen(true);
+            }}
+            onChange={(e) => {
+              setSearchParams({ departDate: e.target.value });
+            }}
+            className="w-full bg-transparent border-0 p-0 text-sm font-semibold text-white focus:outline-none focus:ring-0 transition-colors [color-scheme:dark]"
+            type="date"
+          />
+          {searchParams.tripType === 'roundtrip' && (
+            <>
+              <span className="text-white/20 font-bold select-none text-xs">→</span>
+              <input
+                aria-label="Return date"
+                value={searchParams.returnDate || ''}
+                onFocus={() => {
+                  setOpen(true);
+                }}
+                onChange={(e) => {
+                  setSearchParams({ returnDate: e.target.value });
+                }}
+                className="w-full bg-transparent border-0 p-0 text-sm font-semibold text-white focus:outline-none focus:ring-0 transition-colors [color-scheme:dark]"
+                type="date"
+              />
+            </>
+          )}
+        </div>
       </div>
 
       <AnimatePresence>
@@ -56,12 +67,11 @@ export const DateRangePicker: React.FC<Props> = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18 }}
-            className="mt-2 w-full bg-white/6 backdrop-blur-md border border-white/10 rounded-lg p-4 shadow-lg z-50 absolute"
+            className="mt-xs w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-sm shadow-2xl z-50 absolute left-0 right-0"
           >
-            <div className="text-sm text-white/80">Pick departure and return dates</div>
-            <div className="mt-3 text-xs text-white/60">
-              (Inline calendar UI can be implemented here — placeholder uses native date inputs for
-              accessibility.)
+            <div className="text-xs text-white/90 font-medium">Select Travel Dates</div>
+            <div className="mt-xs text-[10px] text-vantage-muted font-mono leading-relaxed">
+              Use the date selectors above to set your custom itinerary departure and arrival dates.
             </div>
           </motion.div>
         )}
