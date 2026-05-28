@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Compass, Search, ShieldCheck, Ticket, User, Plane } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 export const EnterpriseNavigationBar: React.FC = () => {
   const location = useLocation();
@@ -10,12 +11,7 @@ export const EnterpriseNavigationBar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-sm h-14 flex items-center justify-between">
         {/* Brand Signifier */}
         <Link to="/" className="flex items-center gap-xs">
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-vantage-accent to-blue-600 flex items-center justify-center font-black text-xs text-vantage-dark shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-            V
-          </div>
-          <span className="font-black text-sm tracking-tight text-white uppercase">
-            Capstone<span className="text-vantage-accent">.Vantage</span>
-          </span>
+          <BrandLogo showText={true} iconSize="w-6 h-6" textSize="text-xs" />
         </Link>
 
         {/* Global Action Anchors */}
@@ -98,9 +94,19 @@ export const EnterpriseNavigationBar: React.FC = () => {
           </Link>
         </nav>
 
-        {/* Cryptographic Node Signifier */}
-        <div className="hidden md:flex items-center gap-3xs px-2xs py-3xs bg-white/5 border border-white/5 rounded-full text-[10px] font-mono text-vantage-muted">
-          <ShieldCheck className="w-3 h-3 text-vantage-accent" /> Node: Primary-Secure
+        <div className="flex items-center gap-sm">
+          {/* Cryptographic Node Signifier */}
+          <div className="hidden md:flex items-center gap-3xs px-2xs py-3xs bg-white/5 border border-white/5 rounded-full text-[10px] font-mono text-vantage-muted">
+            <ShieldCheck className="w-3 h-3 text-vantage-accent" /> Node: Primary-Secure
+          </div>
+
+          {/* Gateway Access Link */}
+          <Link
+            to="/login"
+            className="text-[10px] font-bold tracking-wider uppercase bg-white/5 border border-white/10 rounded-xl px-xs py-2xs text-vantage-accent hover:bg-vantage-accent hover:text-vantage-dark transition-all duration-300 min-h-[32px] flex items-center"
+          >
+            Gateway Access
+          </Link>
         </div>
       </div>
     </header>

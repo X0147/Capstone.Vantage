@@ -1,6 +1,7 @@
 import React from 'react';
 import AccessibleButton from './AccessibleButton';
 import { useNavigate } from 'react-router-dom';
+import BrandLogo from './BrandLogo';
 
 /**
  * Multi‑column modern footer with company info, destinations, legal, help, and status.
@@ -15,12 +16,7 @@ export const StructuredFooter: React.FC = () => {
         {/* Brand */}
         <div className="col-span-2 space-y-xs">
           <div className="flex items-center gap-xs">
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-vantage-accent to-blue-600 flex items-center justify-center font-black text-xs text-vantage-dark">
-              V
-            </div>
-            <span className="font-black text-sm tracking-tight text-white uppercase">
-              Capstone<span className="text-vantage-accent">.Vantage</span>
-            </span>
+            <BrandLogo showText={true} iconSize="w-6 h-6" textSize="text-xs" />
           </div>
           <p className="text-[11px] text-vantage-muted max-w-sm">
             Capstone.Vantage operates an encrypted aerospace booking matrix, enabling flight

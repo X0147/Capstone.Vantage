@@ -1,7 +1,8 @@
 import React from 'react';
 import SearchHero from '../components/search/SearchHero';
 import { useSearchStore } from '../store/useSearchStore';
-import { Sparkles } from 'lucide-react';
+import { ShieldCheck, Cpu } from 'lucide-react';
+import BrandLogo from '../components/BrandLogo';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
@@ -78,20 +79,28 @@ export default function SearchPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-center relative z-10">
           {/* Left Column: Heading and Description */}
           <div className="lg:col-span-7 space-y-sm">
-            <span className="inline-flex items-center gap-2xs rounded-full border border-vantage-accent/30 bg-vantage-accent/15 px-xs py-2xs text-[10px] font-black uppercase tracking-widest text-vantage-accent shadow-[0_0_15px_rgba(56,189,248,0.1)]">
-              <Sparkles className="h-3.5 w-3.5 animate-pulse" /> Vantage Flight Intelligence System
-            </span>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-[1.05]">
-              Chart your next horizon <br />
-              <span className="bg-gradient-to-r from-vantage-accent via-sky-400 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(56,189,248,0.15)]">
-                in real-time precision
+            <BrandLogo showText={true} textSize="text-xs" iconSize="w-8 h-8" className="mb-sm" />
+            
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white leading-[1.05]">
+              Next-Gen <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-vantage-accent via-sky-400 to-blue-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.15)]">
+                Aviation Logistics
               </span>
             </h1>
-            <p className="text-sm md:text-base text-vantage-muted max-w-xl leading-relaxed">
-              Orchestrate your global journeys with satellite-linked vector telemetry, secure 
-              instant PNR ticketing, and custom-tailored cabin ergonomics designed exclusively 
-              for the modern elite traveler.
+            
+            <p className="text-sm text-vantage-muted max-w-xl leading-relaxed">
+              Access global flight pathways with instantaneous routing state calculations, industry-leading accessibility, and automated asset encryption.
             </p>
+
+            {/* Micro Trust Indicators */}
+            <div className="flex items-center gap-sm pt-xs border-t border-white/5 max-w-sm">
+              <div className="flex items-center gap-2xs text-[10px] text-vantage-muted font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-vantage-accent" /> Secure API
+              </div>
+              <div className="flex items-center gap-2xs text-[10px] text-vantage-muted font-bold uppercase tracking-wider">
+                <Cpu className="w-4 h-4 text-blue-400" /> Real-time Sync
+              </div>
+            </div>
           </div>
 
           {/* Right Column: Premium Video Preview Frame */}
