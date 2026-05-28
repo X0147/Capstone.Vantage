@@ -44,10 +44,22 @@ export const StructuredFooter: React.FC = () => {
             <input
               type="email"
               placeholder="you@vantage.aero"
-              className="w-full bg-black/40 border border-white/10 rounded-2xl pl-10 pr-sm py-sm text-xs text-white placeholder:text-vantage-muted focus:outline-none focus:border-vantage-accent/60 transition-all"
+              className="w-full bg-black/40 border border-white/10 rounded-2xl pl-10 pr-sm py-sm text-xs text-white placeholder:text-vantage-muted focus:outline-none focus:border-vantage-accent focus:ring-1 focus:ring-vantage-accent/50 transition-all"
             />
           </div>
-          <button className="shrink-0 px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-xs uppercase tracking-wider transition-all hover:shadow-glow-accent hover:scale-[1.02] active:scale-[0.98]">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              const btn = e.currentTarget;
+              btn.innerHTML = 'Subscribed ✓';
+              btn.classList.add('bg-vantage-emerald', 'text-vantage-midnight', 'border-vantage-emerald');
+              setTimeout(() => {
+                btn.innerHTML = 'Subscribe';
+                btn.classList.remove('bg-vantage-emerald', 'text-vantage-midnight', 'border-vantage-emerald');
+              }, 2000);
+            }}
+            className="shrink-0 px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 border border-transparent text-vantage-midnight font-bold text-xs uppercase tracking-wider transition-all hover:shadow-glow-accent hover:scale-[1.02] active:scale-[0.98]"
+          >
             Subscribe
           </button>
         </div>

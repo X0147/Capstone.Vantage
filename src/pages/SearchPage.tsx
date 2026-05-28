@@ -6,6 +6,7 @@ import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
 import { PromoCarousel } from '../components/search/PromoCarousel';
+import { QuickFlightTracker } from '../components/search/QuickFlightTracker';
 
 const PROMO_DESTINATIONS = [
   {
@@ -170,6 +171,9 @@ export default function SearchPage() {
 
         {/* Loyalty Banner */}
         <LoyaltyBanner />
+
+        {/* Quick Flight Tracker */}
+        <QuickFlightTracker />
 
         {/* Platform Features */}
         <section className="space-y-lg">

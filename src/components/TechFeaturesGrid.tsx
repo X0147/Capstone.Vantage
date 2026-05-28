@@ -1,6 +1,6 @@
 import React from 'react';
 import { Compass, Lock, ShieldCheck, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const CARDS = [
   {
@@ -42,26 +42,15 @@ const CARDS = [
 ];
 
 export const TechFeaturesGrid: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
-      {CARDS.map((card) => {
+      {CARDS.map((card, index) => {
         const Icon = card.icon;
         return (
-          <div
-            key={card.title}
-            onClick={() => navigate(card.link)}
-            className={`group relative premium-glass rounded-4xl border ${card.borderColor} p-lg flex flex-col justify-between min-h-64 cursor-pointer transition-all duration-400 ease-premium ${card.glowColor} overflow-hidden`}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                navigate(card.link);
-              }
-            }}
-            aria-label={`Navigate to ${card.title}`}
+          <Link
+            to={card.link}
+            key={index}
+            className={`group block relative premium-glass rounded-4xl border ${card.borderColor} p-lg flex flex-col justify-between min-h-64 cursor-pointer transition-all duration-400 ease-premium ${card.glowColor} overflow-hidden`}
           >
             {/* Gradient background */}
             <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none`} />
@@ -88,7 +77,7 @@ export const TechFeaturesGrid: React.FC = () => {
               <span>{card.cta}</span>
               <ArrowRight className="h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1.5" />
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>

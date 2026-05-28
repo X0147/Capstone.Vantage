@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Award, Tv2, FastForward, ArrowRight, Star, Sparkles, Compass } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const BENEFITS = [
   {
@@ -73,26 +73,26 @@ export const LoyaltyBanner: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-sm pt-xs">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="group flex items-center gap-2xs px-lg py-sm rounded-2xl bg-gradient-to-r from-vantage-gold to-vantage-gold-light text-vantage-midnight font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:shadow-glow-gold hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shadow-lg"
+          <div className="flex flex-wrap items-center gap-md pt-xs">
+            <Link
+              to="/login"
+              className="group/btn relative overflow-hidden rounded-xl bg-vantage-gold/10 border border-vantage-gold/30 px-lg py-sm font-bold text-[11px] uppercase tracking-widest text-vantage-gold transition-all duration-300 hover:bg-vantage-gold hover:text-vantage-midnight hover:shadow-glow-gold hover:-translate-y-0.5"
             >
-              Join Elite Club
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
+              Join Elite Club <ArrowRight className="inline-block ml-xs w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-500 group-hover/btn:translate-x-full" />
+            </Link>
             <button
               onClick={simulateMilesEarned}
-              className="px-sm py-xs border border-white/10 hover:border-vantage-gold/30 hover:bg-vantage-gold/5 rounded-2xl text-[10px] uppercase font-mono tracking-widest text-vantage-gold transition-all"
+              className="flex items-center gap-xs text-[10px] font-mono uppercase tracking-widest text-vantage-muted hover:text-vantage-text transition-colors"
             >
-              Simulate Flight Miles
+              <Compass className="w-4 h-4" /> Simulate Flight Miles
             </button>
           </div>
         </div>
 
-        {/* Right Side: Privilege Membership Virtual Card Cardholder Display */}
+        {/* Right Side: Interactive Card */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="relative w-full max-w-[340px] aspect-[1.586/1] rounded-3xl p-sm border border-vantage-gold/30 bg-gradient-to-br from-vantage-midnight via-[#121620] to-[#040810] shadow-2xl overflow-hidden group/card cursor-pointer">
+          <Link to="/dashboard" className="relative w-full max-w-[340px] aspect-[1.586/1] rounded-3xl p-sm border border-vantage-gold/30 bg-gradient-to-br from-vantage-midnight via-[#121620] to-[#040810] shadow-2xl overflow-hidden group/card cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-glow-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vantage-gold">
             {/* Gloss reflection shimmer */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover/card:translate-x-full transition-transform duration-1000 ease-out" />
             
@@ -127,7 +127,7 @@ export const LoyaltyBanner: React.FC = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* Interactive Miles Tracker Panel */}
           <div className="w-full max-w-[340px] mt-md p-sm bg-black/40 border border-white/5 rounded-2xl space-y-2xs backdrop-blur-md">
