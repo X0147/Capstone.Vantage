@@ -1,25 +1,25 @@
 @layer base {
   :root {
     /* ── Core Palette ─────────────────────────────────────── */
-    --color-bg-primary: #040810;
-    --color-bg-secondary: #0a1120;
-    --color-surface: rgba(12, 20, 38, 0.75);
-    --color-surface-hover: rgba(20, 32, 56, 0.85);
-    --color-surface-border: rgba(255, 255, 255, 0.06);
-    --color-surface-border-hover: rgba(255, 255, 255, 0.12);
+    --color-bg-primary: #000000;
+    --color-bg-secondary: #050505;
+    --color-surface: rgba(10, 10, 10, 0.75);
+    --color-surface-hover: rgba(15, 15, 15, 0.85);
+    --color-surface-border: rgba(212, 175, 55, 0.08);
+    --color-surface-border-hover: rgba(212, 175, 55, 0.2);
 
     /* ── Text ─────────────────────────────────────────────── */
-    --color-text-primary: #f1f5f9;
-    --color-text-secondary: #cbd5e1;
-    --color-text-muted: #64748b;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e5e4e2;
+    --color-text-muted: #9ca3af;
 
     /* ── Accent Colors ────────────────────────────────────── */
-    --color-accent: #38bdf8;
-    --color-accent-hover: #0ea5e9;
-    --color-accent-glow: rgba(56, 189, 248, 0.25);
-    --color-accent-gold: #c5a059;
-    --color-accent-gold-hover: #d4b06a;
-    --color-accent-gold-glow: rgba(197, 160, 89, 0.25);
+    --color-accent: #e5e4e2;
+    --color-accent-hover: #ffffff;
+    --color-accent-glow: rgba(229, 228, 226, 0.25);
+    --color-accent-gold: #d4af37;
+    --color-accent-gold-hover: #f3e5ab;
+    --color-accent-gold-glow: rgba(212, 175, 55, 0.25);
 
     /* ── Premium Easing ───────────────────────────────────── */
     --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -98,14 +98,14 @@
 
   /* ── Typography Helpers ───────────────────────────────── */
   .text-gradient-sky {
-    background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #e0f2fe 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #e5e4e2 50%, #9ca3af 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, #fde68a 0%, #c5a059 50%, #fde68a 100%);
+    background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #f3e5ab 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -115,9 +115,9 @@
   .shimmer-gold {
     background: linear-gradient(
       90deg,
-      rgba(197, 160, 89, 0) 0%,
-      rgba(197, 160, 89, 0.15) 50%,
-      rgba(197, 160, 89, 0) 100%
+      rgba(212, 175, 55, 0) 0%,
+      rgba(212, 175, 55, 0.15) 50%,
+      rgba(212, 175, 55, 0) 100%
     );
     background-size: 200% 100%;
     animation: shimmerPass 3s infinite linear;
@@ -130,6 +130,10 @@
   .fade-in-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
   .fade-in-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
   .fade-in-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+  .animate-slow-zoom {
+    animation: slowZoom 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
 @layer utilities {
@@ -158,4 +162,9 @@
 @keyframes spinSlow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1.15); }
 }

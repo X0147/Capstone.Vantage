@@ -36,11 +36,11 @@ export const PromoCard: React.FC<PromoCardProps> = ({
       src={image}
       alt={city}
       loading="lazy"
-      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-premium group-hover:scale-110"
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-premium group-hover:scale-105"
     />
 
     {/* Gradient overlay */}
-    <div className="absolute inset-0 bg-card-overlay transition-opacity duration-300 group-hover:opacity-90" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-all duration-700 group-hover:from-black/95 group-hover:via-black/60" />
 
     {/* Top-right tag */}
     <span className="absolute top-sm right-sm z-20 rounded-xl bg-black/40 backdrop-blur-md px-xs py-2xs text-[9px] font-mono font-bold text-white uppercase tracking-widest border border-white/15">
@@ -68,9 +68,9 @@ export const PromoCard: React.FC<PromoCardProps> = ({
       </div>
 
       {/* Hover CTA */}
-      <div className="overflow-hidden mt-xs">
-        <div className="flex items-center gap-2xs text-xs font-bold text-white/0 group-hover:text-vantage-accent translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-premium">
-          Explore this route <ArrowRight className="w-3.5 h-3.5" />
+      <div className="overflow-hidden mt-sm">
+        <div className="flex items-center gap-xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-premium">
+          Summon Itinerary <ArrowRight className="w-3.5 h-3.5" />
         </div>
       </div>
     </div>

@@ -85,7 +85,7 @@ export default function SearchPage() {
         {/* Ambient video background */}
         <video
           src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
-          className="absolute inset-0 w-full h-full object-cover opacity-20 scale-105"
+          className="absolute inset-0 w-full h-full object-cover opacity-20 scale-110 animate-slow-zoom"
           autoPlay
           loop
           muted
