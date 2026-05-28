@@ -19,12 +19,22 @@ const resources = {
         success: 'Payment successful!',
         failed: 'Payment failed. Please try again.',
       },
+      track: {
+        title: 'Manage Booking',
+        pnr_label: 'Booking Reference (PNR)',
+        cta: 'Locate Flight Contract',
+      },
     },
   },
   fr: {
     translation: {
       search: 'Rechercher la disponibilité',
       departure: 'Aéroport de départ',
+      track: {
+        title: 'Gérer la Réservation',
+        pnr_label: 'Référence de Réservation (PNR)',
+        cta: 'Localiser le Contrat de Vol',
+      },
     },
   },
   es: {

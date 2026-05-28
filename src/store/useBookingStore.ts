@@ -33,6 +33,18 @@ export interface BookingRecord {
   dateBooked: string;
 }
 
+export interface TicketDetails {
+  pnr: string;
+  lastName: string;
+  flightNumber: string;
+  origin: string;
+  destination: string;
+  departureTime: string;
+  status: 'ON_TIME' | 'BOARDING' | 'DELAYED' | 'DEPARTED';
+  seat: string;
+  passengerName: string;
+}
+
 export interface SearchParams {
   from: string;
   to: string;
@@ -100,6 +112,12 @@ export interface BookingState {
   resetStore: () => void;
   resetBooking: () => void;
   getBooking: (pnr: string, lastName: string) => BookingRecord | null;
+
+  // Ticket Tracking
+  trackedTicket: TicketDetails | null;
+  trackError: string | null;
+  lookupTicket: (pnr: string, lastName: string) => Promise<boolean>;
+  clearTrackedTicket: () => void;
 }
 
 export const useBookingStore = create<BookingState>()(
@@ -134,6 +152,8 @@ export const useBookingStore = create<BookingState>()(
       bookingReference: null,
       bookingConfirmed: false,
       pastBookings: [],
+      trackedTicket: null,
+      trackError: null,
 
       // Actions
       setStep: (step) => {
@@ -326,6 +346,31 @@ export const useBookingStore = create<BookingState>()(
           ) || null
         );
       },
+
+      // Ticket Tracking Actions
+      lookupTicket: async (pnr: string, lastName: string) => {
+        await new Promise((r) => setTimeout(r, 800));
+        if (pnr.toUpperCase() === 'VNTG6K' && lastName.toLowerCase() === 'laurence') {
+          set({
+            trackedTicket: {
+              pnr: 'VNTG6K',
+              lastName: 'Laurence',
+              flightNumber: 'VW-402',
+              origin: 'LOS',
+              destination: 'DXB',
+              departureTime: '2026-06-15T14:30:00Z',
+              status: 'ON_TIME',
+              seat: '12A',
+              passengerName: 'Laurence TechLead',
+            },
+            trackError: null,
+          });
+          return true;
+        }
+        set({ trackedTicket: null, trackError: 'No active reservation found matching those credentials.' });
+        return false;
+      },
+      clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
     }),
     {
       name: 'vantage-booking-store',

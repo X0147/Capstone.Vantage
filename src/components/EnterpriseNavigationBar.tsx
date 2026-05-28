@@ -87,14 +87,14 @@ export const EnterpriseNavigationBar: React.FC = () => {
           </Link>
 
           <Link
-            to="/tracker"
+            to="/track"
             className={`text-xs font-medium tracking-wide transition-colors flex items-center gap-3xs ${
-              location.pathname === '/tracker'
+              location.pathname === '/track'
                 ? 'text-vantage-accent'
                 : 'text-vantage-muted hover:text-white'
             }`}
           >
-            <Compass className="w-3 h-3 animate-spin-slow" /> Airspace Radar
+            <Compass className="w-3 h-3 animate-spin-slow" /> Track Ticket
           </Link>
         </nav>
 

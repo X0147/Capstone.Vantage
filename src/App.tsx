@@ -1,10 +1,6 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-  useInRouterContext,
-} from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation, useInRouterContext } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense } from 'react';
@@ -31,23 +27,16 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TripsPage = lazy(() => import('./pages/TripsPage'));
 const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 const TicketTrackingPage = lazy(() => import('./pages/TicketTrackingPage'));
+const TrackTicketPage = lazy(() => import('./pages/TrackTicketPage'));
 
-export function App() {
-  // If the app is served from a subpath (GitHub Pages project site), set the router basename
-  const basename =
-    typeof window !== 'undefined' && window.location.pathname.startsWith('/Capstone.Vantage')
-      ? '/Capstone.Vantage'
-      : '/';
-
-  if (useInRouterContext()) {
-    return <AppShell />;
-  }
-
+function App() {
   return (
-    <Router basename={basename}>
-      <AppShell />
-      <Toaster position="top-right" />
-    </Router>
+    <I18nextProvider i18n={i18n}>
+      <Router>
+        <AppShell />
+        <Toaster position="top-right" />
+      </Router>
+    </I18nextProvider>
   );
 }
 
@@ -130,6 +119,14 @@ function AnimatedRoutes() {
           element={
             <Suspense fallback={<ResultsSkeleton />}>
               <TicketTrackingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/track"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <TrackTicketPage />
             </Suspense>
           }
         />

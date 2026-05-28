@@ -1,7 +1,29 @@
 import { create } from 'zustand';
 
-export type TripType = 'oneway' | 'roundtrip' | 'multicity';
+// ---------------------------------------------------------------------------
+// Ticket tracking types
+// ---------------------------------------------------------------------------
+export interface TicketDetails {
+  pnr: string;
+  lastName: string;
+  flightNumber: string;
+  origin: string;
+  destination: string;
+  departureTime: string;
+  status: 'ON_TIME' | 'BOARDING' | 'DELAYED' | 'DEPARTED';
+  seat: string;
+  passengerName: string;
+}
 
+export interface BookingStoreState {
+  trackedTicket: TicketDetails | null;
+  trackError: string | null;
+  lookupTicket: (pnr: string, lastName: string) => Promise<boolean>;
+  clearTrackedTicket: () => void;
+}
+
+// Existing imports and types
+export type TripType = 'oneway' | 'roundtrip' | 'multicity';
 export type TravelClass = 'economy' | 'premium' | 'business' | 'first';
 
 export interface Passengers {
@@ -20,7 +42,7 @@ export interface SearchParams {
   travelClass: TravelClass;
 }
 
-interface SearchState {
+interface SearchState extends BookingStoreState {
   searchParams: SearchParams;
   recentSearches: SearchParams[];
   setSearchParams: (patch: Partial<SearchParams>) => void;
@@ -45,6 +67,38 @@ const defaultParams: SearchParams = {
 };
 
 export const useSearchStore = create<SearchState>((set, get) => ({
+  // -----------------------------------------------------------------------
+  // Ticket tracking state
+  // -----------------------------------------------------------------------
+  trackedTicket: null,
+  trackError: null,
+  lookupTicket: async (pnr: string, lastName: string) => {
+    // Simulated high‑performance lookup – replace with real API call later
+    if (pnr.toUpperCase() === 'VNTG6K' && lastName.toLowerCase() === 'laurence') {
+      set({
+        trackedTicket: {
+          pnr: 'VNTG6K',
+          lastName: 'Laurence',
+          flightNumber: 'VW-402',
+          origin: 'LOS',
+          destination: 'DXB',
+          departureTime: '2026-06-15T14:30:00Z',
+          status: 'ON_TIME',
+          seat: '12A',
+          passengerName: 'Laurence TechLead',
+        },
+        trackError: null,
+      });
+      return true;
+    }
+    set({ trackError: 'No active reservation found matching those credentials.', trackedTicket: null });
+    return false;
+  },
+  clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
+
+  // -----------------------------------------------------------------------
+  // Existing search store logic
+  // -----------------------------------------------------------------------
   searchParams: defaultParams,
   recentSearches: [],
   setSearchParams: (patch) => {
@@ -56,7 +110,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   reset: () => {
     set({ searchParams: defaultParams });
   },
-  // UI convenience bindings - mirror searchParams.from/to
+  // UI convenience bindings – mirror searchParams.from/to
   origin: defaultParams.from,
   destination: defaultParams.to,
   setOrigin: (code: string) => {
@@ -76,5 +130,6 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     // Navigation is handled inside the submitting form using standard React Router hooks.
   },
 }));
+
 
 export default useSearchStore;
