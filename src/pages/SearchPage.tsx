@@ -81,15 +81,15 @@ export default function SearchPage() {
           <div className="lg:col-span-7 space-y-sm">
             <BrandLogo showText={true} textSize="text-xs" iconSize="w-8 h-8" className="mb-sm" />
             
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white leading-[1.05]">
-              Next-Gen <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-vantage-accent via-sky-400 to-blue-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.15)]">
-                Aviation Logistics
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.05] font-serif italic">
+              Redefining <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-white to-sky-300 drop-shadow-[0_0_30px_rgba(56,189,248,0.25)]">
+                Air Transportation
               </span>
             </h1>
             
-            <p className="text-sm text-vantage-muted max-w-xl leading-relaxed">
-              Access global flight pathways with instantaneous routing state calculations, industry-leading accessibility, and automated asset encryption.
+            <p className="text-sm md:text-base text-vantage-muted max-w-xl leading-relaxed">
+              Find your next flight in raw real-time. Monitor satellite-linked airspace vectors, lock down instant PNR bookings, and experience premium cabin seat structures in one unified system.
             </p>
 
             {/* Micro Trust Indicators */}

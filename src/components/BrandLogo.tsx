@@ -9,56 +9,47 @@ interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
-  iconSize = 'w-8 h-8',
-  showText = true,
-  textSize = 'text-sm',
+  iconSize = 'w-48 h-auto',
+  showText = false, // Logo 10 includes text inherently
 }) => {
   return (
-    <div className={`flex items-center gap-xs select-none ${className}`}>
-      {/* High-Fidelity Custom Vector Badge */}
+    <div className={`flex items-center select-none ${className}`}>
+      {/* Premium Serif Luxury Concept (Adapted for Dark Mode) */}
       <svg 
-        className={`${iconSize} drop-shadow-[0_0_12px_rgba(56,189,248,0.35)] transform transition-transform duration-500 hover:scale-105`} 
-        viewBox="0 0 100 100" 
+        className={`${iconSize} drop-shadow-[0_0_15px_rgba(56,189,248,0.2)] transform transition-transform duration-500 hover:scale-[1.02]`} 
+        viewBox="0 0 500 100" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="brandLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#38bdf8" />
-            <stop offset="50%" stopColor="#0ea5e9" />
-            <stop offset="100%" stopColor="#2563eb" />
+          <linearGradient id="luxuryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#a3b8cc" />
           </linearGradient>
-          <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
         </defs>
-        
-        {/* Aerodynamic wing chassis */}
-        <path 
-          d="M20 75L50 15L80 75L50 60L20 75Z" 
-          fill="url(#brandLogoGrad)" 
-          filter="url(#logoGlow)"
-        />
-        
-        {/* Core telemetry alignment shaft */}
-        <path 
-          d="M50 15V60" 
-          stroke="#ffffff" 
-          strokeWidth="3.5" 
-          strokeLinecap="round" 
-          opacity="0.9" 
-        />
-        
-        {/* Micro PNR node node */}
-        <circle cx="50" cy="60" r="3" fill="#ffffff" />
+        <text
+          x="0"
+          y="65"
+          fontFamily="'Times New Roman', Times, serif"
+          fontSize="54"
+          fontStyle="italic"
+          fontWeight="bold"
+          fill="url(#luxuryGrad)"
+        >
+          Capstone
+        </text>
+        <circle cx="245" cy="50" r="5" fill="#38bdf8" />
+        <text
+          x="265"
+          y="65"
+          fontFamily="'Times New Roman', Times, serif"
+          fontSize="34"
+          fontStyle="italic"
+          fill="#38bdf8"
+        >
+          Vantage
+        </text>
       </svg>
-
-      {showText && (
-        <span className={`font-black tracking-widest uppercase text-white font-sans ${textSize}`}>
-          VANTAGE<span className="text-vantage-accent">.AERO</span>
-        </span>
-      )}
     </div>
   );
 };

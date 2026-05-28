@@ -35,16 +35,27 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-[75vh] flex flex-col items-center justify-center px-sm py-lg relative">
-      {/* Dynamic ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-vantage-accent/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="w-full min-h-screen flex flex-col items-center justify-center px-sm py-lg relative overflow-hidden -mt-20">
+      {/* Full screen video background */}
+      <video
+        src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] z-0" />
       
-      <div className="w-full max-w-md premium-glass rounded-[2rem] p-md border border-white/5 shadow-2xl space-y-md relative z-10">
+      {/* Dynamic ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-vantage-accent/10 rounded-full blur-3xl pointer-events-none z-0" />
+      
+      <div className="w-full max-w-md premium-glass rounded-[2rem] p-md border border-white/10 shadow-2xl space-y-md relative z-10 backdrop-blur-xl bg-black/40">
         
         {/* Branding Signifier */}
-        <div className="flex flex-col items-center space-y-xs text-center border-b border-white/5 pb-sm">
-          <BrandLogo showText={true} iconSize="w-10 h-10" textSize="text-md" />
-          <p className="text-[10px] uppercase font-mono tracking-widest text-vantage-accent">
+        <div className="flex flex-col items-center space-y-xs text-center border-b border-white/10 pb-sm">
+          <BrandLogo iconSize="w-48 h-auto" />
+          <p className="text-[10px] uppercase font-mono tracking-widest text-vantage-accent mt-2">
             Gateway Access Control
           </p>
         </div>
@@ -66,7 +77,7 @@ export const LoginPage: React.FC = () => {
             <label htmlFor="corporate-email" className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold">
               Corporate Email Address
             </label>
-            <div className="relative">
+            <div className="relative group">
               <input
                 id="corporate-email"
                 type="email"
@@ -74,9 +85,9 @@ export const LoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="laurence@vantage.aero"
-                className="w-full bg-vantage-dark/60 border border-white/10 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent transition-colors placeholder:text-white/20"
+                className="w-full bg-black/50 border border-white/20 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent focus:bg-black/70 transition-all placeholder:text-white/30"
               />
-              <Mail className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors" />
             </div>
           </div>
 
@@ -90,7 +101,7 @@ export const LoginPage: React.FC = () => {
                 Reset Key?
               </a>
             </div>
-            <div className="relative">
+            <div className="relative group">
               <input
                 id="security-passcode"
                 type="password"
@@ -98,9 +109,9 @@ export const LoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-vantage-dark/60 border border-white/10 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent transition-colors placeholder:text-white/20"
+                className="w-full bg-black/50 border border-white/20 rounded-xl pl-10 pr-xs py-xs text-xs text-white focus:outline-none focus:border-vantage-accent focus:bg-black/70 transition-all placeholder:text-white/30"
               />
-              <Lock className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2" />
+              <Lock className="w-4 h-4 text-vantage-muted absolute left-xs top-1/2 -translate-y-1/2 group-focus-within:text-vantage-accent transition-colors" />
             </div>
           </div>
 
@@ -108,7 +119,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading || biometricStatus !== 'idle'}
-            className="w-full py-sm mt-xs rounded-xl bg-gradient-to-r from-vantage-accent to-blue-500 text-vantage-dark font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2xs transition-all active:scale-[0.98] disabled:opacity-50 hover:shadow-[0_0_20px_rgba(56,189,248,0.25)] cursor-pointer"
+            className="w-full py-sm mt-xs rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-dark font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2xs transition-all active:scale-[0.98] disabled:opacity-50 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] cursor-pointer"
           >
             {isLoading ? (
               <>
@@ -121,7 +132,7 @@ export const LoginPage: React.FC = () => {
         </form>
 
         {/* Biometrics Integration Layout */}
-        <div className="border-t border-white/5 pt-sm flex flex-col items-center gap-xs text-center">
+        <div className="border-t border-white/10 pt-sm flex flex-col items-center gap-xs text-center">
           <div className="relative">
             {/* Pulsing indicator when scanning */}
             {biometricStatus === 'scanning' && (
@@ -137,7 +148,7 @@ export const LoginPage: React.FC = () => {
                   ? 'bg-vantage-accent/20 border-vantage-accent text-vantage-accent animate-pulse'
                   : biometricStatus === 'success'
                     ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-vantage-accent/40 text-vantage-muted hover:text-white'
+                    : 'bg-white/5 border-white/20 hover:bg-white/10 hover:border-vantage-accent/60 text-vantage-muted hover:text-white shadow-lg'
               }`}
               title="Authenticate via Biometrics"
             >
