@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Ticket, Plane, Compass, Menu, X, LogIn, Users } from 'lucide-react';
+import { Search, Ticket, Plane, Compass, Menu, X, LogIn, Users, Globe, Crown } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 const NAV_LINKS = [
@@ -8,6 +8,9 @@ const NAV_LINKS = [
   { to: '/manage-booking', label: 'Manage', icon: Ticket },
   { to: '/trips', label: 'My Trips', icon: Plane },
   { to: '/track', label: 'Track Flight', icon: Compass },
+  { to: '/fleet', label: 'Fleet', icon: Plane },
+  { to: '/destinations', label: 'Destinations', icon: Globe },
+  { to: '/loyalty', label: 'Syndicate', icon: Crown },
   { to: '/team', label: 'Team', icon: Users },
 ];
 

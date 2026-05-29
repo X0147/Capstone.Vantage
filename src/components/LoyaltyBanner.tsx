@@ -15,8 +15,8 @@ const BENEFITS = [
   },
   {
     icon: FastForward,
-    title: 'White-Glove Priority',
-    desc: 'Dedicated VIP check-in & seamless security',
+    title: 'Sovereign Terminal Clearance',
+    desc: 'Dedicated biometric check-in & invisible security',
   },
 ];
 
@@ -48,13 +48,13 @@ export const LoyaltyBanner: React.FC = () => {
           <div className="space-y-xs">
             <span className="inline-flex items-center gap-2xs rounded-full border border-vantage-gold/30 bg-vantage-gold/10 px-sm py-2xs text-[9px] font-bold uppercase tracking-widest text-vantage-gold">
               <Award className="h-3 w-3 animate-pulse" />
-              Vantage Privilege Club
+              Vantage Black Syndicate
             </span>
             <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight text-white italic">
-              Command the Ultimate in Travel Prestige
+              Command the Apex of Global Transit
             </h3>
             <p className="text-sm text-vantage-muted leading-relaxed max-w-xl">
-              Step into a world reserved for the elite. Accrue unparalleled rewards, bypass the crowds with sovereign fast-tracks, and unwind in over 1,200 exclusive sanctuaries worldwide.
+              Access a realm reserved for the absolute elite. Accrue zero-gravity cryptographic rewards, bypass the masses with sovereign terminal clearance, and decompress in over 1,200 private sanctuaries worldwide.
             </p>
           </div>
 
@@ -78,14 +78,14 @@ export const LoyaltyBanner: React.FC = () => {
               to="/login"
               className="group/btn relative overflow-hidden rounded-xl bg-vantage-gold/10 border border-vantage-gold/30 px-lg py-sm font-bold text-[11px] uppercase tracking-widest text-vantage-gold transition-all duration-300 hover:bg-vantage-gold hover:text-vantage-midnight hover:shadow-glow-gold hover:-translate-y-0.5"
             >
-              Join Elite Club <ArrowRight className="inline-block ml-xs w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+              Request Black Status <ArrowRight className="inline-block ml-xs w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-500 group-hover/btn:translate-x-full" />
             </Link>
             <button
               onClick={simulateMilesEarned}
               className="flex items-center gap-xs text-[10px] font-mono uppercase tracking-widest text-vantage-muted hover:text-vantage-text transition-colors"
             >
-              <Compass className="w-4 h-4" /> Simulate Flight Miles
+              <Compass className="w-4 h-4" /> Simulate Ledger
             </button>
           </div>
         </div>
@@ -102,8 +102,8 @@ export const LoyaltyBanner: React.FC = () => {
               {/* Card Top */}
               <div className="flex justify-between items-start">
                 <div className="space-y-3xs">
-                  <span className="text-[7px] font-mono uppercase tracking-widest text-vantage-gold">Vantage Sovereign Passport</span>
-                  <div className="text-sm font-semibold tracking-wider text-white">CAPSTONE VANTAGE</div>
+                  <span className="text-[7px] font-mono uppercase tracking-widest text-vantage-gold">Vantage Black Cryptographic Ledger</span>
+                  <div className="text-sm font-semibold tracking-wider text-white">SOVEREIGN PROTOCOL</div>
                 </div>
                 <div className="w-7 h-7 rounded-lg bg-vantage-gold/15 flex items-center justify-center border border-vantage-gold/30">
                   <Sparkles className="w-4 h-4 text-vantage-gold animate-pulse" />

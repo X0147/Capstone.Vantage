@@ -30,6 +30,10 @@ const TicketTrackingPage = lazy(() => import('./pages/TicketTrackingPage'));
 const TrackTicketPage = lazy(() => import('./pages/TrackTicketPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
+const FleetPage = lazy(() => import('./pages/FleetPage'));
+const LoyaltyPage = lazy(() => import('./pages/LoyaltyPage'));
+const DestinationsPage = lazy(() => import('./pages/DestinationsPage'));
+
 
 function App() {
   return (
@@ -72,6 +76,21 @@ function AnimatedRoutes() {
         <Route path="/team" element={
           <Suspense fallback={<ResultsSkeleton />}>
             <TeamPage />
+          </Suspense>
+        } />
+        <Route path="/fleet" element={
+          <Suspense fallback={<ResultsSkeleton />}>
+            <FleetPage />
+          </Suspense>
+        } />
+        <Route path="/loyalty" element={
+          <Suspense fallback={<ResultsSkeleton />}>
+            <LoyaltyPage />
+          </Suspense>
+        } />
+        <Route path="/destinations" element={
+          <Suspense fallback={<ResultsSkeleton />}>
+            <DestinationsPage />
           </Suspense>
         } />
         <Route path="/login" element={<LoginPage />} />

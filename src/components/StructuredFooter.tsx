@@ -8,19 +8,19 @@ const FOOTER_LINKS = {
     { label: 'New York → London', path: '/' },
     { label: 'New York → Tokyo', path: '/' },
     { label: 'New York → Paris', path: '/' },
-    { label: 'New York → Dubai', path: '/' },
+    { label: 'Destinations Directory', path: '/destinations' },
   ],
   'Airspace Tools': [
-    { label: 'ADS-B Radar', path: '/tracker' },
+    { label: 'Live ADS-B Radar', path: '/tracker' },
+    { label: 'Fleet Showcase', path: '/fleet' },
+    { label: 'Vantage Black Ledger', path: '/loyalty' },
     { label: 'Itinerary Retrieval', path: '/manage-booking' },
-    { label: 'Frequent Flyer Miles', path: '/dashboard' },
-    { label: 'Seat Selection', path: '/' },
   ],
-  'Platform': [
-    { label: 'Privacy Policy', path: '#' },
+  'The Syndicate': [
+    { label: 'Executive Directorate', path: '/team' },
+    { label: 'Privacy Protocol', path: '#' },
     { label: 'Terms of Service', path: '#' },
-    { label: 'Cookie Preferences', path: '#' },
-    { label: 'Accessibility', path: '#' },
+    { label: 'Security Clearances', path: '#' },
   ],
 };
 

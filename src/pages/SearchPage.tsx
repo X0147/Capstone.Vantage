@@ -15,7 +15,7 @@ const PROMO_DESTINATIONS = [
     price: 349,
     duration: '7h 15m',
     image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=85',
-    tag: 'Popular',
+    tag: 'Curated',
   },
   {
     city: 'Tokyo',
@@ -23,7 +23,7 @@ const PROMO_DESTINATIONS = [
     price: 689,
     duration: '12h 45m',
     image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=85',
-    tag: 'Trending',
+    tag: 'Exclusive',
   },
   {
     city: 'Paris',
@@ -31,7 +31,7 @@ const PROMO_DESTINATIONS = [
     price: 399,
     duration: '6h 30m',
     image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=85',
-    tag: 'Romantic',
+    tag: 'Bespoke',
   },
   {
     city: 'Singapore',
@@ -39,7 +39,7 @@ const PROMO_DESTINATIONS = [
     price: 719,
     duration: '14h 10m',
     image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=85',
-    tag: 'Futuristic',
+    tag: 'Apex',
   },
   {
     city: 'Cape Town',
@@ -47,7 +47,7 @@ const PROMO_DESTINATIONS = [
     price: 829,
     duration: '15h 20m',
     image: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=85',
-    tag: 'Scenic',
+    tag: 'Sanctuary',
   },
   {
     city: 'Dubai',
@@ -55,7 +55,7 @@ const PROMO_DESTINATIONS = [
     price: 549,
     duration: '13h 00m',
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=85',
-    tag: 'Luxury',
+    tag: 'Sovereign',
   },
 ];
 
@@ -117,7 +117,7 @@ export default function SearchPage() {
               <span className="text-gradient-sky italic">Bespoke Aviation</span>
             </h1>
             <p className="text-vantage-text text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-              Where satellite-grade airspace intelligence meets the quiet precision of true luxury — every reservation a masterwork, every departure a statement, every altitude a world apart.
+              Where military-grade airspace intelligence meets the quiet precision of true luxury. Every reservation is a masterwork, every departure a sovereign statement, every altitude a world apart.
             </p>
           </div>
 
