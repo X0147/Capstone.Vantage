@@ -38,7 +38,7 @@ export function analyzeRoute(originIata: string, destIata: string): RouteAnalysi
   const distanceMiles = Math.round(distanceKm * 0.621371);
 
   // Average cruising speed 900km/h + 45 mins for takeoff/landing
-  const totalHours = (distanceKm / 900) + 0.75;
+  let totalHours = (distanceKm / 900) + 0.75;
   const hours = Math.floor(totalHours);
   const minutes = Math.round((totalHours - hours) * 60);
 
