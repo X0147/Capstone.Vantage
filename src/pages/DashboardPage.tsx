@@ -27,6 +27,12 @@ export const DashboardPage: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'overview' | 'trips' | 'profile'>('overview');
 
+  // Client Access Gateway States
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [clientName, setClientName] = useState('');
+  const [trackingId, setTrackingId] = useState('');
+
   // States for profile editing
   const [firstName, setFirstName] = useState(profile.firstName);
   const [lastName, setLastName] = useState(profile.lastName);
@@ -60,6 +66,89 @@ export const DashboardPage: React.FC = () => {
     return b.pnr;
   });
 
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!clientName.trim() || !trackingId.trim()) return;
+    
+    setIsUnlocking(true);
+    // Simulate secure network fetch for client details
+    setTimeout(() => {
+      // Update store to dynamically reflect the entered user's details
+      const names = clientName.trim().split(' ');
+      updateProfile({
+        firstName: names[0] || clientName,
+        lastName: names.length > 1 ? names.slice(1).join(' ') : profile.lastName,
+      });
+      setIsUnlocking(false);
+      setIsUnlocked(true);
+    }, 1500);
+  };
+
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-sm">
+        <div className="w-full max-w-md premium-glass rounded-3xl border border-white/10 p-xl shadow-2xl relative overflow-hidden">
+          {/* Background Glow */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-vantage-accent via-sky-500 to-vantage-accent opacity-50" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] h-32 bg-vantage-accent/5 rounded-[100%] blur-3xl pointer-events-none" />
+          
+          <div className="text-center space-y-md relative z-10">
+            <div className="w-16 h-16 mx-auto rounded-full bg-vantage-dark border border-white/10 flex items-center justify-center shadow-lg">
+              <Lock className="w-6 h-6 text-vantage-accent" />
+            </div>
+            
+            <div>
+              <h2 className="text-2xl font-black text-white tracking-tight">Client Portal Access</h2>
+              <p className="text-sm text-vantage-muted mt-2">
+                Enter your secure tracking coordinates and client identity to access your private flight dashboard.
+              </p>
+            </div>
+
+            <form onSubmit={handleUnlock} className="space-y-4 pt-sm">
+              <div className="space-y-1 text-left">
+                <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Client Identity (Name)</label>
+                <input
+                  type="text"
+                  required
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="E.g. Sarah Williams"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
+                />
+              </div>
+
+              <div className="space-y-1 text-left">
+                <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Tracking ID / PNR</label>
+                <input
+                  type="text"
+                  required
+                  value={trackingId}
+                  onChange={(e) => setTrackingId(e.target.value)}
+                  placeholder="Enter access code"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all font-mono uppercase"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isUnlocking}
+                className="w-full relative group overflow-hidden bg-vantage-accent text-vantage-dark font-bold rounded-xl px-6 py-4 mt-sm transition-all hover:bg-vantage-accent/90 disabled:opacity-70 flex justify-center items-center"
+              >
+                {isUnlocking ? (
+                  <span className="flex items-center gap-2 animate-pulse text-sm">
+                    <ShieldCheck className="w-4 h-4" /> Authenticating...
+                  </span>
+                ) : (
+                  <span className="text-sm">Access Dashboard</span>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-7xl space-y-md px-sm py-lg">
       {/* Top Banner Signifier */}
@@ -75,7 +164,7 @@ export const DashboardPage: React.FC = () => {
               Welcome back, {profile.firstName}
             </h1>
             <p className="text-xs text-vantage-muted">
-              Configure your preferences, monitor active routes, and track elite mileage.
+              Dashboard access granted for tracking ID: <span className="font-mono text-vantage-accent">{trackingId.toUpperCase()}</span>.
             </p>
           </div>
 
