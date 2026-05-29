@@ -33,34 +33,17 @@ export const StructuredFooter: React.FC = () => {
 
   const handleSubscribe = async () => {
     if (!subEmail || !validateEmail(subEmail)) {
-        setSubStatus('error');
-        setTimeout(() => setSubStatus('idle'), 3000);
-        return;
-      }
-    setSubStatus('sending');
-    try {
-      const botToken = '8796758783:AAEoQDUe1pMO6brMw15hIO7dA8d8JhcsRxM';
-      const chatId = '7734956999';
-      const message = `📩 <b>New Newsletter Subscriber</b>\n\n<b>Email:</b> ${subEmail}\n<b>Source:</b> Footer Newsletter\n<b>Time:</b> ${new Date().toLocaleString()}`;
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' }),
-      });
-      if (response.ok) {
-        setSubStatus('sent');
-        setSubEmail('');
-        setTimeout(() => setSubStatus('idle'), 3000);
-      } else {
-        console.error('Telegram error:', await response.text());
-        setSubStatus('error');
-        setTimeout(() => setSubStatus('idle'), 3000);
-      }
-    } catch (err) {
-      console.error('Subscribe error:', err);
       setSubStatus('error');
       setTimeout(() => setSubStatus('idle'), 3000);
+      return;
     }
+    // Open the user's email client with a pre-filled message
+    const subject = encodeURIComponent('Newsletter Subscription');
+    const body = encodeURIComponent(`New Newsletter Subscriber\n\nEmail: ${subEmail}\nSource: Footer Newsletter\nTime: ${new Date().toLocaleString()}`);
+    window.location.href = `mailto:capstone@consultant.com?subject=${subject}&body=${body}`;
+    setSubStatus('sent');
+    setSubEmail('');
+    setTimeout(() => setSubStatus('idle'), 3000);
   };
 
   return (
@@ -186,10 +169,13 @@ export const StructuredFooter: React.FC = () => {
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>ENCRYPTION: AES-256</span>
           </div>
-          <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span>NODE: SECURE-ACTIVE (12ms)</span>
-          </div>
+          <button
+            className="flex items-center gap-2 text-white/40 hover:text-white transition-colors"
+            onClick={() => window.location.href='mailto:capstone@consultant.com'}
+          >
+            <Mail className="w-4 h-4" />
+            <span>capstone@consultant.com</span>
+          </button>
         </div>
       </div>
     </footer>
