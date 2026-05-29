@@ -135,7 +135,7 @@ export default function VipRegistrationPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Full Name */}
                 <div className="space-y-2.5 relative">
-                  <label className={\`text-[9px] font-mono uppercase tracking-widest transition-colors \${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}\`}>Full Name</label>
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Full Name</label>
                   <input
                     required type="text" name="name" value={formData.name} onChange={handleChange}
                     onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
@@ -147,7 +147,7 @@ export default function VipRegistrationPage() {
 
                 {/* Email */}
                 <div className="space-y-2.5 relative">
-                  <label className={\`text-[9px] font-mono uppercase tracking-widest transition-colors \${focusedField === 'email' ? 'text-vantage-gold' : 'text-vantage-muted'}\`}>Cryptographic Email</label>
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'email' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Cryptographic Email</label>
                   <input
                     required type="email" name="email" value={formData.email} onChange={handleChange}
                     onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
@@ -161,7 +161,7 @@ export default function VipRegistrationPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Phone */}
                 <div className="space-y-2.5 relative">
-                  <label className={\`text-[9px] font-mono uppercase tracking-widest transition-colors \${focusedField === 'phone' ? 'text-vantage-gold' : 'text-vantage-muted'}\`}>Secure Line (Phone)</label>
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'phone' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Secure Line (Phone)</label>
                   <input
                     required type="tel" name="phone" value={formData.phone} onChange={handleChange}
                     onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)}
@@ -173,7 +173,7 @@ export default function VipRegistrationPage() {
 
                 {/* Home Base */}
                 <div className="space-y-2.5 relative">
-                  <label className={\`text-[9px] font-mono uppercase tracking-widest transition-colors \${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}\`}>Origin Sanctuary (Home Base)</label>
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Origin Sanctuary (Home Base)</label>
                   <input
                     required type="text" name="homeBase" value={formData.homeBase} onChange={handleChange}
                     onFocus={() => setFocusedField('homeBase')} onBlur={() => setFocusedField(null)}
@@ -186,7 +186,7 @@ export default function VipRegistrationPage() {
 
               {/* Requirements */}
               <div className="space-y-2.5 relative">
-                <label className={\`text-[9px] font-mono uppercase tracking-widest transition-colors \${focusedField === 'reqs' ? 'text-vantage-gold' : 'text-vantage-muted'}\`}>Bespoke Requirements (Optional)</label>
+                <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'reqs' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Bespoke Requirements (Optional)</label>
                 <textarea
                   name="requirements" value={formData.requirements} onChange={handleChange}
                   onFocus={() => setFocusedField('reqs')} onBlur={() => setFocusedField(null)}
