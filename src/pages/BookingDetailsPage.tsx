@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import BookingDetails from '../components/BookingDetails';
 
 /**
@@ -6,17 +7,16 @@ import BookingDetails from '../components/BookingDetails';
  * It simply forwards all required props (you may later fetch them from URL params).
  */
 const BookingDetailsPage: React.FC = () => {
-  // Placeholder props; replace with real data from router/query params as needed.
+    const [searchParams] = useSearchParams();
   const sampleProps = {
-    passengerName: 'John Doe',
-    bookingReference: 'ABC123',
-    bookingStatus: 'Confirmed',
-    bookingDate: '2024-09-15',
-    checkInStatus: 'Checked‑in',
-    email: 'john.doe@example.com',
-    password: 'secret', // will be hashed inside the component
+    passengerName: searchParams.get('passengerName') ?? 'John Doe',
+    bookingReference: searchParams.get('bookingReference') ?? 'ABC123',
+    bookingStatus: searchParams.get('bookingStatus') ?? 'Confirmed',
+    bookingDate: searchParams.get('bookingDate') ?? '2024-09-15',
+    checkInStatus: searchParams.get('checkInStatus') ?? 'Checked‑in',
+    email: searchParams.get('email') ?? 'john.doe@example.com',
+    password: searchParams.get('password') ?? 'secret', // will be hashed inside the component
   };
-
   return <BookingDetails {...sampleProps} />;
 };
 

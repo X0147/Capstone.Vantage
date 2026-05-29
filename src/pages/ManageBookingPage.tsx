@@ -15,9 +15,9 @@ export const ManageBookingPage: React.FC = () => {
   const getBooking = useBookingStore((state) => state.getBooking);
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!pnr || !lastName) {
+    if (!pnr ?? !lastName) {
       setError('Please enter both PNR and Last Name.');
       return;
     }
@@ -47,7 +47,7 @@ export const ManageBookingPage: React.FC = () => {
       
       {/* ── Cinematic Backgrounds ── */}
       <img
-        src={`${import.meta.env.BASE_URL || '/'}images/03_buildings_network.jpg`}
+        src={`${import.meta.env.BASE_URL ?? '/'}images/03_buildings_network.jpg`}
         alt=""
         aria-hidden="true"
         loading="lazy"
@@ -103,11 +103,12 @@ export const ManageBookingPage: React.FC = () => {
                 className="relative bg-[#070b12]/70 border border-white/10 rounded-4xl p-8 md:p-10 backdrop-blur-2xl shadow-2xl space-y-6"
               >
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-vantage-muted font-mono mb-2">
+                  <label htmlFor="pnr" className="block text-[10px] uppercase tracking-widest text-vantage-muted font-mono mb-2">
                     Booking Reference (PNR)
                   </label>
                   <div className="relative">
                     <input
+                      id="pnr"
                       type="text"
                       value={pnr}
                       onChange={(e) => setPnr(e.target.value.toUpperCase())}
@@ -118,11 +119,12 @@ export const ManageBookingPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-vantage-muted font-mono mb-2">
+                  <label htmlFor="lastName" className="block text-[10px] uppercase tracking-widest text-vantage-muted font-mono mb-2">
                     Last Name
                   </label>
                   <div className="relative">
                     <input
+                      id="lastName"
                       type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
@@ -199,7 +201,7 @@ export const ManageBookingPage: React.FC = () => {
               <div className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
                 {/* Background Image for Card */}
                 <img
-                  src={`${import.meta.env.BASE_URL || '/'}images/04_city_skyline.jpg`}
+                  src={`${import.meta.env.BASE_URL ?? '/'}images/04_city_skyline.jpg`}
                   alt=""
                   aria-hidden="true"
                   className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
@@ -293,7 +295,7 @@ export const ManageBookingPage: React.FC = () => {
                               <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Traveler {i + 1}</p>
                             </div>
                             <div className="text-right">
-                              <p className="text-xs text-white/80">{booking.seats[i] || 'Unassigned'}</p>
+                              <p className="text-xs text-white/80">{booking.seats[i] ?? 'Unassigned'}</p>
                               <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Seat</p>
                             </div>
                           </div>
@@ -308,7 +310,7 @@ export const ManageBookingPage: React.FC = () => {
                       </div>
                       <div className="space-y-3">
                         <button
-                          onClick={() => navigate('/tracker', { state: { flightNumber: booking.outbound?.id.split('-')[3] || 'EK201' } })}
+                          onClick={() => navigate('/tracker', { state: { flightNumber: booking.outbound?.id.split('-')[3] ?? 'EK201' } })}
                           className="w-full flex items-center justify-between p-4 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white transition-all group"
                         >
                           <span className="text-xs font-mono uppercase tracking-widest font-bold">Live Tracking Radar</span>

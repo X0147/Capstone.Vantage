@@ -9,6 +9,27 @@ import {
 import AnimatedSpinner from '../components/AnimatedSpinner';
 import SEO from '../components/SEO';
 
+const TicketSkeleton = () => (
+  <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
+    {/* Header Bar Skeleton */}
+    <div className="flex items-center justify-between flex-wrap gap-sm mb-lg">
+      <div className="space-y-sm">
+        <div className="h-6 w-32 bg-white/10 rounded-full" />
+        <div className="h-10 w-64 bg-white/10 rounded-lg" />
+      </div>
+      <div className="h-8 w-24 bg-white/10 rounded-xl" />
+    </div>
+
+    {/* Main Grid Skeleton */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
+      <div className="lg:col-span-2 premium-glass rounded-3xl border border-white/10 h-[28rem]" />
+      <div className="space-y-md">
+        <div className="premium-glass rounded-3xl border border-white/10 h-64" />
+        <div className="premium-glass rounded-3xl border border-white/10 h-40" />
+      </div>
+    </div>
+  </div>
+);
 export const TrackTicketPage: React.FC = () => {
   const { t } = useTranslation();
   const { trackedTicket, trackError, lookupTicket, clearTrackedTicket } = useBookingStore();
@@ -17,35 +38,15 @@ export const TrackTicketPage: React.FC = () => {
   const [lastName, setLastName] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleLookup = async (e: React.FormEvent) => {
+  const handleLookup = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!pnr || !lastName) return;
+    if (!pnr ?? !lastName) return;
     setIsSearching(true);
     await lookupTicket(pnr, lastName);
     setIsSearching(false);
   };
 
-  const TicketSkeleton = () => (
-    <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
-      {/* Header Bar Skeleton */}
-      <div className="flex items-center justify-between flex-wrap gap-sm mb-lg">
-        <div className="space-y-sm">
-          <div className="h-6 w-32 bg-white/10 rounded-full" />
-          <div className="h-10 w-64 bg-white/10 rounded-lg" />
-        </div>
-        <div className="h-8 w-24 bg-white/10 rounded-xl" />
-      </div>
 
-      {/* Main Grid Skeleton */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
-        <div className="lg:col-span-2 premium-glass rounded-3xl border border-white/10 h-[28rem]" />
-        <div className="space-y-md">
-          <div className="premium-glass rounded-3xl border border-white/10 h-64" />
-          <div className="premium-glass rounded-3xl border border-white/10 h-40" />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="w-full min-h-screen">
@@ -97,36 +98,38 @@ export const TrackTicketPage: React.FC = () => {
               <form onSubmit={handleLookup} className="space-y-md relative z-10">
                 {/* PNR Input */}
                 <div className="space-y-2xs">
-                  <label className="flex items-center gap-2xs text-[10px] uppercase tracking-wider text-vantage-muted font-bold">
-                    <Fingerprint className="w-3 h-3" />
-                    {t('track.pnr_label')}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      maxLength={6}
-                      value={pnr}
-                      onChange={(e) => setPnr(e.target.value.toUpperCase())}
-                      placeholder="e.g., VNTG6K"
-                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-md py-sm text-sm text-white uppercase focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] font-mono tracking-[0.3em] transition-all placeholder:tracking-normal placeholder:normal-case placeholder:text-vantage-muted/40"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono text-white/20">{pnr.length}/6</div>
-                  </div>
+                    <label htmlFor="pnr" className="flex items-center gap-2xs text-[10px] uppercase tracking-wider text-vantage-muted font-bold">
+                      <Fingerprint className="w-3 h-3" />
+                      {t('track.pnr_label')}
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="pnr"
+                        type="text"
+                        maxLength={6}
+                        value={pnr}
+                        onChange={(e) => setPnr(e.target.value.toUpperCase())}
+                        placeholder="e.g., VNTG6K"
+                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-md py-sm text-sm text-white uppercase focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] font-mono tracking-[0.3em] transition-all placeholder:tracking-normal placeholder:normal-case placeholder:text-vantage-muted/40"
+                      />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono text-white/20">{pnr.length}/6</div>
+                    </div>
                 </div>
 
                 {/* Last Name Input */}
                 <div className="space-y-2xs">
-                  <label className="flex items-center gap-2xs text-[10px] uppercase tracking-wider text-vantage-muted font-bold">
-                    <User className="w-3 h-3" />
-                    Passenger Last Name
-                  </label>
-                  <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder="As written on passport"
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-md py-sm text-sm text-white focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] transition-all placeholder:text-vantage-muted/40"
-                  />
+                    <label htmlFor="lastName" className="flex items-center gap-2xs text-[10px] uppercase tracking-wider text-vantage-muted font-bold">
+                      <User className="w-3 h-3" />
+                      Passenger Last Name
+                    </label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="As written on passport"
+                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-md py-sm text-sm text-white focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] transition-all placeholder:text-vantage-muted/40"
+                    />
                 </div>
 
                 {/* Error Alert */}
@@ -140,7 +143,7 @@ export const TrackTicketPage: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isSearching || !pnr || !lastName}
+                  disabled={isSearching ?? !pnr ?? !lastName}
                   className="w-full py-sm rounded-2xl bg-gradient-to-r from-vantage-accent to-blue-500 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center gap-sm transition-all hover:shadow-[0_0_30px_rgba(56,189,248,0.3)] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
                 >
                   {isSearching ? (

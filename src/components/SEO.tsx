@@ -18,7 +18,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, url, image }) => {
     '@type': 'WebPage',
     name: fullTitle,
     description: description,
-    url: url || 'https://x0147.github.io/Capstone.Vantage',
+    url: url ?? 'https://x0147.github.io/Capstone.Vantage',
   };
 
   return (

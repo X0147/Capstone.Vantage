@@ -70,9 +70,11 @@ export default function TicketTrackingPage() {
   const [localTicket, setLocalTicket] = useState<MockTicket | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const handleLookup = async (e: React.FormEvent) => {
+  const handleLookup = async (e: React.SyntheticEvent) => {
+    // ... unchanged ...
+
     e.preventDefault();
-    if (!pnr || !lastName) return;
+    if (!pnr ?? !lastName) return;
     setLocalError(null);
     setIsSearching(true);
 
@@ -106,7 +108,7 @@ export default function TicketTrackingPage() {
     <div className="w-full min-h-screen flex flex-col relative -mt-24 pt-24 overflow-hidden">
       {/* ── Full-screen background ─────────────────────────── */}
       <img
-        src={`${import.meta.env.BASE_URL || '/'}images/20_sunset_flight.jpg`}
+        src={`${import.meta.env.BASE_URL ?? '/' }images/20_sunset_flight.jpg`}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover scale-105 animate-slow-zoom"
@@ -162,12 +164,12 @@ export default function TicketTrackingPage() {
               <form onSubmit={handleLookup} className="space-y-sm">
                 {/* PNR */}
                 <div className="space-y-2xs">
-                  <label className="block text-[9px] uppercase tracking-widest text-vantage-gold/80 font-bold">
+                  <label htmlFor="pnr-input" className="block text-[9px] uppercase tracking-widest text-vantage-gold/80 font-bold">
                     Booking Reference (PNR)
                   </label>
                   <div className="relative group">
                     <Ticket className="absolute left-sm top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted group-focus-within:text-vantage-gold transition-colors" />
-                    <input
+                    <input id="pnr-input"
                       type="text"
                       maxLength={6}
                       value={pnr}
@@ -181,12 +183,12 @@ export default function TicketTrackingPage() {
 
                 {/* Last Name */}
                 <div className="space-y-2xs">
-                  <label className="block text-[9px] uppercase tracking-widest text-vantage-gold/80 font-bold">
+                  <label htmlFor="lastname-input" className="block text-[9px] uppercase tracking-widest text-vantage-gold/80 font-bold">
                     Passenger Surname
                   </label>
                   <div className="relative group">
                     <User className="absolute left-sm top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted group-focus-within:text-vantage-gold transition-colors" />
-                    <input
+                    <input id="lastname-input"
                       type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
@@ -198,10 +200,10 @@ export default function TicketTrackingPage() {
                 </div>
 
                 {/* Error */}
-                {(localError || trackError) && (
+                {(localError ?? trackError) && (
                   <div className="flex items-center gap-2xs p-xs rounded-2xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs">
                     <ShieldAlert className="w-4 h-4 shrink-0" />
-                    <span>{localError || trackError}</span>
+                    <span>{localError ?? trackError}</span>
                   </div>
                 )}
 

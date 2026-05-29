@@ -53,7 +53,7 @@ function AppShell() {
       {/* Global Cinematic Background */}
       <div 
         className="fixed inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none z-0 mix-blend-screen"
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL || '/'}images/18_earth.jpg)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL ?? '/'}images/18_earth.jpg)` }}
       />
       <div className="fixed inset-0 bg-gradient-to-b from-brand-dark/40 via-transparent to-brand-dark/80 pointer-events-none z-0" />
 

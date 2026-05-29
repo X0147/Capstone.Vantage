@@ -56,7 +56,7 @@ export const SearchHero: React.FC = () => {
     e.preventDefault();
 
     if (searchParams.tripType === 'multicity') {
-      const hasEmpty = multiCitySegments.some((s) => !s.origin || !s.destination || !s.date);
+      const hasEmpty = multiCitySegments.some((s) => !s.origin ?? !s.destination ?? !s.date);
       if (hasEmpty) {
         setError('Please fill in all flight details for every segment.');
         return;
@@ -67,7 +67,7 @@ export const SearchHero: React.FC = () => {
       return;
     }
 
-    if (!origin || !destination) {
+    if (!origin ?? !destination) {
       setError('Please select both a departure and arrival airport.');
       return;
     }

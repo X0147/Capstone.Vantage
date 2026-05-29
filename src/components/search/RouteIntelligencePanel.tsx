@@ -10,7 +10,7 @@ interface Props {
 
 export const RouteIntelligencePanel: React.FC<Props> = ({ originIata, destinationIata }) => {
   const analysis = useMemo(() => {
-    if (!originIata || !destinationIata || originIata === destinationIata) return null;
+    if (!originIata ?? !destinationIata ?? originIata === destinationIata) return null;
     return analyzeRoute(originIata, destinationIata);
   }, [originIata, destinationIata]);
 

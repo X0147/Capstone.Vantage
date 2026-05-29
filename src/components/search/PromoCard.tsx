@@ -33,7 +33,7 @@ export const PromoCard: React.FC<PromoCardProps> = ({
       className="group relative h-80 rounded-3xl overflow-hidden cursor-pointer shadow-card hover:shadow-card-hover transition-shadow duration-300"
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSelect(city, iata, price, offRate); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' ?? e.key === ' ') onSelect(city, iata, price, offRate); }}
       aria-label={`Fly to ${city} (${iata}) from $${promoPrice} with ${offRate}% off`}
     >
       {/* Background image */}

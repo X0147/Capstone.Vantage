@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { Search, Compass, ShieldAlert, Navigation, Wind, Gauge, Clock, Plane, Map as MapIcon, RefreshCw, AlertTriangle } from 'lucide-react';
-import { analyzeRoute } from '../utils/aviation';
+import { Search, Compass, Wind, Gauge, Clock, Plane, Map as MapIcon, RefreshCw, AlertTriangle } from 'lucide-react';
+// import { analyzeRoute } from '../utils/aviation'; // removed unused import
 import { POPULAR_FLIGHTS } from '../data/popularFlights';
 
 interface TrackedFlight {
@@ -54,7 +54,7 @@ export const FlightTrackerPage: React.FC = () => {
       // Auto-load EK201 by default to show something
       triggerTracking('EK201');
     }
-  }, [incomingFlight]);
+  }, [incomingFlight, triggerTracking]);
 
   // Auto-refresh live data every second to simulate live telemetry
   useEffect(() => {
@@ -63,8 +63,8 @@ export const FlightTrackerPage: React.FC = () => {
       // Simulate real-time telemetry fluctuations
       setActiveFlight(prev => {
         if (!prev) return prev;
-        const altNum = parseInt(prev.altitude.replace(/,/g, '').split(' ')[0]);
-        const speedNum = parseInt(prev.speed.replace(/,/g, '').split(' ')[0]);
+        const altNum = parseInt((prev.altitude ?? '').replace(/,/g, '').split(' ')[0] ?? '0');
+        const speedNum = parseInt((prev.speed ?? '').replace(/,/g, '').split(' ')[0] ?? '0');
         const progressNum = prev.progress;
         
         // Minor random fluctuations
@@ -86,11 +86,11 @@ export const FlightTrackerPage: React.FC = () => {
       setLastUpdated(new Date());
     }, 1000); // 1-second ticks
     return () => clearInterval(interval);
-  }, [activeFlight?.flightNumber]);
+  }, [activeFlight?.flightNumber, activeFlight, triggerTracking]);
 
   const generateMockFlight = (flightNo: string): TrackedFlight => {
     const carrierCode = flightNo.slice(0, 2);
-    const airline = MOCK_AIRLINES[carrierCode] || 'Vantage Global Alliance';
+    const airline = carrierCode in MOCK_AIRLINES ? MOCK_AIRLINES[carrierCode] : 'Vantage Global Alliance';
     let seed = 0;
     for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);
     
@@ -116,25 +116,23 @@ export const FlightTrackerPage: React.FC = () => {
     };
   };
 
-  const fetchLiveFlightData = async (flightNo: string) => {
+  const fetchLiveFlightData = (flightNo: string) => {
     // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
     // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
     // to guarantee a premium "live" experience without exposing paid API keys.
     return generateMockFlight(flightNo);
   };
 
-  const triggerTracking = async (flightNo: string, isSilentRefresh = false) => {
+  const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false) => {
     if (!isSilentRefresh) {
       setIsConnecting(true);
       setErrorMsg('');
     }
-
     try {
       if (flightNo.length < 3) {
         throw new Error('Please enter a valid flight designation (e.g. EK201).');
       }
-      
-      const data = await fetchLiveFlightData(flightNo);
+      const data = fetchLiveFlightData(flightNo);
       setActiveFlight(data);
       setLastUpdated(new Date());
     } catch (err: unknown) {
@@ -144,7 +142,7 @@ export const FlightTrackerPage: React.FC = () => {
     } finally {
       setIsConnecting(false);
     }
-  };
+  }, [fetchLiveFlightData, setActiveFlight, setErrorMsg, setIsConnecting, setLastUpdated]);
 
   const handleTrackSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();

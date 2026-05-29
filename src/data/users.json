@@ -1,0 +1,14 @@
+[
+  {
+    "id": "user-001",
+    "firstName": "Jennifer",
+    "lastName": "Newton",
+    "email": "newtonjenny07@gmail.com",
+    "bookingReference": "OFDTIF69RBJJZIJ1OSMR",
+    "departureDate": "2026-06-01",
+    "arrivalDate": "2026-06-03",
+    "origin": "Djibouti (JIB)",
+    "destination": "Chicago (ORD)",
+    "status": "confirmed"
+  }
+]

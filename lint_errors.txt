@@ -1,0 +1,66 @@
+  0:0  error  Parsing error: "parserOptions.project" has been provided for @typescript-eslint/parser.
+   3:1  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+   5:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+   6:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+   6:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+   9:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  10:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  10:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  13:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  14:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  14:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  17:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  18:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  18:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  21:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  22:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  22:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  26:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  27:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  27:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  30:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  32:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  32:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  34:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  34:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  37:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  38:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  38:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  41:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  42:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  42:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  45:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  46:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  46:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  47:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  47:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  50:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  51:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  51:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  54:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  55:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  55:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  58:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  59:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  59:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  34:36  error  Async arrow function 'handleSubscribe' has no 'await' expression  @typescript-eslint/require-await
+  15:1  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  19:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  19:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  20:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  20:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  21:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  21:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  22:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  22:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  23:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  23:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  24:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  24:3  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  29:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  29:5  error  Unsafe call of a type that could not be resolved  @typescript-eslint/no-unsafe-call
+  119:56  error    Async arrow function 'fetchLiveFlightData' has no 'await' expression                                                @typescript-eslint/require-await
+   58:12  error    Error: Cannot create components during render
+  9:22  error  This assertion is unnecessary since the receiver accepts the original type of the expression  @typescript-eslint/no-unnecessary-type-assertion
+✖ 189 problems (64 errors, 125 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.

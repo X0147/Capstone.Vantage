@@ -7,7 +7,7 @@ export const Breadcrumbs: React.FC = () => {
   const pathnames = location.pathname.split('/').filter((x) => x);
 
   // Do not show breadcrumbs on the home page or search page
-  if (pathnames.length === 0 || location.pathname === '/') {
+  if (pathnames.length === 0 ?? location.pathname === '/') {
     return null;
   }
 

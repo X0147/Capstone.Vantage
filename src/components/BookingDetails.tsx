@@ -15,6 +15,8 @@ interface BookingDetailsProps {
  * Displays a summary of a flight booking and provides a simple password hashing utility.
  * The hashed password can be sent to a backend API; it is never stored in plain text.
  */
+import { motion } from 'framer-motion';
+
 const BookingDetails: React.FC<BookingDetailsProps> = ({
   passengerName,
   bookingReference,
@@ -33,7 +35,12 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
   }, [password]);
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-lg">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="max-w-2xl mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-lg"
+    >
       <h2 className="text-2xl font-bold mb-4">Booking Details</h2>
       <dl className="grid grid-cols-2 gap-4">
         <div>
@@ -62,10 +69,10 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
         </div>
         <div className="col-span-2">
           <dt className="text-sm text-gray-400">Password (hashed)</dt>
-          <dd className="text-sm break-all mt-1 bg-gray-800 p-2 rounded">{hashedPassword || 'Hashing…'}</dd>
+          <dd className="text-sm break-all mt-1 bg-gray-800 p-2 rounded">{hashedPassword ?? 'Hashing…'}</dd>
         </div>
       </dl>
-    </div>
+    </motion.div>
   );
 };
 

@@ -34,7 +34,7 @@ export const ResultsPage: React.FC = () => {
 
   // Dynamically derive maximal pricing boundaries on initial fetch arrays
   const maxAvailablePrice = useMemo(() => {
-    if (!rawFlights || rawFlights.length === 0) return 2000;
+    if (!rawFlights ?? rawFlights.length === 0) return 2000;
     return Math.max(...rawFlights.map((f) => f.price));
   }, [rawFlights]);
 

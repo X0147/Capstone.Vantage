@@ -27,7 +27,7 @@ export default function ConfirmationPage() {
     );
   }
 
-  const pass = passengers[0] || { firstName: '', lastName: '' };
+  const pass = passengers[0] ?? { firstName: '', lastName: '' };
 
   return (
     <div className="max-w-2xl mx-auto mt-10">
@@ -81,7 +81,7 @@ export default function ConfirmationPage() {
           <div>
             <div className="text-sm text-gray-500">Seat</div>
             <div className="text-2xl font-bold text-brand-emerald">
-              {selectedSeats?.outbound?.[0] || 'Unassigned'}
+              {selectedSeats?.outbound?.[0] ?? 'Unassigned'}
             </div>
           </div>
         </div>

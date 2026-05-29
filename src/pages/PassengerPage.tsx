@@ -13,7 +13,7 @@ export default function PassengerPage() {
     phone: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setPassengers([formData]); // Currently handling single passenger for demo
     navigate('/seat-selection');
@@ -27,45 +27,49 @@ export default function PassengerPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-1">First Name</label>
-              <input
-                required
-                type="text"
-                className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
-                value={formData.firstName}
-                onChange={(e) => {
-                  setFormData({ ...formData, firstName: e.target.value });
-                }}
-              />
+               <label htmlFor="firstName" className="block text-sm mb-1">First Name</label>
+                 <input
+                   id="firstName"
+                   required
+                   type="text"
+                   className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
+                   value={formData.firstName}
+                   onChange={(e) => {
+                     setFormData({ ...formData, firstName: e.target.value });
+                   }}
+                 />
             </div>
             <div>
-              <label className="block text-sm mb-1">Last Name</label>
-              <input
-                required
-                type="text"
-                className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
-                value={formData.lastName}
-                onChange={(e) => {
-                  setFormData({ ...formData, lastName: e.target.value });
-                }}
-              />
+               <label htmlFor="lastName" className="block text-sm mb-1">Last Name</label>
+                 <input
+                   id="lastName"
+                   required
+                   type="text"
+                   className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
+                   value={formData.lastName}
+                   onChange={(e) => {
+                     setFormData({ ...formData, lastName: e.target.value });
+                   }}
+                 />
             </div>
           </div>
           <div>
-            <label className="block text-sm mb-1">Email</label>
-            <input
-              required
-              type="email"
-              className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
-              }}
-            />
+               <label htmlFor="email" className="block text-sm mb-1">Email</label>
+                 <input
+                   id="email"
+                   required
+                   type="email"
+                   className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
+                   value={formData.email}
+                   onChange={(e) => {
+                     setFormData({ ...formData, email: e.target.value });
+                   }}
+                 />
           </div>
           <div>
-            <label className="block text-sm mb-1">Phone Number</label>
+               <label htmlFor="phone" className="block text-sm mb-1">Phone Number</label>
             <input
+              id="phone"
               required
               type="tel"
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"

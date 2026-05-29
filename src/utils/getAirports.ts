@@ -6,10 +6,10 @@ export const getAirports = async (): Promise<Airport[]> => {
   if (cachedAirports) return cachedAirports;
   try {
     const module = await import('../data/airports.json');
-    cachedAirports = module.default as Airport[];
+    cachedAirports = module.default;
     // store in localStorage for next loads
     localStorage.setItem('airports', JSON.stringify(cachedAirports));
-  } catch (e) {
+  } catch {
     // fallback: try to read from localStorage
     const stored = localStorage.getItem('airports');
     if (stored) {
@@ -26,8 +26,8 @@ export const searchAirports = async (query: string): Promise<Airport[]> => {
   const lower = query.toLowerCase();
   return list.filter(
     (a) =>
-      a.code.toLowerCase().includes(lower) ||
-      a.city.toLowerCase().includes(lower) ||
+      a.code.toLowerCase().includes(lower) ??
+      a.city.toLowerCase().includes(lower) ??
       a.name.toLowerCase().includes(lower)
   );
 };
