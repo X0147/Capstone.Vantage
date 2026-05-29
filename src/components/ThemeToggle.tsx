@@ -11,8 +11,8 @@ const ThemeToggle: React.FC = () => {
 
   // Initialise theme from localStorage on mount
   useEffect(() => {
-    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const saved = typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function' ? window.localStorage.getItem('theme') : null;
+    const prefersDark = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     const initial = saved ? saved === 'dark' : prefersDark;
     setIsDark(initial);
     if (initial) {
