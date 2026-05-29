@@ -9,6 +9,27 @@ import {
 import AnimatedSpinner from '../components/AnimatedSpinner';
 import SEO from '../components/SEO';
 
+const TicketSkeleton = () => (
+  <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
+    {/* Header Bar Skeleton */}
+    <div className="flex items-center justify-between flex-wrap gap-sm mb-lg">
+      <div className="space-y-sm">
+        <div className="h-6 w-32 bg-white/10 rounded-full" />
+        <div className="h-10 w-64 bg-white/10 rounded-lg" />
+      </div>
+      <div className="h-8 w-24 bg-white/10 rounded-xl" />
+    </div>
+
+    {/* Main Grid Skeleton */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
+      <div className="lg:col-span-2 premium-glass rounded-3xl border border-white/10 h-[28rem]" />
+      <div className="space-y-md">
+        <div className="premium-glass rounded-3xl border border-white/10 h-64" />
+        <div className="premium-glass rounded-3xl border border-white/10 h-40" />
+      </div>
+    </div>
+  </div>
+);
 export const TrackTicketPage: React.FC = () => {
   const { t } = useTranslation();
   const { trackedTicket, trackError, lookupTicket, clearTrackedTicket } = useBookingStore();
@@ -25,27 +46,7 @@ export const TrackTicketPage: React.FC = () => {
     setIsSearching(false);
   };
 
-  const TicketSkeleton = () => (
-    <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
-      {/* Header Bar Skeleton */}
-      <div className="flex items-center justify-between flex-wrap gap-sm mb-lg">
-        <div className="space-y-sm">
-          <div className="h-6 w-32 bg-white/10 rounded-full" />
-          <div className="h-10 w-64 bg-white/10 rounded-lg" />
-        </div>
-        <div className="h-8 w-24 bg-white/10 rounded-xl" />
-      </div>
 
-      {/* Main Grid Skeleton */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
-        <div className="lg:col-span-2 premium-glass rounded-3xl border border-white/10 h-[28rem]" />
-        <div className="space-y-md">
-          <div className="premium-glass rounded-3xl border border-white/10 h-64" />
-          <div className="premium-glass rounded-3xl border border-white/10 h-40" />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="w-full min-h-screen">

@@ -31,7 +31,7 @@ export const StructuredFooter: React.FC = () => {
   const [subEmail, setSubEmail] = React.useState('');
   const [subStatus, setSubStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = () => {
     if (!subEmail || !validateEmail(subEmail)) {
       setSubStatus('error');
       setTimeout(() => setSubStatus('idle'), 3000);

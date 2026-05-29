@@ -9,12 +9,12 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist', 'node_modules', 'vite.config.ts', 'eslint.config.js', 'vite.config.js'],
+    ignores: ['dist', 'node_modules', 'vite.config.ts', 'eslint.config.js', 'vite.config.js', 'cypress'],
   },
   security.configs.recommended,
   jsxA11y.flatConfigs.recommended,
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',

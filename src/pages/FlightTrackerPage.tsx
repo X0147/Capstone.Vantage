@@ -116,14 +116,14 @@ export const FlightTrackerPage: React.FC = () => {
     };
   };
 
-  const fetchLiveFlightData = async (flightNo: string) => {
+  const fetchLiveFlightData = (flightNo: string) => {
     // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
     // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
     // to guarantee a premium "live" experience without exposing paid API keys.
     return generateMockFlight(flightNo);
   };
 
-  const triggerTracking = async (flightNo: string, isSilentRefresh = false) => {
+  const triggerTracking = (flightNo: string, isSilentRefresh = false) => {
     if (!isSilentRefresh) {
       setIsConnecting(true);
       setErrorMsg('');
@@ -134,7 +134,7 @@ export const FlightTrackerPage: React.FC = () => {
         throw new Error('Please enter a valid flight designation (e.g. EK201).');
       }
       
-      const data = await fetchLiveFlightData(flightNo);
+      const data = fetchLiveFlightData(flightNo);
       setActiveFlight(data);
       setLastUpdated(new Date());
     } catch (err: unknown) {
