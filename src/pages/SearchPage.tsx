@@ -40,6 +40,9 @@ export default function SearchPage() {
       {/* ── CINEMATIC HERO ──────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden -mt-24 pt-24">
 
+        {/* Solid base to block global background from bleeding through */}
+        <div className="absolute inset-0 bg-brand-dark" />
+
         {/* Ambient video background */}
         <video
           src={`${import.meta.env.BASE_URL || '/'}videos/flight-demo-payment.mp4`}
