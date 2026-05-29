@@ -36,7 +36,8 @@ const HEADINGS = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest
 
 export const FlightTrackerPage: React.FC = () => {
   const location = useLocation();
-  const incomingFlight = (location.state as any)?.flightNumber || '';
+  const state = location.state as { flightNumber?: string } | null;
+  const incomingFlight = state?.flightNumber ?? '';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFlight, setActiveFlight] = useState<TrackedFlight | null>(null);
@@ -56,7 +57,7 @@ export const FlightTrackerPage: React.FC = () => {
 
   // Auto-refresh live data every 30 seconds
   useEffect(() => {
-    if (!activeFlight || !activeFlight.isLiveAPI) return;
+    if (!activeFlight?.isLiveAPI) return;
     const interval = setInterval(() => {
       triggerTracking(activeFlight.flightNumber, true);
     }, 30000);
@@ -98,10 +99,10 @@ export const FlightTrackerPage: React.FC = () => {
       const response = await fetch(url);
       if (!response.ok) throw new Error('API Error');
       
-      const data = await response.json();
-      const payload = JSON.parse(data.contents);
+      const data = (await response.json()) as { contents: string };
+      const payload = JSON.parse(data.contents) as Record<string, unknown>;
       
-      if (!payload || !payload.lat) throw new Error('No live data');
+      if (!payload?.lat) throw new Error('No live data');
 
       const carrierCode = flightNo.slice(0, 2);
       
@@ -111,17 +112,17 @@ export const FlightTrackerPage: React.FC = () => {
         origin: 'Unknown',
         destination: 'Unknown',
         status: 'In-Flight' as const,
-        altitude: `${payload.alt_baro || 35000} ft`,
-        speed: `${payload.gs || 500} mph`,
+        altitude: `${(payload.alt_baro as number) ?? 35000} ft`,
+        speed: `${(payload.gs as number) ?? 500} mph`,
         progress: 50, // Hard to calculate without known origin/dest lat/lon exactly
         departureTime: 'Live',
         arrivalTime: 'Live',
-        vessel: payload.t || 'Unknown Aircraft',
-        heading: `${payload.track || 0}°`,
+        vessel: (payload.t as string) ?? 'Unknown Aircraft',
+        heading: `${(payload.track as number) ?? 0}°`,
         temp: 'N/A',
         remainingTime: 'Live Tracking',
-        lat: payload.lat,
-        lon: payload.lon,
+        lat: payload.lat as number,
+        lon: payload.lon as number,
         isLiveAPI: true
       };
     } catch (err) {
@@ -144,15 +145,16 @@ export const FlightTrackerPage: React.FC = () => {
       const data = await fetchLiveFlightData(flightNo);
       setActiveFlight(data);
       setLastUpdated(new Date());
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Tracking failed.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Tracking failed.';
+      setErrorMsg(message);
       if (!isSilentRefresh) setActiveFlight(null);
     } finally {
       setIsConnecting(false);
     }
   };
 
-  const handleTrackSearch = (e: React.FormEvent) => {
+  const handleTrackSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const upperQuery = searchQuery.trim().toUpperCase();
     if (!upperQuery) return;

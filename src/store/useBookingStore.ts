@@ -40,9 +40,15 @@ export interface TicketDetails {
   origin: string;
   destination: string;
   departureTime: string;
-  status: 'ON_TIME' | 'BOARDING' | 'DELAYED' | 'DEPARTED';
+  arrivalTime: string;
+  status: string;
   seat: string;
   passengerName: string;
+  passengerFirstName: string;
+  passengerLastName: string;
+  cabin: string;
+  gate: string;
+  terminal: string;
 }
 
 export interface SearchParams {
@@ -359,9 +365,15 @@ export const useBookingStore = create<BookingState>()(
               origin: 'LOS',
               destination: 'DXB',
               departureTime: '2026-06-15T14:30:00Z',
+              arrivalTime: '2026-06-15T22:30:00Z',
               status: 'ON_TIME',
               seat: '12A',
               passengerName: 'Laurence TechLead',
+              passengerFirstName: 'Laurence',
+              passengerLastName: 'TechLead',
+              cabin: 'First Class',
+              gate: 'A1',
+              terminal: 'Terminal 3',
             },
             trackError: null,
           });

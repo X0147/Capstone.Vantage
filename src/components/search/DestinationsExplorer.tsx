@@ -417,7 +417,7 @@ export const DestinationsExplorer: React.FC<DestinationsExplorerProps> = ({ dest
       </AnimatePresence>
 
       {/* Overlay to close sort dropdown */}
-      {showSort && <div className="fixed inset-0 z-40" onClick={() => setShowSort(false)} />}
+      {showSort && <button className="fixed inset-0 z-40 w-full h-full cursor-default border-none outline-none bg-transparent" onClick={() => setShowSort(false)} aria-label="Close sort menu" />}
     </div>
   );
 };

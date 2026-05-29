@@ -1,0 +1,226 @@
+
+> capstone-app@0.0.0 lint
+> eslint .
+
+
+/Users/laurence/Project X (🦍)/flight/src/App.integration.test.tsx
+  5:10  warning  'MemoryRouter' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/laurence/Project X (🦍)/flight/src/components/BrandLogo.tsx
+  13:3  warning  'showText' is assigned a value but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/laurence/Project X (🦍)/flight/src/components/GlobalLocationInput.tsx
+   41:27  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+   66:28  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+   79:33  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+  107:35  warning  Generic Object Injection Sink               security/detect-object-injection
+  108:44  warning  Generic Object Injection Sink               security/detect-object-injection
+  125:41  warning  Generic Object Injection Sink               security/detect-object-injection
+  126:28  warning  Generic Object Injection Sink               security/detect-object-injection
+
+/Users/laurence/Project X (🦍)/flight/src/components/LoyaltyBanner.tsx
+  24:9   warning  'navigate' is assigned a value but never used                                                              @typescript-eslint/no-unused-vars
+  40:42  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/DateRangePicker.tsx
+  25:7   warning  A form label must be associated with a control                                                             jsx-a11y/label-has-associated-control
+  48:48  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/DestinationsExplorer.tsx
+    4:14  warning  'Percent' is defined but never used                                                                                                                                                                @typescript-eslint/no-unused-vars
+    4:23  warning  'DollarSign' is defined but never used                                                                                                                                                             @typescript-eslint/no-unused-vars
+  420:20  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+  420:20  error    Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/PassengersSelector.tsx
+   54:5   warning  Generic Object Injection Sink                   security/detect-object-injection
+   54:11  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+   54:33  warning  Generic Object Injection Sink                   security/detect-object-injection
+   54:39  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+   59:5   warning  Generic Object Injection Sink                   security/detect-object-injection
+   59:11  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+   59:33  warning  Generic Object Injection Sink                   security/detect-object-injection
+   59:39  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+   67:7   warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  130:17  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  136:61  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/PromoCarousel.tsx
+  25:10  warning  'activeIndex' is assigned a value but never used                                                                      @typescript-eslint/no-unused-vars
+  64:6   warning  React Hook useEffect has a missing dependency: 'checkScrollLimits'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  78:9   warning  'scrollToItem' is assigned a value but never used                                                                     @typescript-eslint/no-unused-vars
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/QuickFlightTracker.tsx
+  3:19  warning  'Search' is defined but never used                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  9:34  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+
+/Users/laurence/Project X (🦍)/flight/src/components/search/SearchHero.tsx
+    3:26  warning  'TripType' is defined but never used                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   55:34  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  129:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/features/search/FilterSidebar.tsx
+  18:19  warning  Generic Object Injection Sink                                                                              security/detect-object-injection
+  18:34  warning  Generic Object Injection Sink                                                                              security/detect-object-injection
+  18:46  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/features/seat/SeatSelector.tsx
+  2:10  warning  'motion' is defined but never used       @typescript-eslint/no-unused-vars
+  3:20  warning  'ShieldCheck' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/laurence/Project X (🦍)/flight/src/pages/CheckoutPage.tsx
+   35:44  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+   54:38  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  154:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  174:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  192:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  211:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/pages/ConfirmationPage.tsx
+  30:30  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  84:45  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/pages/DashboardPage.tsx
+    7:3   warning  'User' is defined but never used                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    9:3   warning  'MapPin' is defined but never used                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   12:3   warning  'Clock' is defined but never used                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   13:3   warning  'Calendar' is defined but never used                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   16:3   warning  'TrendingUp' is defined but never used                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   19:3   warning  'Settings2' is defined but never used                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   20:3   warning  'Lock' is defined but never used                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+   40:39  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  245:86  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  393:82  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  420:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  434:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  448:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  462:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  476:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  490:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  504:21  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/pages/FlightTrackerPage.tsx
+    4:27  warning  'ShieldAlert' is defined but never used                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+    5:10  warning  'analyzeRoute' is defined but never used                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   39:27  error    This assertion is unnecessary since it does not change the type of the expression                                                                                                                                        @typescript-eslint/no-unnecessary-type-assertion
+   39:45  warning  Unexpected any. Specify a different type                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   39:64  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+   49:22  error    Unsafe argument of type `any` assigned to a parameter of type `SetStateAction<string>`                                                                                                                                   @typescript-eslint/no-unsafe-argument
+   49:22  error    Unsafe call of an `any` typed value                                                                                                                                                                                      @typescript-eslint/no-unsafe-call
+   50:23  error    Unsafe argument of type `any` assigned to a parameter of type `string`                                                                                                                                                   @typescript-eslint/no-unsafe-argument
+   50:23  error    Unsafe call of an `any` typed value                                                                                                                                                                                      @typescript-eslint/no-unsafe-call
+   55:6   warning  React Hook useEffect has a missing dependency: 'triggerTracking'. Either include it or remove the dependency array                                                                                                       react-hooks/exhaustive-deps
+   59:9   error    Prefer using an optional chain expression instead, as it's more concise and easier to read                                                                                                                               @typescript-eslint/prefer-optional-chain
+   64:6   warning  React Hook useEffect has missing dependencies: 'activeFlight' and 'triggerTracking'. Either include them or remove the dependency array                                                                                  react-hooks/exhaustive-deps
+   68:21  warning  Generic Object Injection Sink                                                                                                                                                                                            security/detect-object-injection
+   68:48  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  102:34  error    Unsafe argument of type `any` assigned to a parameter of type `string`                                                                                                                                                   @typescript-eslint/no-unsafe-argument
+  104:11  error    Prefer using an optional chain expression instead, as it's more concise and easier to read                                                                                                                               @typescript-eslint/prefer-optional-chain
+  110:18  warning  Generic Object Injection Sink                                                                                                                                                                                            security/detect-object-injection
+  110:45  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  114:39  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  115:30  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  119:27  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  120:35  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  127:14  warning  'err' is defined but never used                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  147:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  148:19  error    Unsafe argument of type `any` assigned to a parameter of type `SetStateAction<string>`                                                                                                                                   @typescript-eslint/no-unsafe-argument
+  148:31  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  155:39  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+
+/Users/laurence/Project X (🦍)/flight/src/pages/LoginPage.tsx
+  13:48  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  35:42  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/pages/LoyaltyPage.tsx
+  3:23  warning  'ArrowRight' is defined but never used  @typescript-eslint/no-unused-vars
+  3:35  warning  'Zap' is defined but never used         @typescript-eslint/no-unused-vars
+
+/Users/laurence/Project X (🦍)/flight/src/pages/ManageBookingPage.tsx
+    3:26  warning  'Calendar' is defined but never used                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   16:34  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+   48:13  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+   62:13  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  156:85  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/pages/PassengerPage.tsx
+  16:34  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  30:15  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  42:15  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  55:13  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  67:13  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/pages/PaymentPage.tsx
+   20:40  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+   29:14  warning  'err' is defined but never used                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   44:39  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  111:70  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/pages/SearchPage.tsx
+  45:44  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/pages/TicketTrackingPage.tsx
+   73:40  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  109:42  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  165:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  184:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  201:30  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  204:39  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  310:87  error    Unsafe argument of type error typed assigned to a parameter of type `string`                                                                                                                                             @typescript-eslint/no-unsafe-argument
+
+/Users/laurence/Project X (🦍)/flight/src/pages/TrackTicketPage.tsx
+  14:40  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+  51:15  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/pages/VipRegistrationPage.tsx
+    2:18  warning  'AnimatePresence' is defined but never used                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   28:34  warning  `FormEvent` is deprecated. FormEvent doesn't actually exist.
+You probably meant to use {@link ChangeEvent}, {@link InputEvent}, {@link SubmitEvent}, or just {@link SyntheticEvent} instead
+depending on the event type  @typescript-eslint/no-deprecated
+   48:42  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator                                                                                                                @typescript-eslint/prefer-nullish-coalescing
+  138:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  150:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  164:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  176:19  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+  189:17  warning  A form label must be associated with a control                                                                                                                                                                           jsx-a11y/label-has-associated-control
+
+/Users/laurence/Project X (🦍)/flight/src/store/useBookingStore.ts
+  178:36  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  194:52  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  213:53  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  219:46  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  220:44  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  346:13  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+/Users/laurence/Project X (🦍)/flight/src/store/useSearchStore.ts
+  128:20  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+
+/Users/laurence/Project X (🦍)/flight/src/utils/aviation.ts
+  32:18  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+  33:16  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+
+✖ 138 problems (11 errors, 127 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+
