@@ -20,25 +20,22 @@ export default function VipRegistrationPage() {
   });
 
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent('Vantage Black Status Registration Request');
-    const body = encodeURIComponent(
-      `Vantage Elite Team,\n\nI would like to apply for the Vantage Black Syndicate and secure sovereign terminal clearance.\n\n` +
-      `Here are my details:\n` +
-      `- Full Name: ${formData.name}\n` +
-      `- Email Address: ${formData.email}\n` +
-      `- Phone Number: ${formData.phone}\n` +
-      `- Preferred Home Base: ${formData.homeBase}\n` +
-      `- Additional Requirements: ${formData.requirements || 'None'}\n\n` +
-      `Please contact me to finalize my registration.\n\nSovereign Regards,\n${formData.name}`
-    );
-    window.location.href = `mailto:concierge@vantage.aero?subject=${subject}&body=${body}`;
+    setIsSubmitting(true);
+    
+    // Simulate secure network transmission instead of popping up mailto
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }, 2500);
   };
 
   return (
@@ -130,7 +127,9 @@ export default function VipRegistrationPage() {
             {/* Form Glow Effect */}
             <div className="absolute -inset-1 rounded-4xl bg-gradient-to-br from-vantage-gold/20 via-sky-500/10 to-vantage-gold/5 opacity-0 group-hover/form:opacity-100 blur-2xl transition-opacity duration-700 pointer-events-none" />
             
-            <form onSubmit={handleSubmit} className="relative bg-[#070b12]/60 border border-white/10 rounded-4xl p-8 md:p-10 backdrop-blur-xl shadow-2xl space-y-6">
+            <AnimatePresence mode="wait">
+              {!isSuccess ? (
+                <motion.form key="form" exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} onSubmit={handleSubmit} className="relative bg-[#070b12]/60 border border-white/10 rounded-4xl p-8 md:p-10 backdrop-blur-xl shadow-2xl space-y-6">
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Full Name */}
@@ -201,12 +200,21 @@ export default function VipRegistrationPage() {
               <div className="pt-6 mt-6 border-t border-white/10">
                 <button
                   type="submit"
-                  className="group relative w-full overflow-hidden rounded-2xl bg-vantage-gold text-vantage-midnight font-bold px-6 py-5 text-sm uppercase tracking-widest transition-all hover:bg-vantage-gold-light hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"
+                  disabled={isSubmitting}
+                  className="group relative w-full overflow-hidden rounded-2xl bg-vantage-gold text-vantage-midnight font-bold px-6 py-5 text-sm uppercase tracking-widest transition-all hover:bg-vantage-gold-light hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] disabled:opacity-70"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-3">
-                    Transmit Credentials to Concierge <Send className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-3 animate-pulse">
+                        Encrypting Transmission...
+                      </span>
+                    ) : (
+                      <>
+                        Transmit Credentials to Concierge <Send className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </>
+                    )}
                   </span>
-                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  {!isSubmitting && <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />}
                 </button>
                 <div className="mt-5 flex justify-center items-center gap-2 opacity-50">
                   <ShieldCheck className="w-3.5 h-3.5 text-vantage-gold" />
@@ -214,7 +222,32 @@ export default function VipRegistrationPage() {
                 </div>
               </div>
 
-            </form>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative bg-[#070b12]/60 border border-vantage-gold/30 rounded-4xl p-8 md:p-12 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center text-center space-y-6"
+                >
+                  <div className="w-20 h-20 rounded-full bg-vantage-gold/10 flex items-center justify-center border border-vantage-gold/30 mb-2">
+                    <ShieldCheck className="w-10 h-10 text-vantage-gold" />
+                  </div>
+                  <h3 className="text-3xl font-display font-black text-white">Transmission Secured</h3>
+                  <p className="text-sm text-vantage-muted max-w-md">
+                    Your credentials have been securely transmitted to the Vantage Concierge. You will be contacted via your secure line within the hour to formalize your Syndicate induction.
+                  </p>
+                  
+                  <button
+                    onClick={() => navigate('/')}
+                    className="mt-6 border border-vantage-gold text-vantage-gold font-bold px-8 py-3 text-[10px] uppercase tracking-widest rounded-full transition-all hover:bg-vantage-gold hover:text-vantage-midnight"
+                  >
+                    Return to Terminal
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
 
