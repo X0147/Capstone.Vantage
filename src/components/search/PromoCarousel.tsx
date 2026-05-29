@@ -22,6 +22,7 @@ export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSe
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const checkScrollLimits = () => {
     const el = containerRef.current;
@@ -31,12 +32,17 @@ export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSe
     setShowLeftArrow(el.scrollLeft > 10);
     setShowRightArrow(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
     
-    // Calculate current visible item index for the indicators
+    // Calculate current visible item index
     const cardWidth = el.scrollWidth / destinations.length;
     const index = Math.round(el.scrollLeft / cardWidth);
     if (index >= 0 && index < destinations.length) {
       setActiveIndex(index);
     }
+
+    // Calculate scroll progress percentage (0 to 100)
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const progress = maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0;
+    setScrollProgress(progress);
   };
 
   useEffect(() => {
@@ -125,20 +131,20 @@ export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSe
         ))}
       </div>
       
-      {/* Navigation indicators at the bottom */}
-      <div className="flex justify-center gap-xs mt-xs">
-        {destinations.map((_, idx) => (
-          <AccessibleButton
-            key={idx}
-            ariaLabel={`Go to slide ${idx + 1}`}
-            onClick={() => scrollToItem(idx)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              activeIndex === idx 
-                ? 'w-6 bg-vantage-accent' 
-                : 'w-2 bg-white/20 hover:bg-white/40'
-            }`}
+      {/* Premium Horizontal Scroll Progress Tracker */}
+      <div className="flex items-center justify-between mt-lg max-w-[240px] mx-auto text-[9px] font-mono tracking-widest text-white/40 uppercase">
+        <span className="text-vantage-accent font-bold">01</span>
+        <div className="flex-1 mx-md h-[1.5px] bg-white/5 rounded-full relative overflow-hidden">
+          <div 
+            className="absolute top-0 bottom-0 bg-vantage-gold rounded-full transition-all duration-150 ease-out"
+            style={{ 
+              left: `0%`,
+              width: '25%',
+              transform: `translateX(${scrollProgress * 3}%)`
+            }}
           />
-        ))}
+        </div>
+        <span>{destinations.length < 10 ? `0${destinations.length}` : destinations.length}</span>
       </div>
     </div>
   );
