@@ -6,6 +6,7 @@ import { TabSwitcher } from './TabSwitcher';
 import { DateRangePicker } from './DateRangePicker';
 import { PassengersSelector } from './PassengersSelector';
 import { AlertCircle, PlaneTakeoff, Plus, Trash2, ArrowRight, ArrowLeftRight } from 'lucide-react';
+import { RouteIntelligencePanel } from './RouteIntelligencePanel';
 
 interface MultiCitySegment {
   origin: string;
@@ -203,6 +204,11 @@ export const SearchHero: React.FC = () => {
             <PassengersSelector />
           </div>
         </div>
+
+        {/* Route Intelligence Panel for One-way/Round-trip */}
+        {searchParams.tripType !== 'multicity' && origin && destination && (
+          <RouteIntelligencePanel originIata={origin} destinationIata={destination} />
+        )}
 
         {/* Error */}
         {error && (

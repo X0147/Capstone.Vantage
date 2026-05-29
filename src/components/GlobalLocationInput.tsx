@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { GLOBAL_AIRPORTS } from '../data/globalAviation';
+import { AIRPORTS } from '../data/airports';
 import { Plane, MapPin } from 'lucide-react';
 
 interface LocationInputProps {
@@ -29,15 +29,16 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
   const suggestions = useMemo(() => {
     if (!query.trim()) return [];
     const cleanQuery = query.toLowerCase().trim();
-    return GLOBAL_AIRPORTS.filter(
+    const airportList = Object.values(AIRPORTS);
+    return airportList.filter(
       (airport) =>
-        airport.code.toLowerCase().includes(cleanQuery) ||
+        airport.iata.toLowerCase().includes(cleanQuery) ||
         airport.city.toLowerCase().includes(cleanQuery) ||
         airport.country.toLowerCase().includes(cleanQuery)
     ).slice(0, 5);
   }, [query]);
 
-  const selectedAirport = GLOBAL_AIRPORTS.find((a) => a.code === value);
+  const selectedAirport = AIRPORTS[value];
 
   useEffect(() => {
     if (!isOpen) setActiveIndex(-1);
@@ -63,8 +64,8 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
         if (activeIndex >= 0 && activeIndex < suggestions.length) {
           e.preventDefault();
           const selected = suggestions[activeIndex];
-          onChange(selected.code);
-          setQuery(`${selected.city} (${selected.code})`);
+          onChange(selected.iata);
+          setQuery(`${selected.city} (${selected.iata})`);
           setIsOpen(false);
           setActiveIndex(-1);
         }
@@ -76,7 +77,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
       case 'Tab':
         if (activeIndex >= 0 && activeIndex < suggestions.length) {
           const targetAirport = suggestions[activeIndex];
-          onChange(targetAirport.code);
+          onChange(targetAirport.iata);
         }
         setIsOpen(false);
         setActiveIndex(-1);
@@ -104,14 +105,14 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
             aria-autocomplete="list"
             aria-activedescendant={
               activeIndex >= 0 && suggestions[activeIndex]
-                ? `global-loc-suggestion-${suggestions[activeIndex].code}`
+                ? `global-loc-suggestion-${suggestions[activeIndex].iata}`
                 : undefined
             }
             value={
               isOpen
                 ? query
                 : selectedAirport
-                  ? `${selectedAirport.city} (${selectedAirport.code})`
+                  ? `${selectedAirport.city} (${selectedAirport.iata})`
                   : query
             }
             placeholder={placeholder}
@@ -122,7 +123,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
             onBlur={() =>
               setTimeout(() => {
                 if (activeIndex >= 0 && suggestions[activeIndex]) {
-                  onChange(suggestions[activeIndex].code);
+                  onChange(suggestions[activeIndex].iata);
                 }
                 setIsOpen(false);
                 setActiveIndex(-1);
@@ -145,14 +146,14 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
         >
           {suggestions.map((airport, i) => (
             <li
-              id={`global-loc-suggestion-${airport.code}`}
-              key={airport.code}
+              id={`global-loc-suggestion-${airport.iata}`}
+              key={airport.iata}
               role="option"
               aria-selected={activeIndex === i}
               onMouseDown={(e) => {
                 e.preventDefault();
-                onChange(airport.code);
-                setQuery(`${airport.city} (${airport.code})`);
+                onChange(airport.iata);
+                setQuery(`${airport.city} (${airport.iata})`);
                 setIsOpen(false);
                 setActiveIndex(-1);
               }}
@@ -171,7 +172,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
                 </div>
               </div>
               <span className="font-mono text-[10px] bg-white/5 border border-white/5 px-2xs py-3xs rounded text-vantage-accent font-bold">
-                {airport.code}
+                {airport.iata}
               </span>
             </li>
           ))}

@@ -29,6 +29,7 @@ const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 const TicketTrackingPage = lazy(() => import('./pages/TicketTrackingPage'));
 const TrackTicketPage = lazy(() => import('./pages/TrackTicketPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
+const TeamPage = lazy(() => import('./pages/TeamPage'));
 
 function App() {
   return (
@@ -68,6 +69,11 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<SearchPage />} />
+        <Route path="/team" element={
+          <Suspense fallback={<ResultsSkeleton />}>
+            <TeamPage />
+          </Suspense>
+        } />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/search-results" element={<ResultsPage />} />
         <Route path="/results" element={<ResultsPage />} />

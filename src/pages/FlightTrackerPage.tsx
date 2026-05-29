@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { Search, Compass, ShieldAlert, Navigation, Wind, Gauge, Clock } from 'lucide-react';
+import { Search, Compass, ShieldAlert, Navigation, Wind, Gauge, Clock, Plane, Map as MapIcon, RefreshCw, AlertTriangle } from 'lucide-react';
+import { analyzeRoute } from '../utils/aviation';
+import { POPULAR_FLIGHTS } from '../data/popularFlights';
 
 interface TrackedFlight {
   flightNumber: string;
@@ -18,198 +20,136 @@ interface TrackedFlight {
   heading: string;
   temp: string;
   remainingTime: string;
+  lat: number;
+  lon: number;
+  isLiveAPI: boolean;
 }
 
-const MOCK_TRACK_DATA: Record<string, TrackedFlight> = {
-  EK201: {
-    flightNumber: 'EK201',
-    airline: 'Emirates',
-    origin: 'DXB (Dubai)',
-    destination: 'LHR (London)',
-    status: 'In-Flight',
-    altitude: '38,000 ft',
-    speed: '540 mph',
-    progress: 62,
-    departureTime: '08:20 AM',
-    arrivalTime: '12:45 PM',
-    vessel: 'Boeing 777-300ER',
-    heading: '284° Northwest',
-    temp: '-54°C',
-    remainingTime: '2h 14m',
-  },
-  P47120: {
-    flightNumber: 'P47120',
-    airline: 'Air Peace',
-    origin: 'LOS (Lagos)',
-    destination: 'JFK (New York)',
-    status: 'In-Flight',
-    altitude: '36,000 ft',
-    speed: '512 mph',
-    progress: 33,
-    departureTime: '11:15 PM',
-    arrivalTime: '06:30 AM',
-    vessel: 'Airbus A350-1000',
-    heading: '315° Northwest',
-    temp: '-51°C',
-    remainingTime: '6h 15m',
-  },
+const MOCK_AIRLINES: Record<string, string> = {
+  AA: 'American Airlines', UA: 'United Airlines', DL: 'Delta Air Lines', LH: 'Lufthansa',
+  BA: 'British Airways', AF: 'Air France', SQ: 'Singapore Airlines', VS: 'Virgin Atlantic',
+  EK: 'Emirates', QR: 'Qatar Airways', P4: 'Air Peace', KL: 'KLM Royal Dutch',
+  NH: 'All Nippon Airways', CX: 'Cathay Pacific', QF: 'Qantas'
 };
 
-const AIRLINES: Record<string, string> = {
-  AA: 'American Airlines',
-  UA: 'United Airlines',
-  DL: 'Delta Air Lines',
-  LH: 'Lufthansa',
-  BA: 'British Airways',
-  AF: 'Air France',
-  SQ: 'Singapore Airlines',
-  VS: 'Virgin Atlantic',
-  EK: 'Emirates',
-  QR: 'Qatar Airways',
-  P4: 'Air Peace',
-  KL: 'KLM Royal Dutch',
-  NH: 'All Nippon Airways',
-  CX: 'Cathay Pacific',
-};
-
-const AIRPORTS = [
-  'JFK (New York)',
-  'LHR (London)',
-  'DXB (Dubai)',
-  'SIN (Singapore)',
-  'HND (Tokyo)',
-  'CDG (Paris)',
-  'LAX (Los Angeles)',
-  'SYD (Sydney)',
-  'CPT (Cape Town)',
-  'AMS (Amsterdam)',
-  'FCO (Rome)',
-  'IST (Istanbul)',
-];
-
-const VESSELS = [
-  'Boeing 787-9 Dreamliner',
-  'Airbus A350-1000',
-  'Boeing 777-300ER',
-  'Airbus A380-800',
-  'Boeing 737 MAX 9',
-  'Airbus A321neo',
-];
-
-const HEADINGS = [
-  'Northwest',
-  'Northeast',
-  'Southwest',
-  'Southeast',
-  'East',
-  'West',
-  'North',
-  'South',
-];
-
-function generateDynamicFlight(flightNo: string): TrackedFlight {
-  const upper = flightNo.trim().toUpperCase();
-  const carrierCode = upper.slice(0, 2);
-  const airline = AIRLINES[carrierCode] || 'Vantage Global Staralliance';
-
-  let seed = 0;
-  for (let i = 0; i < upper.length; i++) {
-    seed += upper.charCodeAt(i);
-  }
-
-  const originIndex = seed % AIRPORTS.length;
-  const destIndex = (seed + 5) % AIRPORTS.length;
-  const origin = AIRPORTS[originIndex];
-  const destination =
-    AIRPORTS[destIndex === originIndex ? (destIndex + 1) % AIRPORTS.length : destIndex];
-
-  const statuses: ('In-Flight' | 'On-Time' | 'Delayed' | 'Landed')[] = [
-    'In-Flight',
-    'In-Flight',
-    'In-Flight',
-    'Delayed',
-    'On-Time',
-  ];
-  const status = statuses[seed % statuses.length];
-
-  const progress = 10 + (seed % 75); // 10% to 85%
-  const altitudeVal = 30000 + (seed % 12) * 1000;
-  const speedVal = 490 + (seed % 8) * 10;
-
-  const depHour = (8 + (seed % 12)) % 12 || 12;
-  const depMin = (seed % 4) * 15;
-  const isPM = seed % 2 === 0;
-  const departureTime = `${String(depHour).padStart(2, '0')}:${String(depMin).padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
-
-  const durationHours = 4 + (seed % 8);
-  const arrHour = (depHour + durationHours) % 12 || 12;
-  const arrMin = (depMin + 30) % 60;
-  const arrivalTime = `${String(arrHour).padStart(2, '0')}:${String(arrMin).padStart(2, '0')} ${!isPM ? 'PM' : 'AM'}`;
-
-  const remainingHours = Math.max(1, Math.floor((durationHours * (100 - progress)) / 100));
-  const remainingMins = Math.floor(
-    ((durationHours * (100 - progress)) / 100 - remainingHours) * 60
-  );
-
-  const vessel = VESSELS[seed % VESSELS.length];
-  const headingVal = `${seed % 360}° ${HEADINGS[seed % HEADINGS.length]}`;
-  const temp = `-${45 + (seed % 15)}°C`;
-
-  return {
-    flightNumber: upper,
-    airline,
-    origin,
-    destination,
-    status,
-    altitude: `${altitudeVal.toLocaleString()} ft`,
-    speed: `${speedVal} mph`,
-    progress,
-    departureTime,
-    arrivalTime,
-    vessel,
-    heading: headingVal,
-    temp,
-    remainingTime: `${remainingHours}h ${remainingMins}m`,
-  };
-}
-
-interface TrackerLocationState {
-  flightNumber?: string;
-}
+const HEADINGS = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'];
 
 export const FlightTrackerPage: React.FC = () => {
   const location = useLocation();
-  const incomingFlight = (location.state as TrackerLocationState | null)?.flightNumber || '';
+  const incomingFlight = (location.state as any)?.flightNumber || '';
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFlight, setActiveFlight] = useState<TrackedFlight | null>(MOCK_TRACK_DATA.EK201);
+  const [activeFlight, setActiveFlight] = useState<TrackedFlight | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
-    if (!incomingFlight) return;
-
-    const nextQuery = incomingFlight.toUpperCase();
-    setSearchQuery(nextQuery);
-    triggerTracking(nextQuery);
+    if (incomingFlight) {
+      setSearchQuery(incomingFlight.toUpperCase());
+      triggerTracking(incomingFlight.toUpperCase());
+    } else {
+      // Auto-load EK201 by default to show something
+      triggerTracking('EK201');
+    }
   }, [incomingFlight]);
 
-  const triggerTracking = (flightNo: string) => {
-    setIsConnecting(true);
-    setErrorMsg('');
+  // Auto-refresh live data every 30 seconds
+  useEffect(() => {
+    if (!activeFlight || !activeFlight.isLiveAPI) return;
+    const interval = setInterval(() => {
+      triggerTracking(activeFlight.flightNumber, true);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [activeFlight?.flightNumber, activeFlight?.isLiveAPI]);
 
-    // Simulate high-tech latency to scan satellites
-    setTimeout(() => {
-      if (MOCK_TRACK_DATA[flightNo]) {
-        setActiveFlight(MOCK_TRACK_DATA[flightNo]);
-      } else if (flightNo.length >= 3) {
-        setActiveFlight(generateDynamicFlight(flightNo));
-      } else {
-        setErrorMsg('Please enter a valid flight designation (e.g. VS103).');
-        setActiveFlight(null);
+  const generateMockFlight = (flightNo: string): TrackedFlight => {
+    const carrierCode = flightNo.slice(0, 2);
+    const airline = MOCK_AIRLINES[carrierCode] || 'Vantage Global Alliance';
+    let seed = 0;
+    for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);
+    
+    return {
+      flightNumber: flightNo,
+      airline,
+      origin: 'JFK',
+      destination: 'LHR',
+      status: 'In-Flight',
+      altitude: `${30000 + (seed % 10000)} ft`,
+      speed: `${450 + (seed % 100)} mph`,
+      progress: 10 + (seed % 80),
+      departureTime: '08:00 AM',
+      arrivalTime: '08:00 PM',
+      vessel: 'Boeing 787-9',
+      heading: `${seed % 360}° ${HEADINGS[seed % 8]}`,
+      temp: `-${45 + (seed % 10)}°C`,
+      remainingTime: `${1 + (seed % 6)}h ${seed % 60}m`,
+      lat: 0,
+      lon: 0,
+      isLiveAPI: false
+    };
+  };
+
+  const fetchLiveFlightData = async (flightNo: string) => {
+    try {
+      // Using AllOrigins to bypass CORS for public ADS-B Exchange
+      // Note: This is a public best-effort endpoint, might fail
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://hexdb.io/api/v1/flight/${flightNo}`)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('API Error');
+      
+      const data = await response.json();
+      const payload = JSON.parse(data.contents);
+      
+      if (!payload || !payload.lat) throw new Error('No live data');
+
+      const carrierCode = flightNo.slice(0, 2);
+      
+      return {
+        flightNumber: flightNo,
+        airline: MOCK_AIRLINES[carrierCode] || 'Vantage Live',
+        origin: 'Unknown',
+        destination: 'Unknown',
+        status: 'In-Flight' as const,
+        altitude: `${payload.alt_baro || 35000} ft`,
+        speed: `${payload.gs || 500} mph`,
+        progress: 50, // Hard to calculate without known origin/dest lat/lon exactly
+        departureTime: 'Live',
+        arrivalTime: 'Live',
+        vessel: payload.t || 'Unknown Aircraft',
+        heading: `${payload.track || 0}°`,
+        temp: 'N/A',
+        remainingTime: 'Live Tracking',
+        lat: payload.lat,
+        lon: payload.lon,
+        isLiveAPI: true
+      };
+    } catch (err) {
+      // Fallback to mock generated data
+      return generateMockFlight(flightNo);
+    }
+  };
+
+  const triggerTracking = async (flightNo: string, isSilentRefresh = false) => {
+    if (!isSilentRefresh) {
+      setIsConnecting(true);
+      setErrorMsg('');
+    }
+
+    try {
+      if (flightNo.length < 3) {
+        throw new Error('Please enter a valid flight designation (e.g. EK201).');
       }
+      
+      const data = await fetchLiveFlightData(flightNo);
+      setActiveFlight(data);
+      setLastUpdated(new Date());
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Tracking failed.');
+      if (!isSilentRefresh) setActiveFlight(null);
+    } finally {
       setIsConnecting(false);
-    }, 800);
+    }
   };
 
   const handleTrackSearch = (e: React.FormEvent) => {
@@ -220,177 +160,231 @@ export const FlightTrackerPage: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-6xl space-y-md px-sm py-lg">
-      <div className="space-y-3xs text-center">
+    <div className="mx-auto max-w-6xl space-y-lg px-sm py-lg">
+      <div className="text-center space-y-3xs">
         <div className="inline-flex items-center gap-2xs rounded-full border border-vantage-accent/20 bg-vantage-accent/10 px-xs py-3xs text-[10px] font-bold uppercase tracking-widest text-vantage-accent">
-          <Compass className="h-3 w-3 animate-spin-slow" /> Real-time Satellite Telemetry
+          <Compass className="h-3 w-3 animate-spin-slow" /> Global ADS-B Telemetry Network
         </div>
-        <h1 className="text-2xl font-black tracking-tight text-white">Global Flight Tracker</h1>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white font-display italic">
+          Live Airspace Surveillance
+        </h1>
         <p className="mx-auto max-w-md text-xs text-vantage-muted">
-          Intercept and monitor live airspace positions, vector velocities, and arrival horizons
-          across any international carrier.
+          Intercept active transponder signals and monitor vector velocities across any international carrier in real-time.
         </p>
       </div>
 
-      <form onSubmit={handleTrackSearch} className="group relative mx-auto max-w-md">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-          }}
-          placeholder="Enter Flight Designation (e.g., EK201, AA100, UA902)"
-          className="w-full rounded-2xl border border-white/10 bg-vantage-surface/40 py-xs pl-md pr-xl text-sm text-white shadow-inner backdrop-blur-md transition-all placeholder-vantage-muted focus:border-vantage-accent focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="absolute right-2xs top-1/2 -translate-y-1/2 p-2xs text-vantage-muted transition-colors hover:text-vantage-accent"
-        >
-          <Search className="h-4 w-4" />
-        </button>
-      </form>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-md">
+        
+        {/* Left Column: Search & Popular */}
+        <div className="lg:col-span-1 space-y-md">
+          <form onSubmit={handleTrackSearch} className="relative w-full">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Designation (e.g., EK201)"
+              className="w-full rounded-2xl border border-white/10 bg-black/40 py-sm pl-md pr-xl text-sm text-white shadow-inner backdrop-blur-md transition-all placeholder-vantage-muted focus:border-vantage-accent focus:outline-none focus:bg-black/60 font-mono uppercase"
+            />
+            <button
+              type="submit"
+              className="absolute right-2xs top-1/2 -translate-y-1/2 p-sm text-vantage-muted transition-colors hover:text-vantage-accent bg-white/5 rounded-xl hover:bg-vantage-accent/20"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          </form>
 
-      {errorMsg && (
-        <p className="text-center text-xs font-medium text-red-400 animate-pulse">{errorMsg}</p>
-      )}
+          {errorMsg && (
+            <div className="p-sm rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-xs">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <p>{errorMsg}</p>
+            </div>
+          )}
 
-      {isConnecting && (
-        <div className="flex flex-col items-center justify-center py-xl space-y-sm">
-          <div className="w-12 h-12 rounded-full border-2 border-vantage-accent/20 border-t-vantage-accent animate-spin" />
-          <p className="text-xs font-mono tracking-widest text-vantage-muted animate-pulse">
-            PINGING ACTIVE GEOGRAPHIC ADS-B SATELLITES...
-          </p>
+          <div className="rounded-3xl border border-white/5 p-sm bg-black/20 premium-glass hidden lg:block">
+            <h3 className="text-[10px] font-mono uppercase tracking-widest text-vantage-muted mb-sm px-2xs">
+              Active Signatures
+            </h3>
+            <div className="space-y-xs">
+              {POPULAR_FLIGHTS.map((flight) => (
+                <button
+                  key={flight.flight}
+                  onClick={() => {
+                    setSearchQuery(flight.flight);
+                    triggerTracking(flight.flight);
+                  }}
+                  className={`w-full text-left p-xs rounded-xl border flex items-center justify-between transition-all ${
+                    activeFlight?.flightNumber === flight.flight
+                      ? 'bg-vantage-accent/10 border-vantage-accent/40 shadow-[0_0_15px_rgba(56,189,248,0.15)]'
+                      : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10'
+                  }`}
+                >
+                  <div>
+                    <p className="text-xs font-bold text-white font-mono">{flight.flight}</p>
+                    <p className="text-[10px] text-vantage-muted">{flight.origin} → {flight.dest}</p>
+                  </div>
+                  <Plane className={`w-4 h-4 ${activeFlight?.flightNumber === flight.flight ? 'text-vantage-accent' : 'text-white/20'}`} />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      )}
 
-      <AnimatePresence mode="wait">
-        {!isConnecting && activeFlight && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="grid grid-cols-1 gap-md lg:grid-cols-3"
-          >
-            <div className="relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-3xl border border-white/5 p-md premium-glass lg:col-span-2">
-              <div className="z-10 flex items-center justify-between">
-                <div>
-                  <span className="mb-3xs block text-[10px] uppercase text-vantage-muted font-mono">
-                    Active Segment
-                  </span>
-                  <h2 className="text-md font-black tracking-wide text-white">
-                    {activeFlight.airline} {activeFlight.flightNumber}
-                  </h2>
-                </div>
-                <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-xs py-2xs font-mono text-[10px] font-bold uppercase tracking-wide text-emerald-400">
-                  ● Live Data Connection
-                </span>
+        {/* Right Column: Tracker Interface */}
+        <div className="lg:col-span-3">
+          {isConnecting && !activeFlight ? (
+            <div className="w-full h-[500px] rounded-3xl border border-white/5 bg-black/20 premium-glass flex flex-col items-center justify-center space-y-md">
+              <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border-2 border-white/10" />
+                <div className="absolute inset-0 rounded-full border-2 border-t-vantage-accent animate-spin" />
+                <Compass className="absolute inset-0 m-auto w-6 h-6 text-vantage-accent animate-pulse" />
               </div>
-
-              <div className="relative my-lg py-md">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="relative h-[2px] w-full bg-white/5">
-                    <motion.div
-                      className="absolute left-0 top-0 h-full bg-gradient-to-r from-vantage-accent/20 to-vantage-accent shadow-[0_0_12px_#38bdf8]"
-                      style={{ width: `${activeFlight.progress}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="rounded-xl border border-white/10 bg-vantage-dark p-sm text-center min-w-[90px]">
-                    <div className="text-md font-black text-white">
-                      {activeFlight.origin.split(' ')[0]}
-                    </div>
-                    <div className="text-[10px] font-mono text-vantage-muted">
-                      {activeFlight.departureTime}
-                    </div>
-                  </div>
-
-                  <div
-                    className="absolute top-1/2 flex -translate-y-1/2 flex-col items-center"
-                    style={{ left: `calc(${activeFlight.progress}% - 16px)` }}
-                  >
-                    <div className="relative">
-                      <Navigation className="h-6 w-6 rotate-90 text-vantage-accent drop-shadow-[0_0_8px_#38bdf8]" />
-                      <span className="pointer-events-none absolute -left-1 -top-1 h-8 w-8 animate-ping rounded-full border border-vantage-accent/40" />
-                    </div>
-                    <span className="mt-3xs rounded border border-vantage-accent/20 bg-vantage-dark/90 px-3xs font-mono text-[9px] text-vantage-accent">
-                      {activeFlight.progress}%
-                    </span>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-vantage-dark p-sm text-center min-w-[90px]">
-                    <div className="text-md font-black text-white">
-                      {activeFlight.destination.split(' ')[0]}
-                    </div>
-                    <div className="text-[10px] font-mono text-vantage-muted">
-                      {activeFlight.arrivalTime}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="z-10 grid grid-cols-3 gap-xs border-t border-white/5 pt-sm text-center font-mono">
-                <div className="rounded-xl border border-white/5 bg-black/20 p-xs">
-                  <div className="mb-3xs flex items-center justify-center gap-3xs text-[10px] uppercase text-vantage-muted">
-                    <Wind className="h-3 w-3 text-vantage-accent" /> Altitude
-                  </div>
-                  <span className="text-xs font-bold text-white">{activeFlight.altitude}</span>
-                </div>
-                <div className="rounded-xl border border-white/5 bg-black/20 p-xs">
-                  <div className="mb-3xs flex items-center justify-center gap-3xs text-[10px] uppercase text-vantage-muted">
-                    <Gauge className="h-3 w-3 text-vantage-accent" /> Ground Speed
-                  </div>
-                  <span className="text-xs font-bold text-white">{activeFlight.speed}</span>
-                </div>
-                <div className="rounded-xl border border-white/5 bg-black/20 p-xs">
-                  <div className="mb-3xs flex items-center justify-center gap-3xs text-[10px] uppercase text-vantage-muted">
-                    <Clock className="h-3 w-3 text-vantage-accent" /> Time Remaining
-                  </div>
-                  <span className="text-xs font-bold text-white">{activeFlight.remainingTime}</span>
-                </div>
-              </div>
-
-              <div className="pointer-events-none absolute -bottom-16 -right-16 flex h-64 w-64 items-center justify-center rounded-full border border-white/[0.02]">
-                <div className="flex h-48 w-48 items-center justify-center rounded-full border border-white/[0.03]">
-                  <div className="h-32 w-32 rounded-full border border-white/[0.05]" />
-                </div>
-              </div>
+              <p className="text-xs font-mono tracking-widest text-vantage-muted animate-pulse">
+                ESTABLISHING SATELLITE UPLINK...
+              </p>
             </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              {activeFlight && (
+                <motion.div
+                  key="tracker"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-md"
+                >
+                  <div className="flex flex-col xl:flex-row gap-md">
+                    
+                    {/* Main Radar Screen */}
+                    <div className="flex-1 rounded-3xl border border-white/5 p-md bg-black/30 premium-glass relative overflow-hidden min-h-[400px] flex flex-col">
+                      <div className="flex items-center justify-between z-10 mb-md relative">
+                        <div>
+                          <h2 className="text-2xl font-black text-white flex items-center gap-sm">
+                            {activeFlight.airline} {activeFlight.flightNumber}
+                            {activeFlight.isLiveAPI ? (
+                              <span className="flex items-center gap-1 text-[10px] font-mono bg-emerald-500/20 text-emerald-400 px-xs py-0.5 rounded border border-emerald-500/30 tracking-widest uppercase">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                ADS-B Live
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-1 text-[10px] font-mono bg-amber-500/20 text-amber-400 px-xs py-0.5 rounded border border-amber-500/30 tracking-widest uppercase">
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                                Simulated Vector
+                              </span>
+                            )}
+                          </h2>
+                          <p className="text-xs text-vantage-muted font-mono mt-1 flex items-center gap-2">
+                            <RefreshCw className="w-3 h-3" /> Last updated: {lastUpdated?.toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </div>
 
-            <div className="flex flex-col justify-between space-y-sm rounded-3xl border border-white/5 p-sm premium-glass">
-              <div className="space-y-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-vantage-accent">
-                  Atmospheric Overview
-                </h3>
+                      {/* Map Area */}
+                      <div className="flex-1 relative rounded-2xl bg-[#0a0f16] border border-white/5 overflow-hidden flex items-center justify-center">
+                        {/* Map Grid Background */}
+                        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#38bdf8 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+                        
+                        {/* Fake Map SVG overlay for aesthetics */}
+                        <MapIcon className="absolute inset-0 m-auto w-full h-[150%] text-white/[0.02] -rotate-12" />
 
-                <div className="space-y-xs">
-                  <div className="flex items-center justify-between rounded-xl border border-white/5 bg-black/20 p-xs text-xs">
-                    <span className="text-vantage-muted">Airframe Vessel</span>
-                    <span className="font-mono font-bold text-white">{activeFlight.vessel}</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-xl border border-white/5 bg-black/20 p-xs text-xs">
-                    <span className="text-vantage-muted">Heading Trajectory</span>
-                    <span className="font-mono font-bold text-white">{activeFlight.heading}</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-xl border border-white/5 bg-black/20 p-xs text-xs">
-                    <span className="text-vantage-muted">Outside Temp</span>
-                    <span className="font-mono font-bold text-white">{activeFlight.temp}</span>
-                  </div>
-                </div>
-              </div>
+                        {/* Animated Radar Sweep */}
+                        <div className="absolute left-1/2 top-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-sky-500/10 shadow-[inset_0_0_100px_rgba(56,189,248,0.05)]">
+                          <div className="absolute top-1/2 left-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent to-sky-400/50 origin-left animate-[spin_4s_linear_infinite]" />
+                        </div>
 
-              <div className="flex items-start gap-2xs rounded-2xl border border-vantage-accent/20 bg-vantage-accent/5 p-xs text-[11px] text-vantage-muted">
-                <ShieldAlert className="h-4 w-4 shrink-0 text-vantage-accent" />
-                <p>
-                  Tracking paths are derived from transponder signals via automated ADS-B receiver
-                  constellations. Subject to atmospheric ion conditions.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                        {/* Flight Path Arc */}
+                        <div className="absolute inset-x-12 top-1/2 h-32 border-t-2 border-dashed border-sky-500/30 rounded-t-[100%] pointer-events-none" />
+
+                        {/* The Plane */}
+                        <motion.div 
+                          className="absolute z-20 flex flex-col items-center"
+                          initial={{ left: '10%' }}
+                          animate={{ left: `${activeFlight.progress}%` }}
+                          transition={{ duration: 2, ease: "easeOut" }}
+                          style={{ top: 'calc(50% - 16px)' }}
+                        >
+                          <div className="relative">
+                            <Navigation className="w-8 h-8 text-sky-400 rotate-90 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]" />
+                            <div className="absolute inset-0 bg-sky-400/40 blur-md rounded-full" />
+                            {activeFlight.isLiveAPI && (
+                              <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-ping" />
+                            )}
+                          </div>
+                          <div className="mt-2 bg-black/80 backdrop-blur-sm border border-sky-500/30 px-xs py-1 rounded text-[10px] font-mono text-sky-300 shadow-lg">
+                            {activeFlight.altitude}
+                          </div>
+                        </motion.div>
+
+                        {/* Origin / Dest Markers */}
+                        <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                          <div className="w-4 h-4 rounded-full bg-white/20 border-2 border-white/40 mb-2" />
+                          <div className="text-white font-bold font-mono bg-black/50 px-2 rounded backdrop-blur-sm">{activeFlight.origin}</div>
+                        </div>
+                        <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                          <div className="w-4 h-4 rounded-full bg-sky-500/20 border-2 border-sky-400 mb-2" />
+                          <div className="text-white font-bold font-mono bg-black/50 px-2 rounded backdrop-blur-sm">{activeFlight.destination}</div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Telemetry Sidebar */}
+                    <div className="w-full xl:w-72 flex flex-col gap-sm">
+                      <div className="rounded-3xl border border-white/5 p-sm bg-black/30 premium-glass">
+                        <h3 className="text-[10px] uppercase tracking-widest text-vantage-accent mb-sm">Flight Telemetry</h3>
+                        <div className="grid grid-cols-2 gap-xs">
+                          <div className="bg-black/40 rounded-2xl p-sm border border-white/5">
+                            <Wind className="w-4 h-4 text-vantage-muted mb-xs" />
+                            <p className="text-[10px] text-vantage-muted uppercase">Altitude</p>
+                            <p className="text-sm font-bold text-white font-mono">{activeFlight.altitude}</p>
+                          </div>
+                          <div className="bg-black/40 rounded-2xl p-sm border border-white/5">
+                            <Gauge className="w-4 h-4 text-vantage-muted mb-xs" />
+                            <p className="text-[10px] text-vantage-muted uppercase">Speed</p>
+                            <p className="text-sm font-bold text-white font-mono">{activeFlight.speed}</p>
+                          </div>
+                          <div className="bg-black/40 rounded-2xl p-sm border border-white/5">
+                            <Compass className="w-4 h-4 text-vantage-muted mb-xs" />
+                            <p className="text-[10px] text-vantage-muted uppercase">Heading</p>
+                            <p className="text-sm font-bold text-white font-mono">{activeFlight.heading}</p>
+                          </div>
+                          <div className="bg-black/40 rounded-2xl p-sm border border-white/5">
+                            <Clock className="w-4 h-4 text-vantage-muted mb-xs" />
+                            <p className="text-[10px] text-vantage-muted uppercase">Est. Arrival</p>
+                            <p className="text-sm font-bold text-white font-mono">{activeFlight.arrivalTime}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Route Intelligence Box */}
+                      {activeFlight.origin !== 'Unknown' && (
+                        <div className="rounded-3xl border border-white/5 p-sm bg-black/30 premium-glass flex-1 flex flex-col">
+                          <h3 className="text-[10px] uppercase tracking-widest text-vantage-accent mb-sm">Route Analysis</h3>
+                          <div className="flex-1 flex flex-col justify-center space-y-sm">
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-vantage-muted">Aircraft</span>
+                              <span className="font-mono text-white">{activeFlight.vessel}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-vantage-muted">Status</span>
+                              <span className="font-mono text-emerald-400">{activeFlight.status}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-vantage-muted">Duration Left</span>
+                              <span className="font-mono text-sky-300">{activeFlight.remainingTime}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 };
