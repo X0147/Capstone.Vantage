@@ -4,9 +4,9 @@ import { ArrowLeft, Send, ShieldCheck, Star, Sparkles, Fingerprint, Lock, Globe 
 import { useNavigate } from 'react-router-dom';
 
 const PRIVILEGES = [
-  { icon: ShieldCheck, title: 'Sovereign Terminal Clearance', desc: 'Bypass commercial security arrays with invisible biometric verification.' },
-  { icon: Lock, title: 'Zero-Knowledge Itineraries', desc: 'AES-256 encrypted flight logs. Your movements remain mathematically untraceable.' },
-  { icon: Globe, title: 'Global Sanctuary Access', desc: 'Unrestricted entry to 1,200+ private departure lounges worldwide.' },
+  { icon: ShieldCheck, title: 'Ghost Protocol Clearance', desc: 'Bypass public infrastructure entirely. Our invisible biometric arrays authenticate you without a single pause.' },
+  { icon: Lock, title: 'Cryptographic Anonymity', desc: 'Your flight manifests are secured with military-grade AES-256 encryption. Your movements do not exist on public ledgers.' },
+  { icon: Globe, title: 'Sanctuary Network', desc: 'Seamless, unrestricted access to 1,200+ ultra-private departure terminals and atmospheric lounges globally.' },
 ];
 
 export default function VipRegistrationPage() {
@@ -119,14 +119,14 @@ export default function VipRegistrationPage() {
               <Star className="h-3.5 w-3.5" /> Black Syndicate Registration
             </span>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white italic leading-[1.05] tracking-tight">
-              Command the <br />
+              Ascend to the <br />
               <span className="text-gradient-gold relative">
                 Absolute Apex
                 <Sparkles className="absolute -top-4 -right-8 w-6 h-6 text-vantage-gold/50" />
               </span>
             </h1>
             <p className="text-base text-vantage-muted leading-relaxed max-w-md pt-2">
-              Submit your cryptographic signature below to request sovereign terminal clearance. Access to the Syndicate is strictly curated by our elite concierge division.
+              The Vantage Black Syndicate is an invite-only collective for the world's most discerning individuals. Submit your credentials below for concierge review.
             </p>
           </div>
 
@@ -164,71 +164,71 @@ export default function VipRegistrationPage() {
             
             <AnimatePresence mode="wait">
               {!isSuccess ? (
-                <motion.form key="form" exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} onSubmit={handleSubmit} className="relative bg-[#070b12]/60 border border-white/10 rounded-4xl p-8 md:p-10 backdrop-blur-xl shadow-2xl space-y-6">
+                <motion.form key="form" exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} onSubmit={handleSubmit} className="relative bg-[#070b12]/80 border border-white/10 rounded-3xl p-8 md:p-10 backdrop-blur-2xl shadow-2xl space-y-5">
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Full Name */}
-                <div className="space-y-2.5 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Full Name</label>
+                <div className="space-y-2 relative">
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Legal Identity</label>
                   <input
                     required type="text" name="name" value={formData.name} onChange={handleChange}
                     onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.05] transition-all"
-                    placeholder="Enter legal name"
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
+                    placeholder="Enter full name"
                   />
-                  {focusedField === 'name' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-2xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
+                  {focusedField === 'name' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
 
                 {/* Email */}
-                <div className="space-y-2.5 relative">
+                <div className="space-y-2 relative">
                   <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'email' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Cryptographic Email</label>
                   <input
                     required type="email" name="email" value={formData.email} onChange={handleChange}
                     onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.05] transition-all"
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
                     placeholder="secure@domain.com"
                   />
-                  {focusedField === 'email' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-2xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
+                  {focusedField === 'email' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Phone */}
-                <div className="space-y-2.5 relative">
+                <div className="space-y-2 relative">
                   <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'phone' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Secure Line (Phone)</label>
                   <input
                     required type="tel" name="phone" value={formData.phone} onChange={handleChange}
                     onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.05] transition-all"
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
                     placeholder="+1 (000) 000-0000"
                   />
-                  {focusedField === 'phone' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-2xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
+                  {focusedField === 'phone' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
 
                 {/* Home Base */}
-                <div className="space-y-2.5 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Origin Sanctuary (Home Base)</label>
+                <div className="space-y-2 relative">
+                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Origin Sanctuary</label>
                   <input
                     required type="text" name="homeBase" value={formData.homeBase} onChange={handleChange}
                     onFocus={() => setFocusedField('homeBase')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.05] transition-all"
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
                     placeholder="JFK, LHR, DXB..."
                   />
-                  {focusedField === 'homeBase' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-2xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
+                  {focusedField === 'homeBase' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
               </div>
 
               {/* Requirements */}
-              <div className="space-y-2.5 relative">
+              <div className="space-y-2 relative">
                 <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'reqs' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Bespoke Requirements (Optional)</label>
                 <textarea
                   name="requirements" value={formData.requirements} onChange={handleChange}
                   onFocus={() => setFocusedField('reqs')} onBlur={() => setFocusedField(null)}
-                  rows={3}
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.05] transition-all resize-none"
-                  placeholder="Specify dietary mandates, fleet preferences, or detail security protocol..."
+                  rows={2}
+                  className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all resize-none"
+                  placeholder="Specify dietary mandates, fleet preferences..."
                 />
-                {focusedField === 'reqs' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-2xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
+                {focusedField === 'reqs' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
               </div>
 
               {/* Submit Section */}
@@ -264,14 +264,14 @@ export default function VipRegistrationPage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative bg-[#070b12]/60 border border-vantage-gold/30 rounded-4xl p-8 md:p-12 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center text-center space-y-6"
+                  className="relative bg-[#070b12]/80 border border-vantage-gold/30 rounded-3xl p-8 md:p-12 backdrop-blur-2xl shadow-2xl flex flex-col items-center justify-center text-center space-y-5"
                 >
-                  <div className="w-20 h-20 rounded-full bg-vantage-gold/10 flex items-center justify-center border border-vantage-gold/30 mb-2">
-                    <ShieldCheck className="w-10 h-10 text-vantage-gold" />
+                  <div className="w-16 h-16 rounded-full bg-vantage-gold/10 flex items-center justify-center border border-vantage-gold/30 mb-2">
+                    <ShieldCheck className="w-8 h-8 text-vantage-gold" />
                   </div>
-                  <h3 className="text-3xl font-display font-black text-white">Transmission Secured</h3>
-                  <p className="text-sm text-vantage-muted max-w-md">
-                    Your credentials have been securely transmitted to the Vantage Concierge. You will be contacted via your secure line within the hour to formalize your Syndicate induction.
+                  <h3 className="text-2xl font-display font-black text-white tracking-tight">Encrypted Transmission Secured</h3>
+                  <p className="text-sm text-vantage-muted max-w-sm leading-relaxed">
+                    The Vantage Concierge has received your dossier. Our elite division is currently verifying your credentials. Expect contact on your secure line shortly.
                   </p>
                   
                   <button
