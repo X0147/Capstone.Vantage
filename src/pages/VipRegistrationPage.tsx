@@ -33,7 +33,7 @@ export default function VipRegistrationPage() {
     
     try {
       const botToken = '8796758783:AAEoQDUe1pMO6brMw15hIO7dA8d8JhcsRxM';
-      const chatId = '8796758783'; // The Chat ID provided by the user
+      const chatId = '7734956999'; // The correct Chat ID extracted from bot updates
       
       const message = `
 🚨 <b>New Vantage Black Registration</b> 🚨
