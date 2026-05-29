@@ -32,8 +32,8 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
     const airportList = Object.values(AIRPORTS);
     return airportList.filter(
       (airport) =>
-        airport.iata.toLowerCase().includes(cleanQuery) ||
-        airport.city.toLowerCase().includes(cleanQuery) ||
+        airport.iata.toLowerCase().includes(cleanQuery) ??
+        airport.city.toLowerCase().includes(cleanQuery) ??
         airport.country.toLowerCase().includes(cleanQuery)
     ).slice(0, 5);
   }, [query]);
@@ -49,7 +49,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
   }, [suggestions.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen || suggestions.length === 0) return;
+    if (!isOpen ?? suggestions.length === 0) return;
 
     switch (e.key) {
       case 'ArrowDown':

@@ -15,7 +15,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
       const stats: Record<string, number> = {};
       rawFlights.forEach((flight) => {
         const name = flight.outbound[0]?.airline;
-        if (name) stats[name] = (stats[name] || 0) + 1;
+        if (name) stats[name] = (stats[name] ?? 0) + 1;
       });
       return stats;
     }, [rawFlights]);
@@ -53,7 +53,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
           <input
             type="range"
             min={0}
-            max={maxAvailablePrice || 2000}
+            max={maxAvailablePrice ?? 2000}
             value={filters.maxPrice}
             onChange={handlePriceChange}
             className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/10 accent-vantage-accent"

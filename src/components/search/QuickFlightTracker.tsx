@@ -6,7 +6,7 @@ export const QuickFlightTracker: React.FC = () => {
   const [flightNo, setFlightNo] = useState('');
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (flightNo.trim()) {
       navigate('/tracker', { state: { flightNumber: flightNo.trim().toUpperCase() } });

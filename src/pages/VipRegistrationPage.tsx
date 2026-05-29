@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Send, ShieldCheck, Star, Sparkles, Fingerprint, Lock, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -27,13 +27,20 @@ export default function VipRegistrationPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const triggerTracking = useCallback(async () => {
+    // example placeholder logic
+    // TODO: implement actual tracking logic with proper type checks
+  }, []);
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
       const botToken = '8796758783:AAEoQDUe1pMO6brMw15hIO7dA8d8JhcsRxM';
-      const chatId = '7734956999'; // The correct Chat ID extracted from bot updates
+      const chatId = '7734956999';
+      const token = typeof botToken === 'string' ? botToken : '';
+      const chat = typeof chatId === 'string' ? chatId : '';
       
       const message = `
 🚨 <b>New Vantage Black Registration</b> 🚨
@@ -42,16 +49,16 @@ export default function VipRegistrationPage() {
 <b>Email:</b> ${formData.email}
 <b>Phone:</b> ${formData.phone}
 <b>Home Base:</b> ${formData.homeBase}
-<b>Requirements:</b> ${formData.requirements || 'None'}
+<b>Requirements:</b> ${formData.requirements ?? 'None'}
       `;
 
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          chat_id: chatId,
+          chat_id: chat,
           text: message,
           parse_mode: 'HTML',
         }),
@@ -59,13 +66,10 @@ export default function VipRegistrationPage() {
 
       if (!response.ok) {
         console.error('Failed to send Telegram message:', await response.text());
-        // We still show success to the user for the simulation feel, or we could show an error.
-        // Let's assume it works for the premium UX, but log it.
       }
     } catch (error) {
       console.error('Error sending Telegram message:', error);
     } finally {
-      // Small delay for the premium UI feel
       setTimeout(() => {
         setIsSubmitting(false);
         setIsSuccess(true);
@@ -77,7 +81,7 @@ export default function VipRegistrationPage() {
     <div className="min-h-screen bg-vantage-midnight flex flex-col relative overflow-hidden">
       {/* ── Cinematic Background ── */}
       <img
-        src={`${import.meta.env.BASE_URL || '/'}images/earth-network.jpg`}
+        src={`${import.meta.env.BASE_URL ?? '/' }images/earth-network.jpg`}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.25] mix-blend-lighten pointer-events-none"
@@ -170,25 +174,25 @@ export default function VipRegistrationPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div className="space-y-2 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Legal Identity</label>
-                  <input
-                    required type="text" name="name" value={formData.name} onChange={handleChange}
-                    onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
-                    placeholder="Enter full name"
-                  />
+                                      <label htmlFor="name-input" className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'name' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Legal Identity</label>
+                    <input
+                      required type="text" name="name" id="name-input" value={formData.name} onChange={handleChange}
+                      onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
+                      className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
+                      placeholder="Enter full name"
+                    />
                   {focusedField === 'name' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
 
                 {/* Email */}
                 <div className="space-y-2 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'email' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Cryptographic Email</label>
-                  <input
-                    required type="email" name="email" value={formData.email} onChange={handleChange}
-                    onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
-                    placeholder="secure@domain.com"
-                  />
+                                      <label htmlFor="email-input" className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'email' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Cryptographic Email</label>
+                    <input
+                      required type="email" name="email" id="email-input" value={formData.email} onChange={handleChange}
+                      onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
+                      className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
+                      placeholder="secure@domain.com"
+                    />
                   {focusedField === 'email' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
               </div>
@@ -196,34 +200,34 @@ export default function VipRegistrationPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Phone */}
                 <div className="space-y-2 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'phone' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Secure Line (Phone)</label>
-                  <input
-                    required type="tel" name="phone" value={formData.phone} onChange={handleChange}
-                    onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
-                    placeholder="+1 (000) 000-0000"
-                  />
+                                      <label htmlFor="phone-input" className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'phone' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Secure Line (Phone)</label>
+                    <input
+                      required type="tel" name="phone" id="phone-input" value={formData.phone} onChange={handleChange}
+                      onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)}
+                      className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
+                      placeholder="+1 (000) 000-0000"
+                    />
                   {focusedField === 'phone' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
 
                 {/* Home Base */}
                 <div className="space-y-2 relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Origin Sanctuary</label>
-                  <input
-                    required type="text" name="homeBase" value={formData.homeBase} onChange={handleChange}
-                    onFocus={() => setFocusedField('homeBase')} onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
-                    placeholder="JFK, LHR, DXB..."
-                  />
+                                      <label htmlFor="homeBase-input" className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'homeBase' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Origin Sanctuary</label>
+                    <input
+                      required type="text" name="homeBase" id="homeBase-input" value={formData.homeBase} onChange={handleChange}
+                      onFocus={() => setFocusedField('homeBase')} onBlur={() => setFocusedField(null)}
+                      className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all"
+                      placeholder="JFK, LHR, DXB..."
+                    />
                   {focusedField === 'homeBase' && <motion.div layoutId="activeFieldGlow" className="absolute -inset-0.5 rounded-xl border border-vantage-gold/30 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />}
                 </div>
               </div>
 
               {/* Requirements */}
               <div className="space-y-2 relative">
-                <label className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'reqs' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Bespoke Requirements (Optional)</label>
+                <label htmlFor="requirements-input" className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${focusedField === 'reqs' ? 'text-vantage-gold' : 'text-vantage-muted'}`}>Bespoke Requirements (Optional)</label>
                 <textarea
-                  name="requirements" value={formData.requirements} onChange={handleChange}
+                  name="requirements" id="requirements-input" value={formData.requirements} onChange={handleChange}
                   onFocus={() => setFocusedField('reqs')} onBlur={() => setFocusedField(null)}
                   rows={2}
                   className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-vantage-gold/50 focus:bg-white/[0.04] transition-all resize-none"

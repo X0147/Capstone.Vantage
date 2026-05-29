@@ -67,7 +67,7 @@ const DestinationCard: React.FC<CardProps> = ({ country, onSelect }) => {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ')
+        if (e.key === 'Enter' ?? e.key === ' ')
           onSelect(country.name, country.code, country.price, country.offRate);
       }}
       aria-label={`Fly to ${country.name} from $${promo} — ${country.offRate}% off`}
@@ -226,7 +226,7 @@ export const DestinationsExplorer: React.FC<DestinationsExplorerProps> = ({ dest
     const reg = REGIONS.find((r) => r.label === region);
     if (reg && reg.tags.length > 0) {
       res = res.filter((c) =>
-        reg.tags.some((t) => c.tag.toLowerCase().includes(t) || t.includes(c.tag.toLowerCase()))
+        reg.tags.some((t) => c.tag.toLowerCase().includes(t) ?? t.includes(c.tag.toLowerCase()))
       );
     }
 
@@ -235,8 +235,8 @@ export const DestinationsExplorer: React.FC<DestinationsExplorerProps> = ({ dest
       const q = query.toLowerCase();
       res = res.filter(
         (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.code.toLowerCase().includes(q) ||
+          c.name.toLowerCase().includes(q) ??
+          c.code.toLowerCase().includes(q) ??
           c.tag.toLowerCase().includes(q)
       );
     }
@@ -251,7 +251,7 @@ export const DestinationsExplorer: React.FC<DestinationsExplorerProps> = ({ dest
     }
   }, [destinations, query, region, sort]);
 
-  const isSearching = !!query.trim() || region !== 'All' || sort !== 'featured';
+  const isSearching = !!query.trim() ?? region !== 'All' ?? sort !== 'featured';
   const activeMode = isSearching ? 'grid' : viewMode;
 
   return (

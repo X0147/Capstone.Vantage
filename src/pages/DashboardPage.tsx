@@ -44,7 +44,7 @@ export const DashboardPage: React.FC = () => {
   const [dietaryPreference, setDietaryPreference] = useState(profile.dietaryPreference);
   const [isSaved, setIsSaved] = useState(false);
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProfile({
       firstName,
@@ -71,7 +71,7 @@ export const DashboardPage: React.FC = () => {
     e.preventDefault();
     setAuthError('');
     
-    if (!clientName.trim() || !trackingId.trim()) {
+    if (!clientName.trim() ?? !trackingId.trim()) {
       setAuthError('Please provide both Client Identity and Tracking ID.');
       return;
     }
@@ -82,7 +82,7 @@ export const DashboardPage: React.FC = () => {
       // Update store to dynamically reflect the entered user's details
       const names = clientName.trim().split(' ');
       updateProfile({
-        firstName: names[0] || clientName,
+        firstName: names[0] ?? clientName,
         lastName: names.length > 1 ? names.slice(1).join(' ') : profile.lastName,
       });
       setIsUnlocking(false);
@@ -95,7 +95,7 @@ export const DashboardPage: React.FC = () => {
       <div className="min-h-[80vh] flex items-center justify-center px-sm relative overflow-hidden rounded-3xl mt-sm">
         {/* Cinematic Background */}
         <img
-          src={`${import.meta.env.BASE_URL || '/'}images/06_plane_sky.jpg`}
+          src={`${import.meta.env.BASE_URL ?? '/'}images/06_plane_sky.jpg`}
           alt="Flight View"
           className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen pointer-events-none"
         />
@@ -121,14 +121,15 @@ export const DashboardPage: React.FC = () => {
 
             <form onSubmit={handleUnlock} className="space-y-4 pt-sm">
               <div className="space-y-1 text-left">
-                <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Client Identity (Name)</label>
-                <input
-                  type="text"
-                  value={clientName}
-                  onChange={(e) => { setClientName(e.target.value); setAuthError(''); }}
-                  placeholder="E.g. Sarah Williams"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
-                />
+                    <label htmlFor="profile-firstName" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">First Name</label>
+                      <input
+                        type="text"
+                        id="profile-firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="First name"
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
+                      />
               </div>
 
               <div className="space-y-1 text-left">
@@ -350,7 +351,7 @@ export const DashboardPage: React.FC = () => {
                               onClick={() =>
                                 navigate('/tracker', {
                                   state: {
-                                    flightNumber: booking.outbound?.id.split('-')[3] || 'EK201',
+                                    flightNumber: booking.outbound?.id.split('-')[3] ?? 'EK201',
                                   },
                                 })
                               }
@@ -381,12 +382,12 @@ export const DashboardPage: React.FC = () => {
                     <div className="flex justify-between">
                       <span className="text-vantage-muted">Passport</span>
                       <span className="text-white font-bold">
-                        {profile.passportNumber || 'None'}
+                        {profile.passportNumber ?? 'None'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-vantage-muted">TSA Pre</span>
-                      <span className="text-white font-bold">{profile.tsaPreCheck || 'None'}</span>
+                      <span className="text-white font-bold">{profile.tsaPreCheck ?? 'None'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-vantage-muted">KNT No.</span>
@@ -498,7 +499,7 @@ export const DashboardPage: React.FC = () => {
                           onClick={() =>
                             navigate('/tracker', {
                               state: {
-                                flightNumber: booking.outbound?.id.split('-')[3] || 'EK201',
+                                flightNumber: booking.outbound?.id.split('-')[3] ?? 'EK201',
                               },
                             })
                           }
@@ -525,10 +526,11 @@ export const DashboardPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-sm">
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-firstName" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       First Name
                     </label>
                     <input
+                      id="profile-firstName"
                       type="text"
                       value={firstName}
                       onChange={(e) => {
@@ -539,10 +541,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-lastName" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       Last Name
                     </label>
                     <input
+                      id="profile-lastName"
                       type="text"
                       value={lastName}
                       onChange={(e) => {
@@ -553,10 +556,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-email" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       Email
                     </label>
                     <input
+                      id="profile-email"
                       type="email"
                       value={email}
                       onChange={(e) => {
@@ -567,10 +571,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-phone" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       Phone
                     </label>
                     <input
+                      id="profile-phone"
                       type="text"
                       value={phone}
                       onChange={(e) => {
@@ -581,10 +586,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-passportNumber" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       Passport Number
                     </label>
                     <input
+                      id="profile-passportNumber"
                       type="text"
                       value={passportNumber}
                       onChange={(e) => {
@@ -595,10 +601,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-tsaPreCheck" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       TSA PreCheck ID
                     </label>
                     <input
+                      id="profile-tsaPreCheck"
                       type="text"
                       value={tsaPreCheck}
                       onChange={(e) => {
@@ -609,10 +616,11 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
+                    <label htmlFor="profile-dietaryPreference" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">
                       Dietary Preference
                     </label>
                     <select
+                      id="profile-dietaryPreference"
                       value={dietaryPreference}
                       onChange={(e) => {
                         setDietaryPreference(e.target.value);

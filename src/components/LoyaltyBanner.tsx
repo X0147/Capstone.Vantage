@@ -37,7 +37,7 @@ export const LoyaltyBanner: React.FC = () => {
     <section className="relative overflow-hidden rounded-4xl border border-vantage-gold/15 bg-gradient-to-br from-[#070b12] via-[#120d04] to-[#040810] p-xl sm:p-2xl shadow-glow-gold transition-all duration-300 hover:border-vantage-gold/25">
       {/* Earth network background image */}
       <img
-        src={`${import.meta.env.BASE_URL || '/'}images/earth-network.jpg`}
+        src={`${import.meta.env.BASE_URL ?? '/'}images/earth-network.jpg`}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.18] mix-blend-lighten pointer-events-none select-none"

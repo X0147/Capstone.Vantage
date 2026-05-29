@@ -26,8 +26,8 @@ export const searchAirports = async (query: string): Promise<Airport[]> => {
   const lower = query.toLowerCase();
   return list.filter(
     (a) =>
-      a.code.toLowerCase().includes(lower) ||
-      a.city.toLowerCase().includes(lower) ||
+      a.code.toLowerCase().includes(lower) ??
+      a.city.toLowerCase().includes(lower) ??
       a.name.toLowerCase().includes(lower)
   );
 };

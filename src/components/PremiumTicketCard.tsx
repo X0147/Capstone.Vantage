@@ -44,8 +44,8 @@ export function PremiumTicketCard({ flightData, onSelect }: PremiumTicketCardPro
     },
   ];
 
-  const gradientId = `flight-curve-grad-${flightData.id || 'default'}`;
-  const glowId = `flight-node-glow-${flightData.id || 'default'}`;
+  const gradientId = `flight-curve-grad-${flightData.id ?? 'default'}`;
+  const glowId = `flight-node-glow-${flightData.id ?? 'default'}`;
 
   return (
     <article className="premium-glass border border-white/10 rounded-[28px] p-6 shadow-[0_40px_120px_rgba(0,0,0,0.18)] max-w-3xl">

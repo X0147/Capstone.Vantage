@@ -22,13 +22,14 @@ export const DateRangePicker: React.FC<Props> = () => {
 
   return (
     <div className="relative flex-1" ref={ref}>
-      <label className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
+      <label htmlFor="departDate" className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
         Dates
       </label>
       <div className="flex items-center gap-xs mt-0.5">
         <Calendar className="w-4 h-4 text-vantage-gold/75 shrink-0" />
         <div className="flex-1 flex items-center gap-2">
           <input
+            id="departDate"
             aria-label="Departure date"
             value={searchParams.departDate}
             onFocus={() => {
@@ -42,10 +43,12 @@ export const DateRangePicker: React.FC<Props> = () => {
           />
           {searchParams.tripType === 'roundtrip' && (
             <>
+              <label htmlFor="returnDate" className="sr-only">Return date</label>
               <span className="text-white/20 font-bold select-none text-xs">→</span>
               <input
+                id="returnDate"
                 aria-label="Return date"
-                value={searchParams.returnDate || ''}
+                value={searchParams.returnDate ?? ''}
                 onFocus={() => {
                   setOpen(true);
                 }}

@@ -181,7 +181,7 @@ export const useBookingStore = create<BookingState>()(
       setPassengers: (passengers) => {
         set({
           passengers,
-          passenger: passengers[0] || null,
+          passenger: passengers[0] ?? null,
         });
       },
 
@@ -197,7 +197,7 @@ export const useBookingStore = create<BookingState>()(
 
       setSelectedSeats: (seatsRecord) => {
         // Handle record format (e.g. from tests or flow 2)
-        const outboundSeats = seatsRecord.outbound || [];
+        const outboundSeats = seatsRecord.outbound ?? [];
         const selectedSeats = [...outboundSeats] as string[] & { outbound?: string[] };
         selectedSeats.outbound = outboundSeats;
         set({ selectedSeats });
@@ -216,14 +216,14 @@ export const useBookingStore = create<BookingState>()(
 
           const newBooking: BookingRecord = {
             pnr: ref,
-            lastName: state.passengers[0]?.lastName || '',
+            lastName: state.passengers[0]?.lastName ?? '',
             outbound: state.selectedOutbound,
             returnFlight: state.selectedReturn,
             passengers: state.passengers,
             seats: state.selectedSeats,
             totalPrice:
-              (state.selectedOutbound?.price || 0) +
-              (state.selectedReturn?.price || 0) +
+              (state.selectedOutbound?.price ?? 0) +
+              (state.selectedReturn?.price ?? 0) +
               state.seatPriceTotal,
             dateBooked: new Date().toISOString(),
           };
@@ -349,7 +349,7 @@ export const useBookingStore = create<BookingState>()(
             (b) =>
               b.pnr.toUpperCase() === pnr.toUpperCase() &&
               b.lastName.toLowerCase() === lastName.toLowerCase()
-          ) || null
+          ) ?? null
         );
       },
 

@@ -69,7 +69,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
         </div>
         <div className="col-span-2">
           <dt className="text-sm text-gray-400">Password (hashed)</dt>
-          <dd className="text-sm break-all mt-1 bg-gray-800 p-2 rounded">{hashedPassword || 'Hashing…'}</dd>
+          <dd className="text-sm break-all mt-1 bg-gray-800 p-2 rounded">{hashedPassword ?? 'Hashing…'}</dd>
         </div>
       </dl>
     </motion.div>

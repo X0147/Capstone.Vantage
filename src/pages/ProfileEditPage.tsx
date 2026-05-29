@@ -18,13 +18,13 @@ export default function ProfileEditPage() {
           <div className="space-y-4">
             <div className="space-y-1">
               <label
-                htmlFor="fullName"
+                htmlFor="profile-fullName"
                 className="text-xs font-bold text-vantage-accent uppercase tracking-wider block"
               >
                 Full Name
               </label>
               <input
-                id="fullName"
+                id="profile-fullName"
                 type="text"
                 className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-vantage-accent transition-colors"
                 placeholder="Enter your name"
@@ -34,15 +34,15 @@ export default function ProfileEditPage() {
 
             <div className="space-y-1">
               <label
-                htmlFor="email"
+                htmlFor="profile-email"
                 className="text-xs font-bold text-vantage-accent uppercase tracking-wider block"
               >
                 Encrypted Email Node
               </label>
               <input
-                id="email"
+                id="profile-email"
                 type="email"
-                className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-vantage-accent transition-colors"
+                className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus;border:border-vantage-accent transition-colors"
                 placeholder="Secure email"
                 defaultValue="user@vantage.matrix"
               />

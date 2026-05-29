@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBookingStore, Passenger as PassengerDetails } from '../store/useBookingStore';
 import SeatSelector from '../features/seat/SeatSelector';
@@ -32,7 +32,7 @@ export const CheckoutPage: React.FC = () => {
     return total;
   }, [checkedBags, mealOption, loungeAccess, disruptionProtection]);
 
-  const baseFare = selectedOutbound?.price || 450;
+  const baseFare = selectedOutbound?.price ?? 450;
   const taxes = 65;
   const grandTotal = baseFare + seatPriceTotal + ancillaryPriceTotal + taxes;
 
@@ -51,7 +51,7 @@ export const CheckoutPage: React.FC = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nextErrors: Record<string, string> = {};
     if (!formFields.firstName) nextErrors.firstName = 'First name required';
@@ -66,6 +66,36 @@ export const CheckoutPage: React.FC = () => {
       setPassenger(formFields);
     }
   };
+
+  const fetchLiveFlightData = useCallback((flightNo: string) => {
+    // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
+    // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
+    // to guarantee a premium "live" experience without exposing paid API keys.
+    return generateMockFlight(flightNo);
+  }, []);
+
+  const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false, setIsConnecting: any, setErrorMsg: any, setActiveFlight: any, setLastUpdated: any) => {
+    if (!isSilentRefresh) {
+      setIsConnecting(true);
+      setErrorMsg('');
+    }
+
+    try {
+      if (flightNo.length < 3) {
+        throw new Error('Please enter a valid flight designation (e.g. EK201).');
+      }
+      
+      const data = fetchLiveFlightData(flightNo);
+      setActiveFlight(data);
+      setLastUpdated(new Date());
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Tracking failed.';
+      setErrorMsg(message);
+      if (!isSilentRefresh) setActiveFlight(null);
+    } finally {
+      setIsConnecting(false);
+    }
+  }, [fetchLiveFlightData]);
 
   // --- Step 4: Payment Brand Matching Logic ---
   const [cardNumber, setCardNumber] = useState('');
@@ -143,6 +173,7 @@ export const CheckoutPage: React.FC = () => {
                 {/* Floating-Label Input Pairings */}
                 <div className="relative">
                   <input
+                    id="profile-firstName"
                     type="text"
                     value={formFields.firstName}
                     onChange={(e) => {
@@ -151,7 +182,7 @@ export const CheckoutPage: React.FC = () => {
                     className="w-full bg-black/20 border border-white/10 rounded-xl px-xs pt-md pb-2xs text-sm text-white focus:outline-none focus:border-vantage-accent peer transition-colors"
                     placeholder=" "
                   />
-                  <label className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
+                  <label htmlFor="profile-firstName" className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
                     First Name
                   </label>
                   {errors.firstName && (
@@ -162,7 +193,7 @@ export const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="relative">
-                  <input
+                  <input id="lastName"
                     type="text"
                     value={formFields.lastName}
                     onChange={(e) => {
@@ -180,7 +211,7 @@ export const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="relative">
-                  <input
+                  <input id="passportNumber"
                     type="text"
                     value={formFields.passportNumber}
                     onChange={(e) => {
@@ -201,6 +232,7 @@ export const CheckoutPage: React.FC = () => {
 
                 <div className="relative">
                   <input
+                    id="profile-dateOfBirth"
                     type="date"
                     value={formFields.dateOfBirth}
                     onChange={(e) => {
@@ -208,7 +240,7 @@ export const CheckoutPage: React.FC = () => {
                     }}
                     className="w-full bg-black/20 border border-white/10 rounded-xl px-xs pt-md pb-2xs text-sm text-white focus:outline-none focus:border-vantage-accent peer transition-colors text-left"
                   />
-                  <label className="absolute text-[10px] text-vantage-accent left-xs top-2xs scale-75 origin-top-left">
+                    <label htmlFor="profile-dateOfBirth" className="absolute text-[10px] text-vantage-accent left-xs top-2xs scale-75 origin-top-left">
                     Date of Birth
                   </label>
                   {errors.dateOfBirth && (
@@ -401,18 +433,18 @@ export const CheckoutPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="font-mono text-sm tracking-[0.18em] py-xs text-center text-white/90">
-                  {cardNumber || '•••• •••• •••• ••••'}
+                  {cardNumber ?? '•••• •••• •••• ••••'}
                 </div>
                 <div className="flex justify-between items-center text-[10px] font-mono tracking-wider text-vantage-muted uppercase">
                   <div>
                     <span className="block text-[8px] opacity-40">Holder</span>
                     <span className="truncate max-w-[100px] inline-block">
-                      {cardName || 'VALID NAMES'}
+                      {cardName ?? 'VALID NAMES'}
                     </span>
                   </div>
                   <div className="text-right">
                     <span className="block text-[8px] opacity-40">Expires</span>
-                    <span>{cardExpiry || 'MM/YY'}</span>
+                    <span>{cardExpiry ?? 'MM/YY'}</span>
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />

@@ -17,21 +17,23 @@ export default function PaymentPage() {
     cvv: '',
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsProcessing(true);
     setPayment(formData);
 
     try {
       await confirmBooking();
-      toast.success(t('payment.success') || 'Payment complete!');
+      toast.success(t('payment.success') ?? 'Payment complete!');
       navigate('/confirmation');
-    } catch (err) {
-      toast.error(t('payment.failed') || 'Payment failed.');
+    } catch {
+      toast.error(t('payment.failed') ?? 'Payment failed.');
     } finally {
       setIsProcessing(false);
     }
   };
+
+  const totalAmount = selectedOutbound?.price ?? 0;
 
   return (
     <div className="max-w-2xl mx-auto mt-10">
@@ -41,14 +43,15 @@ export default function PaymentPage() {
         <div className="mb-6 p-4 bg-brand-dark/50 rounded-lg border border-brand-accent/30 flex justify-between">
           <span>{t('payment.totalAmount')}</span>
           <span className="font-bold text-xl text-brand-emerald">
-            ${selectedOutbound?.price || 0}
+            ${totalAmount}
           </span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm mb-1">{t('payment.nameOnCard')}</label>
+            <label htmlFor="nameOnCard" className="block text-sm mb-1">{t('payment.nameOnCard')}</label>
             <input
+              id="nameOnCard"
               required
               type="text"
               className="w-full bg-brand-dark/50 border border-white/20 rounded p-3 text-white"
@@ -59,8 +62,9 @@ export default function PaymentPage() {
             />
           </div>
           <div>
-            <label className="block text-sm mb-1">{t('payment.cardNumber')}</label>
+            <label htmlFor="cardNumber" className="block text-sm mb-1">{t('payment.cardNumber')}</label>
             <input
+              id="cardNumber"
               required
               type="text"
               maxLength={16}
@@ -73,8 +77,9 @@ export default function PaymentPage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-1">{t('payment.expiry')}</label>
+              <label htmlFor="expiry" className="block text-sm mb-1">{t('payment.expiry')}</label>
               <input
+                id="expiry"
                 required
                 type="text"
                 maxLength={5}
@@ -86,8 +91,9 @@ export default function PaymentPage() {
               />
             </div>
             <div>
-              <label className="block text-sm mb-1">{t('payment.cvv')}</label>
+              <label htmlFor="cvv" className="block text-sm mb-1">{t('payment.cvv')}</label>
               <input
+                id="cvv"
                 required
                 type="password"
                 maxLength={4}
@@ -108,7 +114,7 @@ export default function PaymentPage() {
             >
               {isProcessing
                 ? t('payment.processing')
-                : t('payment.pay', { amount: selectedOutbound?.price || 0 })}
+                : t('payment.pay', { amount: selectedOutbound?.price ?? 0 })}
             </button>
           </div>
         </form>

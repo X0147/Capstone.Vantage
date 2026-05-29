@@ -28,9 +28,15 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
   return R * c;
 }
 
+// Helper to safely get airport data
+function getAirport(code: string) {
+  return Object.hasOwn(AIRPORTS, code) ? AIRPORTS[code] : undefined;
+}
+
+// Main analysis function
 export function analyzeRoute(originIata: string, destIata: string): RouteAnalysis | null {
-  const origin = AIRPORTS[originIata];
-  const dest = AIRPORTS[destIata];
+  const origin = getAirport(originIata);
+  const dest = getAirport(destIata);
 
   if (!origin || !dest) return null;
 
@@ -76,6 +82,6 @@ export function analyzeRoute(originIata: string, destIata: string): RouteAnalysi
     stops,
     stopAnalysis,
     typicalAircraft,
-    commonHubs
+    commonHubs,
   };
 }
