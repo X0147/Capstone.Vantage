@@ -1,0 +1,7 @@
+[
+  {"code":"JFK","name":"John F. Kennedy International Airport","city":"New York","country":"US"},
+  {"code":"LHR","name":"Heathrow Airport","city":"London","country":"GB"},
+  {"code":"HND","name":"Haneda Airport","city":"Tokyo","country":"JP"},
+  {"code":"DXB","name":"Dubai International Airport","city":"Dubai","country":"AE"},
+  {"code":"SYD","name":"Sydney Airport","city":"Sydney","country":"AU"}
+]
