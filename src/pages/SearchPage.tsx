@@ -116,8 +116,8 @@ export default function SearchPage() {
               <br />
               <span className="text-gradient-sky italic">Bespoke Aviation</span>
             </h1>
-            <p className="text-vantage-text text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
-              Experience unparalleled exclusivity with real-time fleet intelligence, seamless global reservations, and uncompromising luxury in the skies.
+            <p className="text-vantage-text text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+              Where satellite-grade airspace intelligence meets the quiet precision of true luxury — every reservation a masterwork, every departure a statement, every altitude a world apart.
             </p>
           </div>
 
