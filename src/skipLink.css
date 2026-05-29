@@ -1,0 +1,27 @@
+/* ─── Skip-to-Content Link ──────────────────────────────────────────────────
+   Hidden off-screen by default; slides into view on :focus for keyboard users.
+   ────────────────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 1rem 1rem;
+  background: linear-gradient(135deg, #c8a44e, #e2c97a);
+  color: #0a0f16;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(200, 164, 78, 0.4);
+  transition: top 0.25s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}

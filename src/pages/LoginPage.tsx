@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Fingerprint, RefreshCw, CheckCircle, ArrowRight } from 'lucide-react';
 import BrandLogo from '../components/BrandLogo';
+import SEO from '../components/SEO';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center px-sm py-lg relative overflow-hidden -mt-24 pt-24">
+      <SEO 
+        title="Syndicate Gateway" 
+        description="Secure authentication gateway for Capstone.Vantage operative access." 
+      />
       {/* Full-screen image background */}
       <img
         src={`${import.meta.env.BASE_URL || '/'}images/20_sunset_flight.jpg`}

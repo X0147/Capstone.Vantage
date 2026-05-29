@@ -36,7 +36,10 @@ export const FlightCard: React.FC<FlightCardProps> = React.memo(
     return (
       <motion.div
         layout="position"
-        transition={{ ease: [0.16, 1, 0.3, 1], duration: 0.4 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ ease: [0.16, 1, 0.3, 1], duration: 0.5 }}
         className={`w-full premium-glass rounded-xl overflow-hidden border transition-colors duration-300 ${
           isSelected
             ? 'border-vantage-accent bg-vantage-surface/90'
@@ -116,7 +119,7 @@ export const FlightCard: React.FC<FlightCardProps> = React.memo(
                   e.stopPropagation();
                   onSelect();
                 }}
-                className="px-sm py-2xs rounded-lg bg-vantage-accent text-vantage-dark font-semibold text-xs tracking-wide hover:bg-white transition-colors duration-300"
+                className="px-sm py-2xs rounded-lg bg-gradient-to-r from-vantage-accent to-blue-500 text-white font-bold text-xs tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 {actionLabel}
               </button>
