@@ -49,20 +49,29 @@ function App() {
 
 function AppShell() {
   return (
-    <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased">
-      <EnterpriseNavigationBar />
+    <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased relative">
+      {/* Global Cinematic Background */}
+      <div 
+        className="fixed inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none z-0 mix-blend-screen"
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL || '/'}images/18_earth.jpg)` }}
+      />
+      <div className="fixed inset-0 bg-gradient-to-b from-brand-dark/40 via-transparent to-brand-dark/80 pointer-events-none z-0" />
 
-      <main className="flex-1 container mx-auto p-4">
-        <Suspense
-          fallback={
-            <div className="p-6">
-              <ResultsSkeleton />
-            </div>
-          }
-        >
-          <AnimatedRoutes />
-        </Suspense>
-      </main>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <EnterpriseNavigationBar />
+
+        <main className="flex-1 container mx-auto p-4">
+          <Suspense
+            fallback={
+              <div className="p-6">
+                <ResultsSkeleton />
+              </div>
+            }
+          >
+            <AnimatedRoutes />
+          </Suspense>
+        </main>
+      </div>
     </div>
   );
 }
