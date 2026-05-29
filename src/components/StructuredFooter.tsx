@@ -31,51 +31,76 @@ export const StructuredFooter: React.FC = () => {
   return (
     <footer className="border-t border-white/5 space-y-xl pt-xl">
       {/* Newsletter strip */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-md premium-glass rounded-4xl p-lg border border-white/6">
-        <div className="space-y-2xs">
-          <h4 className="font-display text-xl font-bold text-white italic">Ascend Your Inbox</h4>
-          <p className="text-xs text-vantage-muted max-w-sm">
+      <div className="relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-xl premium-glass rounded-[2rem] p-lg md:p-xl border border-white/10 shadow-2xl">
+        {/* Glow Effects */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-sky-500/50 to-transparent opacity-50" />
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-vantage-accent/10 rounded-full blur-[80px] pointer-events-none" />
+
+        <div className="space-y-sm z-10 w-full lg:w-1/2">
+          <div className="inline-flex items-center gap-2xs rounded-full border border-vantage-accent/20 bg-vantage-accent/5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-vantage-accent mb-2">
+            <Mail className="w-3 h-3" /> Encrypted Comms
+          </div>
+          <h4 className="font-display text-2xl md:text-3xl font-black text-white tracking-tight">Ascend Your Inbox</h4>
+          <p className="text-sm text-vantage-muted max-w-md leading-relaxed">
             Receive curated luxury travel invitations, strategic airspace intelligence, and exclusive Vantage Privilege missives directly to your private channel.
           </p>
         </div>
-        <div className="flex gap-xs w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <Mail className="absolute left-sm top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted" />
+        
+        <div className="flex flex-col sm:flex-row gap-sm w-full lg:w-auto z-10">
+          <div className="relative flex-1 sm:w-72">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted" />
             <input
               type="email"
               placeholder="you@vantage.aero"
-              className="w-full bg-black/40 border border-white/10 rounded-2xl pl-10 pr-sm py-sm text-xs text-white placeholder:text-vantage-muted focus:outline-none focus:border-vantage-accent focus:ring-1 focus:ring-vantage-accent/50 transition-all"
+              className="w-full bg-black/60 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder:text-vantage-muted/50 focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] transition-all"
             />
           </div>
           <button
             onClick={(e) => {
               e.preventDefault();
               const btn = e.currentTarget;
-              btn.innerHTML = 'Subscribed ✓';
-              btn.classList.add('bg-vantage-emerald', 'text-vantage-midnight', 'border-vantage-emerald');
+              btn.innerHTML = '<span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> SECURED</span>';
+              btn.classList.replace('bg-white', 'bg-emerald-500');
+              btn.classList.replace('text-black', 'text-white');
               setTimeout(() => {
-                btn.innerHTML = 'Subscribe';
-                btn.classList.remove('bg-vantage-emerald', 'text-vantage-midnight', 'border-vantage-emerald');
+                btn.innerHTML = 'SUBSCRIBE';
+                btn.classList.replace('bg-emerald-500', 'bg-white');
+                btn.classList.replace('text-white', 'text-black');
               }, 2000);
             }}
-            className="shrink-0 px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 border border-transparent text-vantage-midnight font-bold text-xs uppercase tracking-wider transition-all hover:shadow-glow-accent hover:scale-[1.02] active:scale-[0.98]"
+            className="shrink-0 px-8 py-4 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-widest transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] flex justify-center items-center"
           >
-            Subscribe
+            SUBSCRIBE
           </button>
         </div>
       </div>
 
       {/* Link columns */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-xl">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-xl py-lg">
         {/* Brand column */}
-        <div className="col-span-2 space-y-md">
+        <div className="col-span-2 lg:col-span-3 space-y-md">
           <BrandLogo iconSize="w-40 h-auto" />
-          <p className="text-[11px] text-vantage-muted leading-relaxed max-w-xs">
+          <p className="text-sm text-vantage-muted leading-relaxed max-w-sm mt-4">
             Capstone.Vantage represents the zenith of private and commercial aviation, seamlessly blending absolute security with unparalleled luxury travel orchestration.
           </p>
-          <div className="flex items-center gap-2xs text-[9px] font-mono text-vantage-muted">
-            <Globe className="w-3 h-3 text-vantage-accent" />
-            <span>Global coverage — 195 countries, 900+ airports</span>
+          
+          {/* Company Contact */}
+          <div className="pt-4 space-y-3">
+            <h5 className="text-[10px] font-bold uppercase tracking-widest text-white/50">Direct Intel</h5>
+            <a 
+              href="mailto:capstone@consultant.com" 
+              className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors group"
+            >
+              <div className="p-1.5 rounded-lg bg-sky-500/20 text-sky-400 group-hover:bg-sky-500/30 transition-colors">
+                <Mail className="w-4 h-4" />
+              </div>
+              <span className="text-sm font-mono text-white tracking-wide">capstone@consultant.com</span>
+            </a>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs font-mono text-vantage-muted mt-6 bg-black/40 p-3 rounded-xl border border-white/5 w-max">
+            <Globe className="w-4 h-4 text-sky-400 animate-pulse" />
+            <span>Global Coverage — 195 Countries</span>
           </div>
         </div>
 
@@ -100,15 +125,19 @@ export const StructuredFooter: React.FC = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5 pt-md flex flex-col md:flex-row justify-between items-center gap-xs">
-        <span className="font-mono text-[9px] text-vantage-muted">
-          © {currentYear} Capstone.Vantage Airspace LLC. All flight parameters encrypted. All rights reserved.
+      <div className="border-t border-white/10 pt-lg pb-md flex flex-col md:flex-row justify-between items-center gap-4">
+        <span className="font-mono text-[10px] text-vantage-muted tracking-wider">
+          © {currentYear} CAPSTONE.VANTAGE AIRSPACE LLC. ALL FLIGHT PARAMETERS ENCRYPTED.
         </span>
-        <div className="flex items-center gap-2xs font-mono text-[9px] text-vantage-muted">
-          <ShieldCheck className="w-3 h-3 text-vantage-gold" />
-          <span>Node: Secure-Active</span>
-          <span className="h-1.5 w-1.5 rounded-full bg-vantage-emerald animate-pulse" />
-          <span className="text-vantage-emerald">Latency: 12ms</span>
+        <div className="flex items-center gap-4 font-mono text-[10px]">
+          <div className="flex items-center gap-2 text-white/40">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>ENCRYPTION: AES-256</span>
+          </div>
+          <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span>NODE: SECURE-ACTIVE (12ms)</span>
+          </div>
         </div>
       </div>
     </footer>
