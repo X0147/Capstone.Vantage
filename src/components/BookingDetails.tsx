@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import bcrypt from 'bcryptjs';
+import { sha256 } from 'js-sha256';
 
 interface BookingDetailsProps {
   passengerName: string;
@@ -28,15 +28,8 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
 
   // Hash the password on component mount (or when password changes)
   React.useEffect(() => {
-    // Using bcrypt with a low cost factor for demo; increase for production.
-    const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) {
-        console.error('Password hashing error', err);
-        return;
-      }
-      setHashedPassword(hash);
-    });
+    const hash = sha256(password);
+    setHashedPassword(hash);
   }, [password]);
 
   return (
