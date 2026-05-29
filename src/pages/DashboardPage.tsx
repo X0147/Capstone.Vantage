@@ -32,6 +32,7 @@ export const DashboardPage: React.FC = () => {
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [clientName, setClientName] = useState('');
   const [trackingId, setTrackingId] = useState('');
+  const [authError, setAuthError] = useState('');
 
   // States for profile editing
   const [firstName, setFirstName] = useState(profile.firstName);
@@ -68,7 +69,12 @@ export const DashboardPage: React.FC = () => {
 
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName.trim() || !trackingId.trim()) return;
+    setAuthError('');
+    
+    if (!clientName.trim() || !trackingId.trim()) {
+      setAuthError('Please provide both Client Identity and Tracking ID.');
+      return;
+    }
     
     setIsUnlocking(true);
     // Simulate secure network fetch for client details
@@ -86,8 +92,17 @@ export const DashboardPage: React.FC = () => {
 
   if (!isUnlocked) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-sm">
-        <div className="w-full max-w-md premium-glass rounded-3xl border border-white/10 p-xl shadow-2xl relative overflow-hidden">
+      <div className="min-h-[80vh] flex items-center justify-center px-sm relative overflow-hidden rounded-3xl mt-sm">
+        {/* Cinematic Background */}
+        <img
+          src={`${import.meta.env.BASE_URL || '/'}images/06_plane_sky.jpg`}
+          alt="Flight View"
+          className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen pointer-events-none"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f16] via-[#0a0f16]/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-vantage-dark/40 pointer-events-none backdrop-blur-[2px]" />
+
+        <div className="w-full max-w-md premium-glass rounded-3xl border border-white/10 p-xl shadow-2xl relative overflow-hidden z-10 bg-black/60 backdrop-blur-2xl">
           {/* Background Glow */}
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-vantage-accent via-sky-500 to-vantage-accent opacity-50" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] h-32 bg-vantage-accent/5 rounded-[100%] blur-3xl pointer-events-none" />
@@ -109,11 +124,10 @@ export const DashboardPage: React.FC = () => {
                 <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Client Identity (Name)</label>
                 <input
                   type="text"
-                  required
                   value={clientName}
-                  onChange={(e) => setClientName(e.target.value)}
+                  onChange={(e) => { setClientName(e.target.value); setAuthError(''); }}
                   placeholder="E.g. Sarah Williams"
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
                 />
               </div>
 
@@ -121,13 +135,18 @@ export const DashboardPage: React.FC = () => {
                 <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Tracking ID / PNR</label>
                 <input
                   type="text"
-                  required
                   value={trackingId}
-                  onChange={(e) => setTrackingId(e.target.value)}
+                  onChange={(e) => { setTrackingId(e.target.value); setAuthError(''); }}
                   placeholder="Enter access code"
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all font-mono uppercase"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all font-mono uppercase"
                 />
               </div>
+
+              {authError && (
+                <div className="text-red-400 text-xs text-left bg-red-500/10 border border-red-500/20 rounded-lg p-2.5">
+                  {authError}
+                </div>
+              )}
 
               <button
                 type="submit"
