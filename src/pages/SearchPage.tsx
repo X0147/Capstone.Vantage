@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import SearchHero from '../components/search/SearchHero';
 import { useSearchStore } from '../store/useSearchStore';
-import { ShieldCheck, Zap, BadgeDollarSign, Award, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Zap, BadgeDollarSign, Search, X, SortAsc, Percent, DollarSign } from 'lucide-react';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
@@ -10,20 +10,67 @@ import { QuickFlightTracker } from '../components/search/QuickFlightTracker';
 
 import { ALL_COUNTRIES } from '../data/allCountries';
 
-
 const TRUST_BADGES = [
   { icon: ShieldCheck, label: 'AES-256 Encrypted', color: 'text-vantage-accent' },
   { icon: Zap, label: 'Real-Time Sync', color: 'text-blue-400' },
   { icon: BadgeDollarSign, label: 'Best Price Guarantee', color: 'text-vantage-gold' },
 ];
 
+type SortMode = 'default' | 'discount-high' | 'price-low' | 'price-high' | 'name-az';
+
+const SORT_OPTIONS: { label: string; value: SortMode; icon: typeof Percent }[] = [
+  { label: 'Featured', value: 'default', icon: SortAsc },
+  { label: 'Best Discount', value: 'discount-high', icon: Percent },
+  { label: 'Price: Low', value: 'price-low', icon: DollarSign },
+  { label: 'Price: High', value: 'price-high', icon: DollarSign },
+  { label: 'A–Z', value: 'name-az', icon: SortAsc },
+];
+
 export default function SearchPage() {
   const { setOrigin, setDestination } = useSearchStore();
+  const [query, setQuery] = useState('');
+  const [sortMode, setSortMode] = useState<SortMode>('default');
+
+  const filteredDestinations = useMemo(() => {
+    let results = ALL_COUNTRIES;
+
+    // Filter by search query
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      results = results.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.code.toLowerCase().includes(q) ||
+          c.tag.toLowerCase().includes(q)
+      );
+    }
+
+    // Sort
+    switch (sortMode) {
+      case 'discount-high':
+        return [...results].sort((a, b) => b.offRate - a.offRate);
+      case 'price-low':
+        return [...results].sort((a, b) => {
+          const pa = Math.round(a.price * (1 - a.offRate / 100));
+          const pb = Math.round(b.price * (1 - b.offRate / 100));
+          return pa - pb;
+        });
+      case 'price-high':
+        return [...results].sort((a, b) => {
+          const pa = Math.round(a.price * (1 - a.offRate / 100));
+          const pb = Math.round(b.price * (1 - b.offRate / 100));
+          return pb - pa;
+        });
+      case 'name-az':
+        return [...results].sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return results;
+    }
+  }, [query, sortMode]);
 
   const handleSelectPromo = (city: string, iata: string, originalPrice: number, offRate: number) => {
     const discountedPrice = Math.round(originalPrice * (1 - offRate / 100));
     const promoCode = `VANTAGE-${city.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${offRate}`;
-    
     const subject = encodeURIComponent(`Bespoke Flight Booking Request — ${city} (${iata})`);
     const body = encodeURIComponent(
       `Dear Vantage Elite Booking Desk,\n\n` +
@@ -38,7 +85,6 @@ export default function SearchPage() {
       `Sovereign Regards,\n` +
       `[Your Name]`
     );
-    
     window.location.href = `mailto:concierge@vantage.aero?subject=${subject}&body=${body}`;
   };
 
@@ -114,7 +160,8 @@ export default function SearchPage() {
 
         {/* Popular Destinations */}
         <section className="space-y-lg">
-          <div className="flex justify-between items-end">
+          {/* Section header */}
+          <div className="flex justify-between items-end flex-wrap gap-md">
             <div className="space-y-2xs">
               <p className="text-[10px] font-mono uppercase tracking-widest text-vantage-accent">
                 Exclusive Journeys
@@ -131,7 +178,77 @@ export default function SearchPage() {
               Live Pricing
             </span>
           </div>
-          <PromoCarousel destinations={ALL_COUNTRIES} onSelect={handleSelectPromo} />
+
+          {/* ── PREMIUM SEARCH & FILTER BAR ── */}
+          <div className="space-y-sm">
+            {/* Search input */}
+            <div className="relative group">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-sky-500/10 via-blue-500/5 to-sky-500/10 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm pointer-events-none" />
+              <div className="relative flex items-center gap-sm bg-white/[0.03] border border-white/8 group-focus-within:border-sky-400/40 rounded-2xl px-md py-sm transition-all duration-300 backdrop-blur-md">
+                <Search className="w-4 h-4 text-sky-400/60 group-focus-within:text-sky-400 transition-colors shrink-0" />
+                <input
+                  id="country-search-input"
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search countries, regions, or experiences... (e.g. Japan, Alpine, 25%)"
+                  className="flex-1 bg-transparent text-sm text-white placeholder:text-white/25 focus:outline-none font-light tracking-wide"
+                />
+                {query && (
+                  <button
+                    onClick={() => setQuery('')}
+                    className="p-2xs rounded-lg text-white/30 hover:text-white hover:bg-white/10 transition-all"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                {/* Results count badge */}
+                <span className="hidden sm:flex items-center px-xs py-3xs rounded-full bg-sky-500/10 border border-sky-400/20 text-[9px] font-mono font-bold text-sky-400 tracking-widest uppercase shrink-0">
+                  {filteredDestinations.length} destinations
+                </span>
+              </div>
+            </div>
+
+            {/* Sort filters pill row */}
+            <div className="flex items-center gap-xs flex-wrap">
+              <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 mr-2xs">Sort by:</span>
+              {SORT_OPTIONS.map(({ label, value, icon: Icon }) => (
+                <button
+                  key={value}
+                  onClick={() => setSortMode(value)}
+                  className={`flex items-center gap-2xs px-sm py-2xs rounded-full text-[10px] font-bold font-mono uppercase tracking-widest transition-all duration-200 border ${
+                    sortMode === value
+                      ? 'bg-sky-500/20 border-sky-400/50 text-sky-300 shadow-[0_0_12px_rgba(56,189,248,0.15)]'
+                      : 'bg-white/[0.03] border-white/8 text-white/40 hover:text-white/70 hover:border-white/20 hover:bg-white/5'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* No results message */}
+            {filteredDestinations.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-2xl text-center space-y-sm">
+                <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                  <Search className="w-6 h-6 text-white/20" />
+                </div>
+                <p className="text-sm text-vantage-muted">No destinations match <span className="text-white font-medium">"{query}"</span></p>
+                <button
+                  onClick={() => setQuery('')}
+                  className="text-[10px] font-mono uppercase tracking-widest text-sky-400 hover:text-sky-300 underline underline-offset-4 transition-colors"
+                >
+                  Clear filter
+                </button>
+              </div>
+            )}
+          </div>
+
+          {filteredDestinations.length > 0 && (
+            <PromoCarousel destinations={filteredDestinations} onSelect={handleSelectPromo} />
+          )}
         </section>
 
         {/* Loyalty Banner */}
@@ -159,3 +276,5 @@ export default function SearchPage() {
     </div>
   );
 }
+
+
