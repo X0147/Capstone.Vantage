@@ -27,6 +27,36 @@ const FOOTER_LINKS = {
 export const StructuredFooter: React.FC = () => {
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
+  const [subEmail, setSubEmail] = React.useState('');
+  const [subStatus, setSubStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const handleSubscribe = async () => {
+    if (!subEmail || !subEmail.includes('@')) return;
+    setSubStatus('sending');
+    try {
+      const botToken = '8796758783:AAEoQDUe1pMO6brMw15hIO7dA8d8JhcsRxM';
+      const chatId = '7734956999';
+      const message = `📩 <b>New Newsletter Subscriber</b>\n\n<b>Email:</b> ${subEmail}\n<b>Source:</b> Footer Newsletter\n<b>Time:</b> ${new Date().toLocaleString()}`;
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' }),
+      });
+      if (response.ok) {
+        setSubStatus('sent');
+        setSubEmail('');
+        setTimeout(() => setSubStatus('idle'), 3000);
+      } else {
+        console.error('Telegram error:', await response.text());
+        setSubStatus('error');
+        setTimeout(() => setSubStatus('idle'), 3000);
+      }
+    } catch (err) {
+      console.error('Subscribe error:', err);
+      setSubStatus('error');
+      setTimeout(() => setSubStatus('idle'), 3000);
+    }
+  };
 
   return (
     <footer className="border-t border-white/5 space-y-xl pt-xl">
@@ -51,26 +81,33 @@ export const StructuredFooter: React.FC = () => {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-vantage-muted" />
             <input
               type="email"
+              value={subEmail}
+              onChange={(e) => setSubEmail(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               placeholder="you@vantage.aero"
               className="w-full bg-black/60 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder:text-vantage-muted/50 focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] transition-all"
             />
           </div>
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              const btn = e.currentTarget;
-              btn.innerHTML = '<span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> SECURED</span>';
-              btn.classList.replace('bg-white', 'bg-emerald-500');
-              btn.classList.replace('text-black', 'text-white');
-              setTimeout(() => {
-                btn.innerHTML = 'SUBSCRIBE';
-                btn.classList.replace('bg-emerald-500', 'bg-white');
-                btn.classList.replace('text-white', 'text-black');
-              }, 2000);
-            }}
-            className="shrink-0 px-8 py-4 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-widest transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] flex justify-center items-center"
+            onClick={handleSubscribe}
+            disabled={subStatus === 'sending'}
+            className={`shrink-0 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center gap-2 ${
+              subStatus === 'sent'
+                ? 'bg-emerald-500 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                : subStatus === 'error'
+                ? 'bg-red-500 text-white'
+                : subStatus === 'sending'
+                ? 'bg-white/50 text-black/50 cursor-wait'
+                : 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]'
+            }`}
           >
-            SUBSCRIBE
+            {subStatus === 'sending' && (
+              <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" /></svg>
+            )}
+            {subStatus === 'sent' && (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+            )}
+            {subStatus === 'idle' ? 'SUBSCRIBE' : subStatus === 'sending' ? 'SECURING...' : subStatus === 'sent' ? 'SECURED' : 'RETRY'}
           </button>
         </div>
       </div>
