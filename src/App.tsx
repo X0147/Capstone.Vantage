@@ -33,6 +33,7 @@ const TeamPage = lazy(() => import('./pages/TeamPage'));
 const FleetPage = lazy(() => import('./pages/FleetPage'));
 const LoyaltyPage = lazy(() => import('./pages/LoyaltyPage'));
 const DestinationsPage = lazy(() => import('./pages/DestinationsPage'));
+const VipRegistrationPage = lazy(() => import('./pages/VipRegistrationPage'));
 
 
 function App() {
@@ -91,6 +92,11 @@ function AnimatedRoutes() {
         <Route path="/destinations" element={
           <Suspense fallback={<ResultsSkeleton />}>
             <DestinationsPage />
+          </Suspense>
+        } />
+        <Route path="/vip-register" element={
+          <Suspense fallback={<ResultsSkeleton />}>
+            <VipRegistrationPage />
           </Suspense>
         } />
         <Route path="/login" element={<LoginPage />} />

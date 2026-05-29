@@ -86,7 +86,7 @@ export const LoyaltyBanner: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-md pt-xs">
             <Link
-              to="/login"
+              to="/vip-register"
               className="group/btn relative overflow-hidden rounded-xl bg-vantage-gold/10 border border-vantage-gold/30 px-lg py-sm font-bold text-[11px] uppercase tracking-widest text-vantage-gold transition-all duration-300 hover:bg-vantage-gold hover:text-vantage-midnight hover:shadow-glow-gold hover:-translate-y-0.5"
             >
               Request Black Status <ArrowRight className="inline-block ml-xs w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
@@ -103,7 +103,7 @@ export const LoyaltyBanner: React.FC = () => {
 
         {/* Right Side: Interactive Card */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <Link to="/dashboard" className="relative w-full max-w-[340px] aspect-[1.586/1] rounded-3xl p-sm border border-vantage-gold/30 bg-gradient-to-br from-vantage-midnight via-[#121620] to-[#040810] shadow-2xl overflow-hidden group/card cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-glow-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vantage-gold">
+          <Link to="/vip-register" className="relative w-full max-w-[340px] aspect-[1.586/1] rounded-3xl p-sm border border-vantage-gold/30 bg-gradient-to-br from-vantage-midnight via-[#121620] to-[#040810] shadow-2xl overflow-hidden group/card cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-glow-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vantage-gold">
             {/* Gloss reflection shimmer */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover/card:translate-x-full transition-transform duration-1000 ease-out" />
             
