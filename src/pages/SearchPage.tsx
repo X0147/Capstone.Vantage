@@ -8,224 +8,8 @@ import StructuredFooter from '../components/StructuredFooter';
 import { PromoCarousel } from '../components/search/PromoCarousel';
 import { QuickFlightTracker } from '../components/search/QuickFlightTracker';
 
-const PROMO_DESTINATIONS = [
-  {
-    city: 'London',
-    iata: 'LHR',
-    price: 620,
-    duration: '7h 15m',
-    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=85',
-    tag: 'Sovereign',
-  },
-  {
-    city: 'Tokyo',
-    iata: 'HND',
-    price: 1280,
-    duration: '12h 45m',
-    image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=85',
-    tag: 'Exclusive',
-  },
-  {
-    city: 'Paris',
-    iata: 'CDG',
-    price: 590,
-    duration: '6h 30m',
-    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=85',
-    tag: 'Haute Couture',
-  },
-  {
-    city: 'Singapore',
-    iata: 'SIN',
-    price: 1420,
-    duration: '14h 10m',
-    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=85',
-    tag: 'Apex',
-  },
-  {
-    city: 'Cape Town',
-    iata: 'CPT',
-    price: 1150,
-    duration: '15h 20m',
-    image: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=85',
-    tag: 'Reserve',
-  },
-  {
-    city: 'Dubai',
-    iata: 'DXB',
-    price: 980,
-    duration: '13h 00m',
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=85',
-    tag: 'Syndicate',
-  },
-  {
-    city: 'Sydney',
-    iata: 'SYD',
-    price: 1650,
-    duration: '19h 30m',
-    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=85',
-    tag: 'Pacific',
-  },
-  {
-    city: 'Rome',
-    iata: 'FCO',
-    price: 680,
-    duration: '8h 10m',
-    image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=85',
-    tag: 'Heritage',
-  },
-  {
-    city: 'Reykjavik',
-    iata: 'KEF',
-    price: 450,
-    duration: '5h 45m',
-    image: 'https://images.unsplash.com/photo-1504829857797-ddff28127792?auto=format&fit=crop&w=800&q=85',
-    tag: 'Sanctuary',
-  },
-  {
-    city: 'Maldives',
-    iata: 'MLE',
-    price: 1890,
-    duration: '17h 10m',
-    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=85',
-    tag: 'Private Atoll',
-  },
-  {
-    city: 'Rio de Janeiro',
-    iata: 'GIG',
-    price: 780,
-    duration: '9h 30m',
-    image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=85',
-    tag: 'Tropical',
-  },
-  {
-    city: 'Saint-Tropez',
-    iata: 'NCE',
-    price: 720,
-    duration: '8h 05m',
-    image: 'https://images.unsplash.com/photo-1505881502353-a1986add3762?auto=format&fit=crop&w=800&q=85',
-    tag: 'Riviera',
-  },
-  {
-    city: 'St. Moritz',
-    iata: 'ZRH',
-    price: 890,
-    duration: '7h 55m',
-    image: 'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=800&q=85',
-    tag: 'Alpine',
-  },
-  {
-    city: 'Cairo',
-    iata: 'CAI',
-    price: 850,
-    duration: '11h 15m',
-    image: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=85',
-    tag: 'Antiquity',
-  },
-  {
-    city: 'Mumbai',
-    iata: 'BOM',
-    price: 1120,
-    duration: '14h 25m',
-    image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&w=800&q=85',
-    tag: 'Imperial',
-  },
-  {
-    city: 'Shanghai',
-    iata: 'PVG',
-    price: 1350,
-    duration: '13h 50m',
-    image: 'https://images.unsplash.com/photo-1474181487882-5abf3f0bc6c2?auto=format&fit=crop&w=800&q=85',
-    tag: 'Dynasty',
-  },
-  {
-    city: 'Queenstown',
-    iata: 'ZQN',
-    price: 1780,
-    duration: '21h 10m',
-    image: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?auto=format&fit=crop&w=800&q=85',
-    tag: 'Retreat',
-  },
-  {
-    city: 'Aspen',
-    iata: 'ASE',
-    price: 480,
-    duration: '4h 15m',
-    image: 'https://images.unsplash.com/photo-1482862549707-f63cb32c5fd9?auto=format&fit=crop&w=800&q=85',
-    tag: 'Powder Peak',
-  },
-  {
-    city: 'Bora Bora',
-    iata: 'PPT',
-    price: 2100,
-    duration: '12h 15m',
-    image: 'https://images.unsplash.com/photo-1532408840957-434030740518?auto=format&fit=crop&w=800&q=85',
-    tag: 'Lagoon',
-  },
-  {
-    city: 'Monaco',
-    iata: 'MCM',
-    price: 920,
-    duration: '8h 15m',
-    image: 'https://images.unsplash.com/photo-1559589689-577aabd1db4f?auto=format&fit=crop&w=800&q=85',
-    tag: 'Grand Prix',
-  },
-  {
-    city: 'Marrakech',
-    iata: 'RAK',
-    price: 810,
-    duration: '9h 55m',
-    image: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=85',
-    tag: 'Riad Elite',
-  },
-  {
-    city: 'Kyoto',
-    iata: 'KIX',
-    price: 1310,
-    duration: '13h 25m',
-    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=85',
-    tag: 'Zen Sanctuary',
-  },
-  {
-    city: 'Cusco',
-    iata: 'CUZ',
-    price: 940,
-    duration: '8h 45m',
-    image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=85',
-    tag: 'Andean',
-  },
-  {
-    city: 'Vancouver',
-    iata: 'YVR',
-    price: 410,
-    duration: '5h 30m',
-    image: 'https://images.unsplash.com/photo-1560814304-4f05b62af116?auto=format&fit=crop&w=800&q=85',
-    tag: 'Gateway',
-  },
-  {
-    city: 'Munich',
-    iata: 'MUC',
-    price: 540,
-    duration: '7h 45m',
-    image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=85',
-    tag: 'Bavarian',
-  },
-  {
-    city: 'Barcelona',
-    iata: 'BCN',
-    price: 560,
-    duration: '7h 35m',
-    image: 'https://images.unsplash.com/photo-1583779457094-0dccf257f227?auto=format&fit=crop&w=800&q=85',
-    tag: 'Catalan',
-  },
-  {
-    city: 'Athens',
-    iata: 'ATH',
-    price: 670,
-    duration: '9h 15m',
-    image: 'https://images.unsplash.com/photo-1503152394-c571994fd383?auto=format&fit=crop&w=800&q=85',
-    tag: 'Aegean',
-  },
-];
+import { ALL_COUNTRIES } from '../data/allCountries';
+
 
 const TRUST_BADGES = [
   { icon: ShieldCheck, label: 'AES-256 Encrypted', color: 'text-vantage-accent' },
@@ -236,13 +20,26 @@ const TRUST_BADGES = [
 export default function SearchPage() {
   const { setOrigin, setDestination } = useSearchStore();
 
-  const handleSelectPromo = (iata: string) => {
-    setOrigin('JFK');
-    setDestination(iata);
-    const element = document.getElementById('search-funnel-container');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  const handleSelectPromo = (city: string, iata: string, originalPrice: number, offRate: number) => {
+    const discountedPrice = Math.round(originalPrice * (1 - offRate / 100));
+    const promoCode = `VANTAGE-${city.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${offRate}`;
+    
+    const subject = encodeURIComponent(`Bespoke Flight Booking Request — ${city} (${iata})`);
+    const body = encodeURIComponent(
+      `Dear Vantage Elite Booking Desk,\n\n` +
+      `I would like to request a bespoke private flight booking to ${city} (${iata}) departing from New York (JFK).\n\n` +
+      `Flight & Promo Details:\n` +
+      `- Origin: New York (JFK)\n` +
+      `- Destination: ${city} (${iata})\n` +
+      `- Standard Price: $${originalPrice}\n` +
+      `- Exclusive Promo Applied: ${promoCode} (${offRate}% OFF)\n` +
+      `- Final Sovereign Price: $${discountedPrice}\n\n` +
+      `Please contact me immediately to finalize my itinerary, schedule, and aircraft selection (Gulfstream G700 / Bombardier Global 7500).\n\n` +
+      `Sovereign Regards,\n` +
+      `[Your Name]`
+    );
+    
+    window.location.href = `mailto:concierge@vantage.aero?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -334,7 +131,7 @@ export default function SearchPage() {
               Live Pricing
             </span>
           </div>
-          <PromoCarousel destinations={PROMO_DESTINATIONS} onSelect={handleSelectPromo} />
+          <PromoCarousel destinations={ALL_COUNTRIES} onSelect={handleSelectPromo} />
         </section>
 
         {/* Loyalty Banner */}

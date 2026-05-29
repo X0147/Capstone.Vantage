@@ -7,6 +7,7 @@ interface PromoDestination {
   city: string;
   iata: string;
   price: number;
+  offRate: number;
   duration: string;
   image: string;
   tag: string;
@@ -14,7 +15,7 @@ interface PromoDestination {
 
 interface PromoCarouselProps {
   destinations: PromoDestination[];
-  onSelect: (iata: string) => void;
+  onSelect: (city: string, iata: string, price: number, offRate: number) => void;
 }
 
 export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSelect }) => {
@@ -122,6 +123,7 @@ export const PromoCarousel: React.FC<PromoCarouselProps> = ({ destinations, onSe
               city={promo.city}
               iata={promo.iata}
               price={promo.price}
+              offRate={promo.offRate}
               duration={promo.duration}
               image={promo.image}
               tag={promo.tag}
