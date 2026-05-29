@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, ArrowRight, Zap, Crown, Key, Star, Fingerprint } from 'lucide-react';
+import SEO from '../components/SEO';
 import StructuredFooter from '../components/StructuredFooter';
 
 const TIERS = [
@@ -33,6 +34,10 @@ const TIERS = [
 export const LoyaltyPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-24 -mt-24 relative selection:bg-vantage-gold/30 selection:text-white">
+      <SEO 
+        title="Vantage Black Ledger" 
+        description="Explore the exclusive Vantage Black Ledger loyalty tiers, offering unprecedented airspace privileges and rewards." 
+      />
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 bg-[#02050a] overflow-hidden">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-vantage-gold/5 rounded-full blur-[150px] pointer-events-none" />

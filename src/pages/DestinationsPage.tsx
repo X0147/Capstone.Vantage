@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Globe, MapPin, ArrowRight } from 'lucide-react';
 import StructuredFooter from '../components/StructuredFooter';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const DESTINATIONS = [
   {
@@ -37,6 +38,10 @@ const DESTINATIONS = [
 export const DestinationsPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-24 -mt-24 relative selection:bg-vantage-accent/30 selection:text-white">
+      <SEO 
+        title="Global Destinations" 
+        description="Explore the expansive network of Capstone.Vantage secure travel routes spanning 195 countries." 
+      />
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 bg-vantage-midnight overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-sky-900/10 rounded-full blur-[150px] pointer-events-none" />

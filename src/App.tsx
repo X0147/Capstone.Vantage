@@ -4,15 +4,11 @@ import i18n from './i18n';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense } from 'react';
+import React from 'react';
+import './skipLink.css';
 import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
-
-// Provide a simple fallback for the suspense since ResultsSkeleton is missing or needs import
-const ResultsSkeleton = () => (
-  <div className="animate-pulse space-y-4 p-4">
-    <div className="h-12 bg-white/5 rounded-xl"></div>
-    <div className="h-32 bg-white/5 rounded-xl"></div>
-  </div>
-);
+import ResultsSkeleton from './features/search/ResultsSkeleton';
+import Breadcrumbs from './components/Breadcrumbs';
 
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ResultsPage = lazy(() => import('./pages/ResultsPage'));
@@ -50,6 +46,10 @@ function App() {
 function AppShell() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-dark text-white font-sans antialiased relative">
+      {/* Skip-to-content link for keyboard / screen-reader users */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       {/* Global Cinematic Background */}
       <div 
         className="fixed inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none z-0 mix-blend-screen"
@@ -59,8 +59,9 @@ function AppShell() {
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <EnterpriseNavigationBar />
+        <Breadcrumbs />
 
-        <main className="flex-1 container mx-auto p-4">
+        <main id="main-content" tabIndex={-1} className="flex-1 container mx-auto p-4">
           <Suspense
             fallback={
               <div className="p-6">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Ticket, Plane, Compass, Menu, X, LogIn, Users, Globe, Crown } from 'lucide-react';
 import BrandLogo from './BrandLogo';
-
+import ThemeToggle from './ThemeToggle';
 const NAV_LINKS = [
   { to: '/', label: 'Book Flights', icon: Search },
   { to: '/manage-booking', label: 'Manage', icon: Ticket },
@@ -67,24 +67,15 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           {/* Right side */}
           <div className="flex items-center gap-sm">
-            {/* Sign In CTA — glowing premium button */}
-            <Link
-              to="/login"
-              className="hidden sm:flex items-center gap-xs px-md py-xs rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-blue-700 text-white font-black text-[11px] tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04] active:scale-[0.97] shadow-[0_0_15px_rgba(56,189,248,0.3)] border border-sky-300/20"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              Sign In
-            </Link>
-
-            {/* Mobile hamburger */}
-            <button
-              className="lg:hidden p-xs rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+  <ThemeToggle />
+  <button
+    className="lg:hidden p-xs rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+    onClick={() => setMobileOpen(!mobileOpen)}
+    aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+  >
+    {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+  </button>
+</div>
         </div>
       </header>
 

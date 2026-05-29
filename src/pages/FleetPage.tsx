@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plane, Wind, Shield, Zap, ArrowRight, Compass } from 'lucide-react';
+import SEO from '../components/SEO';
 import StructuredFooter from '../components/StructuredFooter';
 import { Link } from 'react-router-dom';
 
@@ -46,6 +47,10 @@ const FLEET = [
 export const FleetPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-24 -mt-24 relative selection:bg-vantage-gold/30 selection:text-white">
+      <SEO 
+        title="Fleet Showcase" 
+        description="Discover the Capstone.Vantage aerospace fleet, featuring cutting-edge engineering and ultimate in-flight luxury." 
+      />
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 bg-vantage-midnight overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-sky-900/10 to-transparent" />

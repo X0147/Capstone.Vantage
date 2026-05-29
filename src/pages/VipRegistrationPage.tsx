@@ -79,6 +79,7 @@ export default function VipRegistrationPage() {
       <img
         src={`${import.meta.env.BASE_URL || '/'}images/earth-network.jpg`}
         alt=""
+        aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.25] mix-blend-lighten pointer-events-none"
       />
       <div className="absolute inset-0 bg-gradient-to-br from-vantage-midnight/95 via-vantage-midnight/80 to-black/95 pointer-events-none" />

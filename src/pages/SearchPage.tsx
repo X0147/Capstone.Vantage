@@ -2,6 +2,7 @@ import React from 'react';
 import SearchHero from '../components/search/SearchHero';
 import { ShieldCheck, Zap, BadgeDollarSign } from 'lucide-react';
 import LoyaltyBanner from '../components/LoyaltyBanner';
+import SEO from '../components/SEO';
 import TechFeaturesGrid from '../components/TechFeaturesGrid';
 import StructuredFooter from '../components/StructuredFooter';
 import { QuickFlightTracker } from '../components/search/QuickFlightTracker';
@@ -36,7 +37,11 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-2xl">
+      <SEO 
+        title="Book Secure Flights" 
+        description="Capstone.Vantage offers premium, encrypted travel solutions for discerning clients worldwide." 
+      />
       {/* ── CINEMATIC HERO ──────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden -mt-24 pt-24">
 

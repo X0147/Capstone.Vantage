@@ -3,6 +3,7 @@ import { useBookingStore, BookingRecord } from '../store/useBookingStore';
 import { Search, MapPin, Calendar, Users, Briefcase, ChevronRight, ShieldCheck, Fingerprint, Lock, ArrowRight, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 export const ManageBookingPage: React.FC = () => {
   const [pnr, setPnr] = useState('');
@@ -39,10 +40,17 @@ export const ManageBookingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-vantage-midnight flex flex-col relative overflow-hidden">
+      <SEO 
+        title="Manage Booking" 
+        description="Access and manage your Capstone.Vantage reservation with enterprise-grade encryption." 
+      />
+      
       {/* ── Cinematic Backgrounds ── */}
       <img
         src={`${import.meta.env.BASE_URL || '/'}images/03_buildings_network.jpg`}
         alt=""
+        aria-hidden="true"
+        loading="lazy"
         className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-lighten pointer-events-none"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-vantage-midnight/90 via-vantage-midnight/60 to-black/95 pointer-events-none" />
@@ -193,6 +201,7 @@ export const ManageBookingPage: React.FC = () => {
                 <img
                   src={`${import.meta.env.BASE_URL || '/'}images/04_city_skyline.jpg`}
                   alt=""
+                  aria-hidden="true"
                   className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-[#070b12]/80 backdrop-blur-md pointer-events-none" />

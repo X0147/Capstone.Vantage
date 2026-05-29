@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { Target, Award, Globe, ShieldCheck, ArrowRight, Compass } from 'lucide-react';
+import SEO from '../components/SEO';
 import StructuredFooter from '../components/StructuredFooter';
 
 interface TeamMember {
@@ -83,6 +84,10 @@ function InteractiveCard({ children, className = '' }: { children: React.ReactNo
 export const TeamPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-24 -mt-24 relative selection:bg-vantage-accent/30 selection:text-white">
+      <SEO 
+        title="Executive Directorate" 
+        description="Meet the visionaries behind Capstone.Vantage, bridging elite aviation and unparalleled security." 
+      />
       
       {/* Deep Space Background */}
       <div className="absolute inset-0 z-0 bg-vantage-midnight overflow-hidden">
