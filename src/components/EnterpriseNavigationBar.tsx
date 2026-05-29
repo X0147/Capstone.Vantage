@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Ticket, Plane, Compass, ShieldCheck, Menu, X } from 'lucide-react';
+import { Search, Ticket, Plane, Compass, Menu, X, LogIn } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 const NAV_LINKS = [
@@ -26,39 +26,36 @@ export const EnterpriseNavigationBar: React.FC = () => {
       <header
         className={`w-full sticky top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'bg-vantage-midnight/90 backdrop-blur-2xl shadow-nav border-b border-white/5'
-            : 'bg-transparent backdrop-blur-sm'
+            ? 'bg-black/80 backdrop-blur-2xl shadow-nav border-b border-white/8'
+            : 'bg-black/30 backdrop-blur-md'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-lg h-24 flex items-center justify-between gap-lg">
+        <div className="max-w-7xl mx-auto px-lg h-20 flex items-center justify-between gap-lg">
           {/* Brand */}
           <Link
             to="/"
             className="shrink-0 hover:opacity-90 transition-opacity duration-300"
             aria-label="Capstone Vantage — Home"
           >
-            <BrandLogo iconSize="w-40 h-auto" />
+            <BrandLogo iconSize="w-36 h-auto" />
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-md shrink-0" aria-label="Main navigation">
+          {/* Desktop Nav — pill-style buttons */}
+          <nav className="hidden lg:flex items-center gap-xs shrink-0" aria-label="Main navigation">
             {NAV_LINKS.map(({ to, label, icon: Icon }) => {
               const isActive = location.pathname === to;
               return (
                 <Link
                   key={to}
                   to={to}
-                  className={`relative flex items-center gap-2xs px-sm py-2xs rounded-xl text-[11px] font-semibold tracking-widest uppercase whitespace-nowrap shrink-0 transition-all duration-300 group ${
+                  className={`relative flex items-center gap-xs px-sm py-xs rounded-full text-[11px] font-bold tracking-widest uppercase whitespace-nowrap shrink-0 transition-all duration-300 group ${
                     isActive
-                      ? 'text-vantage-accent bg-vantage-accent/8'
-                      : 'text-vantage-muted hover:text-white hover:bg-white/5'
+                      ? 'text-white bg-gradient-to-r from-sky-500/80 to-blue-600/80 shadow-[0_0_20px_rgba(56,189,248,0.35)] border border-sky-400/30'
+                      : 'text-white/60 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/10'
                   }`}
                 >
-                  <Icon className={`w-3 h-3 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-vantage-accent' : ''}`} />
+                  <Icon className={`w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-white' : 'text-sky-400/70 group-hover:text-sky-300'}`} />
                   {label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-vantage-accent" />
-                  )}
                 </Link>
               );
             })}
@@ -66,18 +63,12 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
           {/* Right side */}
           <div className="flex items-center gap-sm">
-            {/* Security badge */}
-            <div className="hidden md:flex items-center gap-2xs px-xs py-2xs rounded-full bg-black/20 border border-white/5 text-[9px] font-mono tracking-widest text-vantage-muted">
-              <ShieldCheck className="w-3 h-3 text-vantage-gold shrink-0" />
-              <span>AES-256 Secured</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-vantage-emerald animate-pulse shrink-0" />
-            </div>
-
-            {/* Sign In CTA */}
+            {/* Sign In CTA — glowing premium button */}
             <Link
               to="/login"
-              className="hidden sm:flex items-center gap-2xs px-md py-xs rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-[11px] tracking-widest uppercase transition-all duration-300 hover:shadow-glow-accent hover:scale-[1.02] active:scale-[0.98] shadow-md"
+              className="hidden sm:flex items-center gap-xs px-md py-xs rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-blue-700 text-white font-black text-[11px] tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04] active:scale-[0.97] shadow-[0_0_15px_rgba(56,189,248,0.3)] border border-sky-300/20"
             >
+              <LogIn className="w-3.5 h-3.5" />
               Sign In
             </Link>
 
@@ -95,7 +86,7 @@ export const EnterpriseNavigationBar: React.FC = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 pt-24 bg-vantage-midnight/95 backdrop-blur-2xl">
+        <div className="lg:hidden fixed inset-0 z-40 pt-20 bg-black/95 backdrop-blur-2xl">
           <nav className="flex flex-col gap-xs p-lg">
             {NAV_LINKS.map(({ to, label, icon: Icon }) => {
               const isActive = location.pathname === to;
@@ -104,13 +95,13 @@ export const EnterpriseNavigationBar: React.FC = () => {
                   key={to}
                   to={to}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-sm px-md py-sm rounded-2xl text-sm font-semibold tracking-wider uppercase transition-all ${
+                  className={`flex items-center gap-sm px-md py-sm rounded-2xl text-sm font-bold tracking-wider uppercase transition-all ${
                     isActive
-                      ? 'text-vantage-accent bg-vantage-accent/10 border border-vantage-accent/20'
-                      : 'text-vantage-text hover:bg-white/5 border border-white/5'
+                      ? 'text-white bg-gradient-to-r from-sky-500/30 to-blue-600/30 border border-sky-400/30 shadow-[0_0_20px_rgba(56,189,248,0.2)]'
+                      : 'text-white/60 hover:text-white hover:bg-white/5 border border-white/8'
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-sky-400' : 'text-white/40'}`} />
                   {label}
                 </Link>
               );
@@ -118,8 +109,9 @@ export const EnterpriseNavigationBar: React.FC = () => {
             <Link
               to="/login"
               onClick={() => setMobileOpen(false)}
-              className="mt-sm flex items-center justify-center gap-2xs px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-sm tracking-wider uppercase"
+              className="mt-sm flex items-center justify-center gap-xs px-md py-sm rounded-2xl bg-gradient-to-r from-sky-400 via-blue-500 to-blue-700 text-white font-black text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(56,189,248,0.4)]"
             >
+              <LogIn className="w-4 h-4" />
               Sign In to Vantage
             </Link>
           </nav>
