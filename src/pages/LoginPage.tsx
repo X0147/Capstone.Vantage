@@ -13,7 +13,7 @@ export const LoginPage: React.FC = () => {
 
   const handleAuthentication = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email ?? !password) return;
+    if (!email || !password) return;
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsLoading(false);
@@ -113,7 +113,7 @@ export const LoginPage: React.FC = () => {
 
           <button
             type="submit"
-            disabled={isLoading ?? biometricStatus !== 'idle'}
+            disabled={isLoading || biometricStatus !== 'idle'}
             className="w-full group flex items-center justify-center gap-sm py-sm rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 text-vantage-midnight font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:shadow-glow-accent hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
@@ -142,7 +142,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={handleBiometricAuth}
-              disabled={isLoading ?? biometricStatus === 'success'}
+              disabled={isLoading || biometricStatus === 'success'}
               className={`p-lg rounded-full border-2 transition-all duration-300 active:scale-90 group ${
                 biometricStatus === 'scanning'
                   ? 'bg-vantage-accent/20 border-vantage-accent text-vantage-accent animate-glow-pulse'
