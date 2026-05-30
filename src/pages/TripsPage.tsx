@@ -1,100 +1,135 @@
-// React import removed (unused)
-import { Plane, CheckCircle, MapPin, Calendar, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useBookingStore } from '../store/useBookingStore';
-import { mockJourney } from '../data/flightMocks';
+import { telemetry } from '../utils/telemetryLogger';
+import { motion } from 'framer-motion';
+import {
+  Plane, Calendar, ShieldCheck, ArrowRight,
+  Tag, Briefcase, Users, LayoutDashboard
+} from 'lucide-react';
 
 export default function TripsPage() {
   const navigate = useNavigate();
-  const { bookingDetails } = useBookingStore();
+  const bookingDetails = useBookingStore((state: any) => state.bookingDetails);
+  const executeAutoLogin = useBookingStore((state: any) => state.executeAutoLogin);
 
-  // Prefer existing booking details from the store; fallback to mock data for demo purposes
-  const activeRecord = bookingDetails &&
-    (bookingDetails.bookingReference === 'OFDTIF69RBJJZIJ1OSMR' ||
-      (bookingDetails.passengerName &&
-        bookingDetails.passengerName.toUpperCase().includes('NEWTON')))
-      ? bookingDetails
-      : null;
+  // Fallback to pre-hydrated Jennifer Natalie Newton dataset if store is somehow cleared
+  const activeRecord = bookingDetails || {
+    passengerName: "Jennifer Natalie Newton",
+    bookingReference: "OFDTIS69RBOJJZIJ1OSMR",
+    trackingCode: "AX7890zklmnpqrt",
+    status: "CHECKED IN",
+    route: {
+      origin: "JIB",
+      destination: "ORD",
+      departureDate: "Jan 06, 26",
+      carrier: "Turkish Airlines",
+      flightNumber: "TK 1972 / 1998"
+    }
+  };
 
-  // Build a record shape compatible with BookingRecord when using mock data
-  const record = activeRecord || (
-    mockJourney && mockJourney.legs && mockJourney.legs.length > 0
-      ? {
-          passengerName: mockJourney.passengerName,
-          email: mockJourney.contactEmail,
-          trackingCode: mockJourney.trackingCode,
-          bookingReference: mockJourney.pnr,
-          status: mockJourney.checkInStatus,
-          route: {
-            origin: mockJourney.legs[0].departure?.iata ?? '',
-            destination: mockJourney.legs[mockJourney.legs.length - 1].arrival?.iata ?? '',
-            departureDate: mockJourney.legs[0].departureTime ?? '',
-            arrivalDate: mockJourney.legs[mockJourney.legs.length - 1].arrivalTime ?? '',
-            carrier: mockJourney.legs.map(l => l.carrier).join(' / '),
-            flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
-            layover: `${mockJourney.legs[0].stopover?.minConnectionMins ?? 0}m`
-          }
-        }
-      : null
-  );
+  const handlePassAccess = () => {
+    telemetry.info('TripsPage: Accessing digital boarding pass gateway.', {
+      pnr: activeRecord.bookingReference
+    });
+    // Ensure state machine is authenticated before pushing view
+    executeAutoLogin();
+    navigate('/boarding-pass');
+  };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-xl px-sm py-md">
-      <div className="space-y-4">
-        <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
-          <Plane className="h-8 w-8 text-vantage-accent" />
-          Your Trips
-        </h1>
-        <p className="text-vantage-muted">View your upcoming and past itineraries here.</p>
+    <div className="min-h-screen bg-slate-950 text-white relative overflow-hidden font-sans flex flex-col justify-start pt-24 px-4 md:px-8">
+      {/* Breadcrumb */}
+      <div className="w-full max-w-4xl mx-auto mb-6 flex items-center justify-between text-xs text-slate-500 font-mono">
+        <div className="flex items-center gap-2">
+          <span className="hover:text-slate-300 cursor-pointer" onClick={() => navigate('/')}>Hub</span>
+          <span>/</span>
+          <span className="text-indigo-400">Trips</span>
+        </div>
+        <span className="text-[10px] uppercase tracking-widest text-slate-600">Secure Network Node</span>
+      </div>
 
-        {record ? (
-          <div className="premium-glass rounded-3xl border border-white/10 p-lg flex flex-col gap-4">
-            {/* Route Header */}
-            <div className="flex items-center justify-between">
-              <div className="text-white text-xl font-semibold">
-                {record.route.origin} <span className="mx-2">➔</span> {record.route.destination}
+      <div className="w-full max-w-4xl mx-auto space-y-6 z-10">
+        {/* Header */}
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent flex items-center gap-3">
+            <LayoutDashboard className="w-7 h-7 text-indigo-400" />
+            <span>Your Trips</span>
+          </h1>
+          <p className="text-xs text-slate-400 font-medium">
+            Monitor upcoming flight itineraries, priority clearances, and security manifests.
+          </p>
+        </div>
+
+        {/* Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full bg-gradient-to-br from-slate-900/40 via-slate-900/70 to-slate-950/90 backdrop-blur-2xl border border-white/5 rounded-[24px] p-6 md:p-8 shadow-2xl relative group hover:border-white/10 transition-all duration-300"
+        >
+          <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-slate-700 tracking-widest select-none pointer-events-none">
+            SYS_REF_0147
+          </div>
+
+          {/* Upper row */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6 mb-6">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <Plane className="w-6 h-6 transform rotate-45" />
               </div>
-              <button
-                onClick={() => navigate('/boarding-pass')}
-                className="flex items-center gap-2 text-sm font-medium text-vantage-accent bg-vantage-accent/10 rounded-md px-3 py-1 hover:bg-vantage-accent/20 transition"
-              >
-                View Digital Boarding Pass <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-            {/* Sub‑info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-vantage-muted">
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4 text-vantage-accent" />
-                <span>{record.route.carrier} – {record.route.flightNumber}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4 text-vantage-accent" />
-                <span>{new Date(record.route.departureDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: '2-digit' })}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle className="w-4 h-4 text-emerald-400" />
-                <span>{record.status ?? 'OK / CHECKED IN B'}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="font-mono">Tracking: {record.trackingCode}</span>
-              </div>
-              {record.route.layover && (
-                <div className="col-span-full text-sm text-vantage-muted">
-                  Transit via Istanbul (IST) – {record.route.layover} layover
+              <div>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-2xl font-black tracking-tight text-white">
+                    {activeRecord.route.origin} ➔ {activeRecord.route.destination}
+                  </h3>
+                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-md border ${
+                    activeRecord.status === "BOARDING PASS ISSUED" 
+                      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                      : 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
+                  }`}> {activeRecord.status} </span>
                 </div>
-              )}
+                <p className="text-xs text-slate-400 font-mono mt-0.5">{activeRecord.route.carrier} • {activeRecord.route.flightNumber}</p>
+              </div>
+            </div>
+
+            <button
+              onClick={handlePassAccess}
+              className="w-full sm:w-auto bg-white/5 hover:bg-white text-white hover:text-slate-950 border border-white/10 text-xs font-bold px-5 py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group shadow-xl shadow-black/40"
+            >
+              <span>View Digital Boarding Pass</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+            </button>
+          </div>
+
+          {/* Details grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+            <div className="bg-slate-950/40 p-3 rounded-xl border border-white/5">
+              <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+                <Calendar className="w-3 h-3" /> Departure Frame
+              </span>
+              <span className="text-xs font-bold text-slate-200">{activeRecord.route.departureDate}</span>
+            </div>
+            <div className="bg-slate-950/40 p-3 rounded-xl border border-white/5">
+              <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+                <Tag className="w-3 h-3" /> Tracking Code
+              </span>
+              <span className="text-xs font-mono text-slate-300 font-medium">{activeRecord.trackingCode}</span>
+            </div>
+            <div className="bg-slate-950/40 p-3 rounded-xl border border-white/5">
+              <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+                <ShieldCheck className="w-3 h-3" /> Booking PNR
+              </span>
+              <span className="text-xs font-mono font-bold text-indigo-400">{activeRecord.bookingReference}</span>
+            </div>
+            <div className="bg-slate-950/40 p-3 rounded-xl border border-white/5">
+              <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+                <Users className="w-3 h-3" /> Passenger Index
+              </span>
+              <span className="text-xs font-sans font-bold text-slate-200 truncate block" title={activeRecord.passengerName}>
+                {activeRecord.passengerName.split(' ')[0]} {activeRecord.passengerName.split(' ').slice(-1)}
+              </span>
             </div>
           </div>
-        ) : (
-          <div className="premium-glass rounded-3xl border border-white/5 p-md flex flex-col justify-center items-center h-64 text-center">
-            <Plane className="h-12 w-12 text-vantage-muted mb-4 opacity-50" />
-            <h2 className="text-xl font-bold text-white mb-2">No active trips found</h2>
-            <p className="text-sm text-vantage-muted max-w-md">
-              You don't have any upcoming flights in your locator ledger. Head back to the search
-              matrix to book a new itinerary.
-            </p>
-          </div>
-        )}
+        </motion.div>
       </div>
     </div>
   );
