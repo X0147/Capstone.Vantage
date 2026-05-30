@@ -19,7 +19,7 @@ interface SeatSelectorProps {
 // Simulated premium cabin layout layout configuration
 const GENERATED_SEATS: Seat[] = Array.from({ length: 12 }, (_, rowIndex) => {
   const row = rowIndex + 1;
-  const cabinClass = row <= 3 ? 'first' : row <= 6 ? 'premium' : 'economy';
+  const cabinClass: 'first' | 'premium' | 'economy' = row <= 3 ? 'first' : row <= 6 ? 'premium' : 'economy';
   const letters = cabinClass === 'first' ? ['A', 'C', 'D', 'F'] : ['A', 'B', 'C', 'D', 'E', 'F'];
 
   return letters.map((letter) => ({
@@ -168,7 +168,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
                   key={s.id}
                   className="px-xs py-2xs rounded bg-white/5 text-xs text-white border border-white/10 font-mono"
                 >
-                  {s.id} ({s.class[0].toUpperCase()})
+                  {s.id} ({s.class.charAt(0).toUpperCase()})
                 </span>
               ))}
             </div>

@@ -38,7 +38,7 @@ const HEADINGS = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest
 const generateMockFlight = (flightNo: string): TrackedFlight => {
   const carrierCode = flightNo.slice(0, 2);
   // eslint-disable-next-line security/detect-object-injection
-  const airline = carrierCode in MOCK_AIRLINES ? MOCK_AIRLINES[carrierCode] : 'Vantage Global Alliance';
+  const airline = carrierCode in MOCK_AIRLINES ? (MOCK_AIRLINES[carrierCode] ?? 'Vantage Global Alliance') : 'Vantage Global Alliance';
   let seed = 0;
   for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);
   
@@ -82,6 +82,28 @@ export const FlightTrackerPage: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false) => {
+    if (!isSilentRefresh) {
+      setIsConnecting(true);
+      setErrorMsg('');
+    }
+    try {
+      if (flightNo.length < 3) {
+        throw new Error('Please enter a valid flight designation (e.g. EK201).');
+      }
+      const data = fetchLiveFlightData(flightNo);
+      setActiveFlight(data);
+      setLastUpdated(new Date());
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Tracking failed.';
+      setErrorMsg(message);
+      if (!isSilentRefresh) setActiveFlight(null);
+    } finally {
+      setIsConnecting(false);
+    }
+  }, [setActiveFlight, setErrorMsg, setIsConnecting, setLastUpdated]);
+
   useEffect(() => {
     if (incomingFlight) {
       setSearchQuery(incomingFlight.toUpperCase());
@@ -124,27 +146,7 @@ export const FlightTrackerPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeFlight?.flightNumber, activeFlight, triggerTracking]);
 
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
-  const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false) => {
-    if (!isSilentRefresh) {
-      setIsConnecting(true);
-      setErrorMsg('');
-    }
-    try {
-      if (flightNo.length < 3) {
-        throw new Error('Please enter a valid flight designation (e.g. EK201).');
-      }
-      const data = fetchLiveFlightData(flightNo);
-      setActiveFlight(data);
-      setLastUpdated(new Date());
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Tracking failed.';
-      setErrorMsg(message);
-      if (!isSilentRefresh) setActiveFlight(null);
-    } finally {
-      setIsConnecting(false);
-    }
-  }, [setActiveFlight, setErrorMsg, setIsConnecting, setLastUpdated]);
+
 
   const handleTrackSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();

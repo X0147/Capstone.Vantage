@@ -17,7 +17,7 @@ export const ManageBookingPage: React.FC = () => {
 
   const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!pnr ?? !lastName) {
+    if (!pnr || !lastName) {
       setError('Please enter both PNR and Last Name.');
       return;
     }
