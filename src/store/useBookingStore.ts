@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { searchFlights } from '../services/flightService';
+import { trackTicket } from '../services/trackService';
 
 export interface Passenger {
   firstName: string;
@@ -122,7 +123,7 @@ export interface BookingState {
   // Ticket Tracking
   trackedTicket: TicketDetails | null;
   trackError: string | null;
-  lookupTicket: (pnr: string, lastName: string) => Promise<boolean>;
+  lookupTicket: (pnr: string, lastName: string, email: string) => Promise<boolean>;
   clearTrackedTicket: () => void;
 }
 
@@ -354,33 +355,20 @@ export const useBookingStore = create<BookingState>()(
       },
 
       // Ticket Tracking Actions
-      lookupTicket: async (pnr: string, lastName: string) => {
-        await new Promise((r) => setTimeout(r, 800));
-        if (pnr.toUpperCase() === 'VNTG6K' && lastName.toLowerCase() === 'laurence') {
-          set({
-            trackedTicket: {
-              pnr: 'VNTG6K',
-              lastName: 'Laurence',
-              flightNumber: 'VW-402',
-              origin: 'LOS',
-              destination: 'DXB',
-              departureTime: '2026-06-15T14:30:00Z',
-              arrivalTime: '2026-06-15T22:30:00Z',
-              status: 'ON_TIME',
-              seat: '12A',
-              passengerName: 'Laurence TechLead',
-              passengerFirstName: 'Laurence',
-              passengerLastName: 'TechLead',
-              cabin: 'First Class',
-              gate: 'A1',
-              terminal: 'Terminal 3',
-            },
-            trackError: null,
-          });
-          return true;
+      lookupTicket: async (pnr: string, lastName: string, email: string) => {
+        set({ trackError: null, trackedTicket: null });
+        try {
+          const ticket = await trackTicket({ pnr, lastName, email });
+          if (ticket) {
+            set({ trackedTicket: ticket });
+            return true;
+          }
+          return false;
+        } catch (error) {
+          const msg = error instanceof Error ? error.message : 'Unknown error';
+          set({ trackError: msg });
+          return false;
         }
-        set({ trackedTicket: null, trackError: 'No active reservation found matching those credentials.' });
-        return false;
       },
       clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
     }),

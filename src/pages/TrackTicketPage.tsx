@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useBookingStore } from '../store/useBookingStore';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import {
   Search, Ticket, Plane, ShieldAlert, QrCode, RefreshCw,
-  ShieldCheck, Clock, MapPin, User, Calendar, ArrowRight, Fingerprint, Copy
+  ShieldCheck, Clock, MapPin, User, Calendar, ArrowRight, Fingerprint, Copy, Mail
 } from 'lucide-react';
 import AnimatedSpinner from '../components/AnimatedSpinner';
 import SEO from '../components/SEO';
@@ -36,13 +37,14 @@ export const TrackTicketPage: React.FC = () => {
 
   const [pnr, setPnr] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
   const handleLookup = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!pnr ?? !lastName) return;
+    if (!pnr || !lastName || !email) return;
     setIsSearching(true);
-    await lookupTicket(pnr, lastName);
+    await lookupTicket(pnr, lastName, email);
     setIsSearching(false);
   };
 
@@ -77,7 +79,12 @@ export const TrackTicketPage: React.FC = () => {
           </div>
 
           {/* Search Card */}
-          <div className="w-full max-w-lg mx-auto fade-in-up" style={{ animationDelay: '0.15s' }}>
+          <motion.div 
+            className="w-full max-w-lg mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+          >
             <div className="relative premium-glass rounded-3xl p-lg border border-white/10 shadow-2xl overflow-hidden">
               {/* Card glow effects */}
               <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
@@ -132,6 +139,22 @@ export const TrackTicketPage: React.FC = () => {
                     />
                 </div>
 
+                {/* Email Input */}
+                <div className="space-y-2xs">
+                    <label htmlFor="email" className="flex items-center gap-2xs text-[10px] uppercase tracking-wider text-vantage-muted font-bold">
+                      <Mail className="w-3 h-3" />
+                      Email Address
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Email used for booking"
+                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-md py-sm text-sm text-white focus:outline-none focus:border-vantage-accent focus:bg-white/[0.03] transition-all placeholder:text-vantage-muted/40"
+                    />
+                </div>
+
                 {/* Error Alert */}
                 {trackError && (
                   <div className="flex items-center gap-sm p-sm rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs animate-fadeIn">
@@ -141,10 +164,12 @@ export const TrackTicketPage: React.FC = () => {
                 )}
 
                 {/* Submit Button */}
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   type="submit"
-                  disabled={isSearching ?? !pnr ?? !lastName}
-                  className="w-full py-sm rounded-2xl bg-gradient-to-r from-vantage-accent to-blue-500 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center gap-sm transition-all hover:shadow-[0_0_30px_rgba(56,189,248,0.3)] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
+                  disabled={isSearching || !pnr || !lastName || !email}
+                  className="w-full py-sm rounded-2xl bg-gradient-to-r from-vantage-accent to-blue-500 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center gap-sm transition-all hover:shadow-[0_0_30px_rgba(56,189,248,0.3)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
                 >
                   {isSearching ? (
                     <AnimatedSpinner size={16} />
@@ -152,7 +177,7 @@ export const TrackTicketPage: React.FC = () => {
                     <Search className="w-4 h-4" />
                   )}
                   {isSearching ? 'Authenticating...' : t('track.cta')}
-                </button>
+                </motion.button>
               </form>
 
               {/* Security badge */}
@@ -168,7 +193,7 @@ export const TrackTicketPage: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-sm mt-lg fade-in-up" style={{ animationDelay: '0.3s' }}>
