@@ -1,60 +1,58 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCcw } from 'lucide-react';
+import { Component, ErrorInfo, ReactNode } from 'react';
+import { telemetry } from '../utils/telemetryLogger';
+import { ShieldAlert, RefreshCw } from 'lucide-react';
 
-interface Props {
-  children?: ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
+interface Props { children: ReactNode; }
+interface State { hasError: boolean; error: Error | null; }
 
 export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null,
-  };
+  public state: State = { hasError: false, error: null };
 
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    telemetry.error(`Fatal UI Thread Crash: ${error.message}`, {
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+    });
   }
+
+  private handleSystemReset = () => {
+    localStorage.clear(); // Safe clear-all state recovery strategy
+    window.location.href = '/Capstone.Vantage/';
+  };
 
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center p-lg text-white font-sans text-center">
-          <div className="premium-glass rounded-3xl p-xl max-w-lg w-full space-y-md border border-red-500/20 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-red-500/50" />
-            <div className="mx-auto w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-sm">
-              <AlertTriangle className="w-8 h-8 text-red-400" />
+        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 font-sans">
+          <div className="max-w-md w-full bg-slate-900 border border-red-500/20 rounded-3xl p-8 text-center space-y-6 shadow-2xl backdrop-blur-xl">
+            <div className="w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center mx-auto border border-red-500/20">
+              <ShieldAlert className="w-8 h-8 text-red-400" />
             </div>
-            <h2 className="font-display text-2xl font-bold text-white tracking-tight">System Exception</h2>
-            <p className="text-sm text-vantage-muted">
-              An unexpected anomaly occurred within the application layer. Our telemetry has been updated.
-            </p>
-            <div className="bg-black/40 p-sm rounded-xl border border-white/5 text-left overflow-auto max-h-32 mt-4">
-              <code className="text-[10px] text-red-300 font-mono">
-                {this.state.error?.toString()}
-              </code>
+            <div className="space-y-2">
+              <h1 className="text-xl font-black text-white tracking-tight">Core Ledger Violation</h1>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                An unhandled exception has interrupted the runtime stream. The vector context has been written securely to telemetry cache.
+              </p>
+            </div>
+            <div className="p-4 bg-slate-950 rounded-xl border border-white/5 text-left overflow-x-auto max-h-32 text-[10px] font-mono text-red-400">
+              {this.state.error?.toString()}
             </div>
             <button
-              onClick={() => window.location.reload()}
-              className="mt-lg w-full flex items-center justify-center gap-2xs px-lg py-sm rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs font-bold uppercase tracking-widest text-white"
+              onClick={this.handleSystemReset}
+              className="w-full bg-white text-slate-950 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 transition-all shadow-lg"
             >
-              <RefreshCcw className="w-4 h-4" /> Reload Instance
+              <RefreshCw className="w-4 h-4" />
+              <span>Flush Engine and Purge State Cache</span>
             </button>
           </div>
         </div>
       );
     }
-
     return this.props.children;
   }
 }
-
 export default ErrorBoundary;

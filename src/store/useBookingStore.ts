@@ -1,6 +1,24 @@
 import { create } from 'zustand';
 import { mockJourney } from '../data/flightMocks';
 
+export interface FlightSegment {
+  origin: string;
+  destination: string;
+  departureDate: string;
+  arrivalDate: string;
+  carrier: string;
+  flightNumber: string;
+}
+
+export interface BookingRecord {
+  passengerName: string;
+  email: string;
+  trackingCode: string;
+  bookingReference: string;
+  status: string;
+  route: FlightSegment;
+}
+
 // Hydrate a BookingRecord from mockJourney, mapping pnr -> bookingReference
 const hydratedRecord: BookingRecord = {
   passengerName: mockJourney.passengerName,
@@ -18,27 +36,7 @@ const hydratedRecord: BookingRecord = {
   },
 };
 
-// ==========================================
-// 1. TYPE CONTRACTS & INTERFACES
-// ==========================================
-export interface FlightSegment {
-  origin: string;
-  destination: string;
-  departureDate: string;
-  arrivalDate: string;
-  carrier: string;
-  flightNumber: string;
-  layover?: string;
-}
 
-export interface BookingRecord {
-  passengerName: string;
-  email: string;
-  trackingCode: string;
-  bookingReference: string;
-  status: string;
-  route: FlightSegment;
-}
 
 // Keeping your complex booking ecosystem completely typed
 export interface BookingState {
@@ -124,3 +122,8 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 }));
 
 export default useBookingStore;
+
+// Debug: output initial store state
+if (process.env.NODE_ENV === 'development') {
+  console.log('🚀 Initial booking store state:', useBookingStore.getState());
+}
