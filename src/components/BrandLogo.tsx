@@ -3,7 +3,7 @@ import React from 'react';
 interface BrandLogoProps {
   className?: string;
   iconSize?: string;
-  showText?: boolean;
+
   textSize?: string;
 }
 
