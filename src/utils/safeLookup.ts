@@ -1,6 +1,17 @@
-export function getAirport(code: string) {
-  // Safely retrieve airport data, avoiding direct bracket access.
-  // Returns undefined if the code does not exist in the AIRPORTS map.
-  // AIRPORTS is imported wherever needed.
-  return Object.hasOwn(AIRPORTS, code) ? AIRPORTS[code] : undefined;
+import { AIRPORTS } from '../data/airports';
+import type { Airport } from '../data/airports';
+
+/**
+ * Safely look up a property on an object without prototype pollution.
+ */
+export function safeLookup<V>(obj: Record<string, V>, key: string): V | undefined {
+  // eslint-disable-next-line security/detect-object-injection
+  return Object.hasOwn(obj, key) ? obj[key] : undefined;
+}
+
+/**
+ * Retrieves airport data safely by its IATA code.
+ */
+export function getAirport(code: string): Airport | undefined {
+  return safeLookup(AIRPORTS, code);
 }

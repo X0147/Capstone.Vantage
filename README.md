@@ -12,6 +12,7 @@ Welcome to the **Capstone.Vantage** flight booking and telemetry matrix platform
 - **/manage-booking**: PNR retrieval and passenger details management.
 - **/tracker**: ADS-B real-time satellite radar visualization.
 - **/dashboard**: Frequent flyer miles and centralized user metrics.
+- **/track**: Secure ticket tracking module using PNR, Last Name, and Email validation with mock backend integration (`trackService`).
 
 ## Component Architecture
 
