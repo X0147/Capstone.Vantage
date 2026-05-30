@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { getAirport } from '../utils/safeLookup';
 import { Plane, MapPin } from 'lucide-react';
+import { AIRPORTS } from '../data/airports';
 
 interface LocationInputProps {
   label: string;
@@ -26,14 +27,16 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
     [label]
   );
 
+
+
   const suggestions = useMemo(() => {
     if (!query.trim()) return [];
     const cleanQuery = query.toLowerCase().trim();
     const airportList = Object.values(AIRPORTS);
     return airportList.filter(
       (airport) =>
-        airport.iata.toLowerCase().includes(cleanQuery) ??
-        airport.city.toLowerCase().includes(cleanQuery) ??
+        airport.iata.toLowerCase().includes(cleanQuery) ||
+        airport.city.toLowerCase().includes(cleanQuery) ||
         airport.country.toLowerCase().includes(cleanQuery)
     ).slice(0, 5);
   }, [query]);

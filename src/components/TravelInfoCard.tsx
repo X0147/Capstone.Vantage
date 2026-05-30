@@ -1,17 +1,15 @@
 import React from 'react';
 import { ClipboardCopy, CheckCircle2 } from 'lucide-react';
 
-interface TravelInfoProps {
+export interface TravelInfoCardProps {
   passengerName: string;
   email: string;
   bookingReference: string;
   status: string;
-  bookingStatus: string;
   departure: string; // e.g., 'JIB'
   arrival: string; // e.g., 'ORD'
   departureDate: string; // ISO date string
   arrivalDate: string; // ISO date string
-  trackingCode: string;
 }
 
 /**
@@ -22,7 +20,7 @@ export const TravelInfoCard: React.FC<TravelInfoCardProps> = ({
   passengerName,
   email,
   bookingReference,
-  bookingStatus,
+  status,
   departure,
   arrival,
   departureDate,
@@ -31,9 +29,8 @@ export const TravelInfoCard: React.FC<TravelInfoCardProps> = ({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(bookingReference);
-      // optional UI feedback could be added later
     } catch (e) {
-      console.error('Copy failed', e);
+      console.error('Copy failed', e instanceof Error ? e.message : String(e));
     }
   };
 

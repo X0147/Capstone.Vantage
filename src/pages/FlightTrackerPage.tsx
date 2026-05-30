@@ -35,6 +35,41 @@ const MOCK_AIRLINES: Record<string, string> = {
 
 const HEADINGS = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'];
 
+const generateMockFlight = (flightNo: string): TrackedFlight => {
+  const carrierCode = flightNo.slice(0, 2);
+  const airline = carrierCode in MOCK_AIRLINES ? MOCK_AIRLINES[carrierCode] : 'Vantage Global Alliance';
+  let seed = 0;
+  for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);
+  
+  return {
+    flightNumber: flightNo,
+    airline,
+    origin: 'JFK',
+    destination: 'DXB',
+    status: 'In-Flight',
+    altitude: `${(35000 + (seed % 5000)).toLocaleString()} ft`,
+    speed: `${540 + (seed % 50)} mph`,
+    progress: 15 + (seed % 70),
+    departureTime: '08:00 AM',
+    arrivalTime: '08:00 PM',
+    vessel: 'Boeing 777-300ER',
+    heading: `${seed % 360}° ${HEADINGS[seed % 8]}`,
+    temp: `-${45 + (seed % 10)}°C`,
+    remainingTime: `${3 + (seed % 6)}h ${seed % 60}m`,
+    lat: 40.6413 + (seed % 10),
+    lon: -73.7781 + (seed % 100),
+    isLiveAPI: true, // We simulate "live" for the premium feel
+    mach: `M ${(0.82 + (seed % 5) / 100).toFixed(2)}`
+  };
+};
+
+const fetchLiveFlightData = (flightNo: string) => {
+  // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
+  // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
+  // to guarantee a premium "live" experience without exposing paid API keys.
+  return generateMockFlight(flightNo);
+};
+
 export const FlightTrackerPage: React.FC = () => {
   const location = useLocation();
   const state = location.state as { flightNumber?: string } | null;
@@ -88,41 +123,7 @@ export const FlightTrackerPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeFlight?.flightNumber, activeFlight, triggerTracking]);
 
-  const generateMockFlight = (flightNo: string): TrackedFlight => {
-    const carrierCode = flightNo.slice(0, 2);
-    const airline = carrierCode in MOCK_AIRLINES ? MOCK_AIRLINES[carrierCode] : 'Vantage Global Alliance';
-    let seed = 0;
-    for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);
-    
-    return {
-      flightNumber: flightNo,
-      airline,
-      origin: 'JFK',
-      destination: 'DXB',
-      status: 'In-Flight',
-      altitude: `${(35000 + (seed % 5000)).toLocaleString()} ft`,
-      speed: `${540 + (seed % 50)} mph`,
-      progress: 15 + (seed % 70),
-      departureTime: '08:00 AM',
-      arrivalTime: '08:00 PM',
-      vessel: 'Boeing 777-300ER',
-      heading: `${seed % 360}° ${HEADINGS[seed % 8]}`,
-      temp: `-${45 + (seed % 10)}°C`,
-      remainingTime: `${3 + (seed % 6)}h ${seed % 60}m`,
-      lat: 40.6413 + (seed % 10),
-      lon: -73.7781 + (seed % 100),
-      isLiveAPI: true, // We simulate "live" for the premium feel
-      mach: `M ${(0.82 + (seed % 5) / 100).toFixed(2)}`
-    };
-  };
-
-  const fetchLiveFlightData = (flightNo: string) => {
-    // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
-    // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
-    // to guarantee a premium "live" experience without exposing paid API keys.
-    return generateMockFlight(flightNo);
-  };
-
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false) => {
     if (!isSilentRefresh) {
       setIsConnecting(true);
@@ -142,7 +143,7 @@ export const FlightTrackerPage: React.FC = () => {
     } finally {
       setIsConnecting(false);
     }
-  }, [fetchLiveFlightData, setActiveFlight, setErrorMsg, setIsConnecting, setLastUpdated]);
+  }, [setActiveFlight, setErrorMsg, setIsConnecting, setLastUpdated]);
 
   const handleTrackSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();

@@ -67,35 +67,7 @@ export const CheckoutPage: React.FC = () => {
     }
   };
 
-  const fetchLiveFlightData = useCallback((flightNo: string) => {
-    // Note: Public free ADS-B endpoints (like HexDB) are defunct or blocked by Cloudflare.
-    // For this Capstone, we fall back immediately to an ultra-realistic, high-frequency simulation
-    // to guarantee a premium "live" experience without exposing paid API keys.
-    return generateMockFlight(flightNo);
-  }, []);
 
-  const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false, setIsConnecting: any, setErrorMsg: any, setActiveFlight: any, setLastUpdated: any) => {
-    if (!isSilentRefresh) {
-      setIsConnecting(true);
-      setErrorMsg('');
-    }
-
-    try {
-      if (flightNo.length < 3) {
-        throw new Error('Please enter a valid flight designation (e.g. EK201).');
-      }
-      
-      const data = fetchLiveFlightData(flightNo);
-      setActiveFlight(data);
-      setLastUpdated(new Date());
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Tracking failed.';
-      setErrorMsg(message);
-      if (!isSilentRefresh) setActiveFlight(null);
-    } finally {
-      setIsConnecting(false);
-    }
-  }, [fetchLiveFlightData]);
 
   // --- Step 4: Payment Brand Matching Logic ---
   const [cardNumber, setCardNumber] = useState('');

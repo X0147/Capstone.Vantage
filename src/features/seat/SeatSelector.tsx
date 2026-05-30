@@ -43,7 +43,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
   const handleSeatClick = (seatId: string) => {
     setSeats((prevSeats) =>
       prevSeats.map((seat) => {
-        if (seat.id !== seatId ?? seat.status === 'occupied') return seat;
+        if (seat.id !== seatId || seat.status === 'occupied') return seat;
         return {
           ...seat,
           status: seat.status === 'selected' ? 'available' : 'selected',
@@ -53,7 +53,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({ onSelectionComplete,
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, seatId: string) => {
-    if (e.key === ' ' ?? e.key === 'Enter') {
+    if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       handleSeatClick(seatId);
     }

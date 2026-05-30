@@ -11,6 +11,8 @@ import ResultsSkeleton from './features/search/ResultsSkeleton';
 import Breadcrumbs from './components/Breadcrumbs';
 
 const SearchPage = lazy(() => import('./pages/SearchPage'));
+const DestinationsPage = lazy(() => import('./pages/DestinationsPage'));
+const NataliePage = lazy(() => import('./pages/NataliePage'));
 const ResultsPage = lazy(() => import('./pages/ResultsPage'));
 const PassengerPage = lazy(() => import('./pages/PassengerPage'));
 const SeatSelectionPage = lazy(() => import('./pages/SeatSelectionPage'));
@@ -28,9 +30,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const FleetPage = lazy(() => import('./pages/FleetPage'));
 const LoyaltyPage = lazy(() => import('./pages/LoyaltyPage'));
-const DestinationsPage = lazy(() => import('./pages/DestinationsPage'));
 const VipRegistrationPage = lazy(() => import('./pages/VipRegistrationPage'));
-
 
 function App() {
   return (
@@ -104,6 +104,15 @@ function AnimatedRoutes() {
             <DestinationsPage />
           </Suspense>
         } />
+          <Route
+            path="/natalie"
+            element={
+              <Suspense fallback={<ResultsSkeleton />}> 
+                <NataliePage />
+              </Suspense>
+            }
+          />
+
         <Route path="/vip-register" element={
           <Suspense fallback={<ResultsSkeleton />}>
             <VipRegistrationPage />
