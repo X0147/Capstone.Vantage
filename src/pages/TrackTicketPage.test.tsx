@@ -30,7 +30,7 @@ describe('TrackTicketPage', () => {
       trackError: null,
       lookupTicket: mockLookupTicket,
       clearTrackedTicket: mockClearTrackedTicket,
-    } as any);
+    });
   });
 
   it('renders the form correctly', () => {
@@ -65,7 +65,7 @@ describe('TrackTicketPage', () => {
       trackError: 'Mock error message',
       lookupTicket: mockLookupTicket,
       clearTrackedTicket: mockClearTrackedTicket,
-    } as any);
+    });
 
     render(<TrackTicketPage />);
     expect(screen.getByText('Mock error message')).toBeInTheDocument();

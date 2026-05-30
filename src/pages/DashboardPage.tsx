@@ -190,17 +190,7 @@ export const DashboardPage: React.FC = () => {
             </p>
           </div>
 {/* Travel Itinerary Card */}
-<TravelInfoCard
-  passengerName={`${profile.firstName} ${profile.lastName}`}
-  email={profile.email}
-  bookingReference="OFDTIF69RBJJZIJ1OSMR"
-  bookingStatus="OK"
-  departure="JIB"
-  arrival="ORD"
-  departureDate="2026-06-01"
-  arrivalDate="2026-06-03"
-  trackingCode="AX7890zklmnpqrt"
-/>
+
 
 
           <div className="flex items-center gap-sm">
