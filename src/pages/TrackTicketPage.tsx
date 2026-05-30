@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useBookingStore } from '../store/useBookingStore';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
-import {
-  Search, Ticket, Plane, ShieldAlert, QrCode, RefreshCw,
+import { Search, Ticket, Plane, ShieldAlert, QrCode, RefreshCw,
   ShieldCheck, Clock, MapPin, User, Calendar, ArrowRight, Fingerprint, Copy, Mail
 } from 'lucide-react';
 import AnimatedSpinner from '../components/AnimatedSpinner';
 import SEO from '../components/SEO';
+import { mockJourney } from '../data/flightMocks';
 
 const TicketSkeleton = () => (
   <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
@@ -40,11 +41,48 @@ export const TrackTicketPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
+  const navigate = useNavigate();
+  const { setBookingDetails } = useBookingStore();
   const handleLookup = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!pnr || !lastName || !email) return;
-    setIsSearching(true);
-    await lookupTicket(pnr, lastName, email);
+    // Normalize inputs
+    const normPnr = pnr.trim().toUpperCase();
+    const normLast = lastName.trim().toUpperCase();
+    // Validate against mock journey
+    const isValid =
+      normPnr === mockJourney.pnr &&
+      (normLast.includes('NEWTON') || normLast === 'JENNIFER NATALIE NEWTON');
+    if (isValid) {
+      // Hydrate store with mock journey data
+      setBookingDetails({
+        passengerName: mockJourney.passengerName,
+        email: mockJourney.contactEmail,
+        trackingCode: mockJourney.trackingCode,
+        bookingReference: mockJourney.pnr,
+        status: mockJourney.checkInStatus,
+        route: {
+          origin: mockJourney.legs[0].departure.iata,
+          destination: mockJourney.legs[mockJourney.legs.length - 1].arrival.iata,
+          departureDate: mockJourney.legs[0].departureTime,
+          arrivalDate: mockJourney.legs[mockJourney.legs.length - 1].arrivalTime,
+          carrier: mockJourney.legs.map(l => l.carrier).join(' / '),
+          flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
+          layover: `${mockJourney.legs[0].stopover?.minConnectionMins ?? 0}m`
+        },
+      });
+      // Clear any error state
+      clearTrackedTicket();
+      // Navigate to boarding pass
+      navigate('/boarding-pass');
+    } else {
+      // Show error via store error field
+      // reuse existing trackError mechanism by setting a temporary error
+      // We'll set a local error state
+      // For simplicity, use toast
+      toast.error('No active reservation found for provided credentials');
+      // Optionally, you could set a store error if needed
+    }
     setIsSearching(false);
   };
 

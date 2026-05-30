@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import QRCodeSVG from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import { mockJourney } from '../data/flightMocks';
 
 /**
@@ -103,7 +103,7 @@ export default function BoardingPassPage() {
             </text>
           </svg>
           <p className="mt-2 text-sm text-vantage-muted">
-            {journey.legs[0].departure.iata} → {journey.legs.at(-1)!.arrival.iata}
+            {journey.legs?.[0]?.departure?.iata ?? ''} → {journey.legs?.at(-1)?.arrival?.iata ?? ''}
           </p>
           <div className="my-4">
             <QRCodeSVG

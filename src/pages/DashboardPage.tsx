@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Lock,
 } from 'lucide-react';
+import { ItineraryTrackerCard } from '../components/ItineraryTrackerCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -299,19 +300,9 @@ export const DashboardPage: React.FC = () => {
                   </h3>
 
                   {upcomingBookings.length === 0 ? (
-                    <div className="premium-glass rounded-3xl border border-white/5 p-lg text-center space-y-xs">
-                      <Plane className="h-8 w-8 text-vantage-muted mx-auto animate-pulse" />
-                      <p className="text-xs text-white font-bold">No active segments detected.</p>
-                      <p className="text-[11px] text-vantage-muted">
-                        Book a flight now to unlock dynamic tracking coordinates.
-                      </p>
-                      <button
-                        onClick={() => navigate('/')}
-                        className="mt-xs text-xs font-bold text-vantage-accent hover:underline"
-                      >
-                        Start Booking Flow →
-                      </button>
-                    </div>
+                    <div className="space-y-4 w-full">
+  <ItineraryTrackerCard />
+</div>
                   ) : (
                     <div className="space-y-xs">
                       {upcomingBookings.map((booking, idx) => (

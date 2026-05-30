@@ -31,6 +31,7 @@ const TeamPage = lazy(() => import('./pages/TeamPage'));
 const FleetPage = lazy(() => import('./pages/FleetPage'));
 const LoyaltyPage = lazy(() => import('./pages/LoyaltyPage'));
 const VipRegistrationPage = lazy(() => import('./pages/VipRegistrationPage'));
+const BoardingPassPage = lazy(() => import('./pages/BoardingPassPage'));
 
 function App() {
   return (
@@ -182,6 +183,7 @@ function AnimatedRoutes() {
             </Suspense>
           }
         />
+        <Route path="/boarding-pass" element={<BoardingPassPage />} />
       </Routes>
     </AnimatePresence>
   );
