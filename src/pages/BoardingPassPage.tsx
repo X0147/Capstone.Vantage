@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { mockJourney } from '../data/flightMocks';
+import { useBookingStore } from '../store/useBookingStore';
 
 /**
  * Premium boarding pass page – displays the full multi‑leg itinerary, PNR, tracking code,
@@ -9,6 +10,7 @@ import { mockJourney } from '../data/flightMocks';
  */
 export default function BoardingPassPage() {
   const journey = mockJourney;
+  const bookingDetails = useBookingStore(state => state.bookingDetails);
 
   // Simple timeline component rendering each leg
   const LegItem = ({ leg, isLast }: { leg: typeof journey.legs[0]; isLast: boolean }) => (
@@ -43,7 +45,7 @@ export default function BoardingPassPage() {
 
   return (
     <motion.main
-      className="max-w-4xl mx-auto p-6 bg-[#070b12]/60 backdrop-blur-xl border border-white/10 rounded-2xl mt-8"
+      className="max-w-4xl mx-auto p-6 bg-slate-950/40 backdrop-blur-xl border border-white/10 rounded-2xl mt-8"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
     >
@@ -117,6 +119,19 @@ export default function BoardingPassPage() {
           <p className="text-xs text-vantage-muted text-center">
             Show this QR code at any Vantage check‑in kiosk. Physical tickets can be printed on‑site.
           </p>
+          {/* Payment Receipt Trace */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full bg-emerald-500/10 border-emerald-500/20 text-emerald-400 rounded-[24px] p-4 md:p-6 mt-4 shadow-2xl"
+          >
+            <div className="flex flex-col gap-2">
+              <span className="font-mono font-bold">PAYMENT METHOD:</span>
+              <span>{bookingDetails?.paymentMethod}</span>
+              <span className="font-mono font-bold">RECEIPT:</span>
+              <span>{bookingDetails?.currencyReceipt}</span>
+            </div>
+          </motion.div>
         </div>
       </section>
     </motion.main>

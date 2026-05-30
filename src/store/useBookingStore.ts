@@ -2,6 +2,8 @@ import { telemetry } from '../utils/telemetryLogger';
 import { create } from 'zustand';
 import { mockJourney } from '../data/flightMocks';
 
+export type PaymentType = 'CREDIT' | 'WALLET' | 'CASH_AT_COUNTER';
+
 export interface FlightSegment {
   origin: string;
   destination: string;
@@ -22,6 +24,10 @@ export interface BookingRecord {
   baggage?: string;
   gate?: string;
   boardingTime?: string;
+  // New payment fields
+  paymentMethod: PaymentType;
+  paymentStatus: 'SETTLED' | 'PENDING_COLLECTION';
+  currencyReceipt: string;
 }
 
 // Hydrate a BookingRecord from mockJourney, mapping pnr -> bookingReference
@@ -39,19 +45,36 @@ const hydratedRecord: BookingRecord = {
     carrier: mockJourney.legs[0]?.carrier ?? 'Turkish Airlines',
     flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
   },
+  // Initialize payment fields
+  paymentMethod: 'CASH_AT_COUNTER',
+  paymentStatus: 'SETTLED',
+  currencyReceipt: 'USD 4,250.00',
 };
 
 
 
 // Keeping your complex booking ecosystem completely typed
+
+export interface FlightSelection {
+  // Define as needed; placeholder for future flight selection data
+}
+
+export interface PassengerData {
+  // Define passenger related data structure; placeholder
+}
+
+export interface SearchParams {
+  [key: string]: unknown;
+}
+
 export interface BookingState {
   // --- Original Framework Slices ---
-  flightSelections: any[];
-  passengerData: any[];
-  seatMaps: Record<string, any>;
+  flightSelections: FlightSelection[];
+  passengerData: PassengerData[];
+  seatMaps: Record<string, unknown>;
   selectedSeats: string[];
-  searchParams: Record<string, any> | null;
-  paymentDetails: Record<string, any> | null;
+  searchParams: SearchParams | null;
+  paymentDetails: Record<string, unknown> | null;
 
   // --- Extended Structural Slices ---
   bookingDetails: BookingRecord | null;
@@ -61,19 +84,13 @@ export interface BookingState {
   isLoading: boolean;
 
   // --- Consolidated Core Actions ---
-  setSearchParams: (params: Record<string, any>) => void;
+  setSearchParams: (params: SearchParams) => void;
   setSelectedSeats: (seats: string[]) => void;
-  setPassengerData: (data: any[]) => void;
-  setPaymentDetails: (details: Record<string, any>) => void;
+  setPassengerData: (data: PassengerData[]) => void;
+  setPaymentDetails: (details: Record<string, unknown>) => void;
 
   setBookingDetails: (details: BookingRecord | null) => void;
-  setStep: (step: number) => void;
-  getBooking: (pnr: string, lastName: string) => BookingRecord | null;
-  clearStore: () => void;
-  // ➕ Enhanced Auto-Login Action
-  executeAutoLogin: () => void;
-  // ➕ Complete Check-In Action
-  completeCheckIn: (seat: string, baggageCount: number) => void;
+
 }
 
 // ==========================================
