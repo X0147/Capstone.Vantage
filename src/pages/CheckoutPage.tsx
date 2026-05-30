@@ -193,16 +193,17 @@ export const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="relative">
-                  <input id="lastName"
-                    type="text"
-                    value={formFields.lastName}
-                    onChange={(e) => {
-                      setFormFields({ ...formFields, lastName: e.target.value });
-                    }}
-                    className="w-full bg-black/20 border border-white/10 rounded-xl px-xs pt-md pb-2xs text-sm text-white focus:outline-none focus:border-vantage-accent peer transition-colors"
-                    placeholder=" "
-                  />
-                  <label className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
+                  <input
+                     id="profile-lastName"
+                     type="text"
+                     value={formFields.lastName}
+                     onChange={(e) => {
+                       setFormFields({ ...formFields, lastName: e.target.value });
+                     }}
+                     className="w-full bg-black/20 border border-white/10 rounded-xl px-xs pt-md pb-2xs text-sm text-white focus:outline-none focus:border-vantage-accent peer transition-colors"
+                     placeholder=" "
+                 />
+                  <label htmlFor="profile-lastName" className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
                     Last Name
                   </label>
                   {errors.lastName && (

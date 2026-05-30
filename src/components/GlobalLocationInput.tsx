@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { AIRPORTS } from '../data/airports';
+import { getAirport } from '../utils/safeLookup';
 import { Plane, MapPin } from 'lucide-react';
 
 interface LocationInputProps {
@@ -38,7 +38,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
     ).slice(0, 5);
   }, [query]);
 
-  const selectedAirport = AIRPORTS[value];
+  const selectedAirport = getAirport(value);
 
   useEffect(() => {
     if (!isOpen) setActiveIndex(-1);
@@ -49,7 +49,7 @@ export const GlobalLocationInput: React.FC<LocationInputProps> = ({
   }, [suggestions.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen ?? suggestions.length === 0) return;
+    if (!isOpen || suggestions.length === 0) return;
 
     switch (e.key) {
       case 'ArrowDown':

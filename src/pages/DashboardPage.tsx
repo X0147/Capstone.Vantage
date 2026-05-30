@@ -19,6 +19,7 @@ import {
   Settings2,
   Lock,
 } from 'lucide-react';
+import { TravelInfoCard } from '../components/TravelInfoCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -121,20 +122,21 @@ export const DashboardPage: React.FC = () => {
 
             <form onSubmit={handleUnlock} className="space-y-4 pt-sm">
               <div className="space-y-1 text-left">
-                    <label htmlFor="profile-firstName" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">First Name</label>
-                      <input
-                        type="text"
-                        id="profile-firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="First name"
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
-                      />
+                <label htmlFor="clientNameInput" className="block text-[10px] uppercase font-bold text-vantage-muted tracking-wider mb-2xs">Client Name</label>
+                <input
+                  id="clientNameInput"
+                  type="text"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vantage-accent/50 focus:bg-white/[0.05] transition-all"
+                />
               </div>
 
               <div className="space-y-1 text-left">
-                <label className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Tracking ID / PNR</label>
+                <label htmlFor="trackingIdInput" className="text-[10px] uppercase font-bold tracking-wider text-vantage-muted pl-1">Tracking ID / PNR</label>
                 <input
+                  id="trackingIdInput"
                   type="text"
                   value={trackingId}
                   onChange={(e) => { setTrackingId(e.target.value); setAuthError(''); }}
@@ -187,6 +189,19 @@ export const DashboardPage: React.FC = () => {
               Dashboard access granted for tracking ID: <span className="font-mono text-vantage-accent">{trackingId.toUpperCase()}</span>.
             </p>
           </div>
+{/* Travel Itinerary Card */}
+<TravelInfoCard
+  passengerName={`${profile.firstName} ${profile.lastName}`}
+  email={profile.email}
+  bookingReference="OFDTIF69RBJJZIJ1OSMR"
+  bookingStatus="OK"
+  departure="JIB"
+  arrival="ORD"
+  departureDate="2026-06-01"
+  arrivalDate="2026-06-03"
+  trackingCode="AX7890zklmnpqrt"
+/>
+
 
           <div className="flex items-center gap-sm">
             <div className="premium-glass rounded-2xl border border-white/5 p-xs text-center min-w-[120px]">
