@@ -64,13 +64,14 @@ export const PassengersSelector: React.FC = () => {
 
   return (
     <div className="relative flex-1" ref={ref}>
-      <label className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
+      <label htmlFor="passenger-toggle" className="block text-[10px] uppercase tracking-wider text-vantage-muted font-mono mb-1 select-none">
         Passengers & Class
       </label>
       <div className="flex items-center gap-xs mt-0.5">
         <Users className="w-4 h-4 text-vantage-gold/75 shrink-0" />
         <div className="flex-1">
           <button
+            id="passenger-toggle"
             type="button"
             onClick={() => {
               setOpen((s) => !s);

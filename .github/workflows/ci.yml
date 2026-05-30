@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20] # Limit to Node 20 to prevent double uploads
+        node-version: [22] # Limit to Node 22 to prevent double uploads
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
