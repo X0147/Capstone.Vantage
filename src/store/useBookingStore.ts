@@ -1,3 +1,4 @@
+import { telemetry } from '../utils/telemetryLogger';
 import { create } from 'zustand';
 import { mockJourney } from '../data/flightMocks';
 
@@ -17,6 +18,10 @@ export interface BookingRecord {
   bookingReference: string;
   status: string;
   route: FlightSegment;
+  seat?: string;
+  baggage?: string;
+  gate?: string;
+  boardingTime?: string;
 }
 
 // Hydrate a BookingRecord from mockJourney, mapping pnr -> bookingReference
@@ -65,6 +70,10 @@ export interface BookingState {
   setStep: (step: number) => void;
   getBooking: (pnr: string, lastName: string) => BookingRecord | null;
   clearStore: () => void;
+  // ➕ Enhanced Auto-Login Action
+  executeAutoLogin: () => void;
+  // ➕ Complete Check-In Action
+  completeCheckIn: (seat: string, baggageCount: number) => void;
 }
 
 // ==========================================
@@ -118,7 +127,39 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     return found ?? null;
   },
 
-  clearStore: () => set({ ...initialStoreState }),
+  clearStore: () => set({ ...initialStoreState, bookingDetails: null }),
+
+  // Enhanced auto-login action
+  executeAutoLogin: () => {
+    telemetry.info('Auto-login sequence fired. Enforcing credential structural match.');
+    set({
+      bookingDetails: hydratedRecord,
+      error: null,
+      isLoading: false,
+      currentStep: 3
+    });
+  },
+
+  // Complete check-in action
+  completeCheckIn: (seat: string, baggageCount: number) => {
+    const currentDetails = get().bookingDetails;
+    if (!currentDetails) return;
+    const updatedDetails = {
+      ...currentDetails,
+      status: 'BOARDING PASS ISSUED',
+      seat,
+      baggage: `${baggageCount} Checked Bags`,
+      gate: 'B14',
+      boardingTime: '13:15'
+    };
+    telemetry.info('Passenger check-in sequence validated and tokenized.', { seat, baggageCount });
+    set({
+      bookingDetails: updatedDetails,
+      pastBookings: get().pastBookings.map(b =>
+        b.bookingReference === currentDetails.bookingReference ? updatedDetails : b
+      )
+    });
+  }
 }));
 
 export default useBookingStore;
