@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { ArrowLeft, ShieldCheck, MapPin, Calendar, Clock, Plane, Briefcase, Star, Fingerprint, ChevronRight } from 'lucide-react';
+import { ShieldCheck, MapPin, Calendar, Clock, Plane, Briefcase, Star, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import NavBar from '../components/NavBar';

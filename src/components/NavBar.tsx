@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Settings, Plane, Grid } from 'lucide-react';
 
 const navLinks = [
@@ -12,6 +12,10 @@ const navLinks = [
 
 const NavBar: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const linkClass = (path: string) =>
+    `flex items-center gap-1 text-sm ${location.pathname === path ? 'text-white font-bold' : 'text-vantage-muted hover:text-white'} transition-colors`;
 
   return (
     <nav className="relative z-30 w-full bg-black/30 backdrop-blur-xl border-b border-white/10">
@@ -24,11 +28,7 @@ const NavBar: React.FC = () => {
           {/* Desktop Links */}
           <div className="hidden md:flex md:space-x-6">
             {navLinks.map(({ to, label, icon: Icon }) => (
-              <Link
-                key={to}
-                to={to}
-                className="flex items-center gap-1 text-sm text-vantage-muted hover:text-white transition-colors"
-              >
+              <Link key={to} to={to} className={linkClass(to)}>
                 <Icon className="w-4 h-4" />
                 {label}
               </Link>
@@ -72,7 +72,7 @@ const NavBar: React.FC = () => {
                 key={to}
                 to={to}
                 onClick={() => setOpen(false)}
-                className="block px-3 py-2 rounded-md text-base text-vantage-muted hover:text-white hover:bg-white/5 transition-colors"
+                className={linkClass(to)}
               >
                 <div className="flex items-center gap-2">
                   <Icon className="w-4 h-4" />

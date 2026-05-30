@@ -82,7 +82,7 @@ export const FlightTrackerPage: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+   
   const triggerTracking = useCallback((flightNo: string, isSilentRefresh = false) => {
     if (!isSilentRefresh) {
       setIsConnecting(true);
