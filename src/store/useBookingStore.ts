@@ -1,4 +1,22 @@
 import { create } from 'zustand';
+import { mockJourney } from '../data/flightMocks';
+
+// Hydrate a BookingRecord from mockJourney, mapping pnr -> bookingReference
+const hydratedRecord: BookingRecord = {
+  passengerName: mockJourney.passengerName,
+  email: mockJourney.contactEmail,
+  trackingCode: mockJourney.trackingCode,
+  bookingReference: mockJourney.pnr,
+  status: mockJourney.checkInStatus,
+  route: {
+    origin: mockJourney.legs[0]?.departure?.iata ?? 'JIB',
+    destination: mockJourney.legs[mockJourney.legs.length - 1]?.arrival?.iata ?? 'ORD',
+    departureDate: mockJourney.legs[0]?.departure?.date ?? '01-06-26',
+    arrivalDate: mockJourney.legs[mockJourney.legs.length - 1]?.arrival?.date ?? '02-06-26',
+    carrier: mockJourney.legs[0]?.carrier ?? 'Turkish Airlines',
+    flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
+  },
+};
 
 // ==========================================
 // 1. TYPE CONTRACTS & INTERFACES
@@ -44,7 +62,7 @@ export interface BookingState {
   setSelectedSeats: (seats: string[]) => void;
   setPassengerData: (data: any[]) => void;
   setPaymentDetails: (details: Record<string, any>) => void;
-  
+
   setBookingDetails: (details: BookingRecord | null) => void;
   setStep: (step: number) => void;
   getBooking: (pnr: string, lastName: string) => BookingRecord | null;
@@ -62,8 +80,8 @@ const initialStoreState = {
   searchParams: null,
   paymentDetails: null,
 
-  bookingDetails: null,
-  currentStep: 1, // Explicit structural literal value, NOT a type token
+  bookingDetails: hydratedRecord,
+  currentStep: 1,
   pastBookings: [],
   error: null,
   isLoading: false,
@@ -77,15 +95,15 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   // --- Action Implementations (Declared Exactly Once) ---
   setSearchParams: (params) => set({ searchParams: params }),
-  
+
   setSelectedSeats: (seats) => set({ selectedSeats: seats }),
-  
+
   setPassengerData: (data) => set({ passengerData: data }),
-  
+
   setPaymentDetails: (details) => set({ paymentDetails: details }),
-  
+
   setBookingDetails: (details) => set({ bookingDetails: details }),
-  
+
   setStep: (step) => set({ currentStep: step }),
 
   getBooking: (pnr: string, lastName: string): BookingRecord | null => {
