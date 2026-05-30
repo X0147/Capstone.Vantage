@@ -3,6 +3,7 @@ import { motion, Variants } from 'framer-motion';
 import { ArrowLeft, ShieldCheck, MapPin, Calendar, Clock, Plane, Briefcase, Star, Fingerprint, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import NavBar from '../components/NavBar';
 import { ProfileCard } from '../components/ProfileCard';
 import { ItineraryCard } from '../components/ItineraryCard';
 import { TravelTimeline } from '../components/TravelTimeline';
@@ -65,22 +66,7 @@ const NataliePage: React.FC = () => {
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-vantage-gold/5 rounded-full blur-[150px] pointer-events-none -mr-40" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-sky-500/10 rounded-full blur-[120px] pointer-events-none -ml-40" />
 
-      {/* Top Navigation */}
-      <div className="relative z-20 w-full px-6 py-8 md:px-12 flex justify-between items-center">
-        <button
-          onClick={() => navigate(-1)}
-          className="group flex items-center gap-3 text-vantage-muted hover:text-white transition-all text-xs font-mono tracking-widest uppercase"
-        >
-          <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 group-hover:border-white/20 transition-all shadow-lg">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-          </span>
-          Return
-        </button>
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-vantage-gold/30 bg-vantage-gold/10 backdrop-blur-md">
-          <Fingerprint className="w-3.5 h-3.5 text-vantage-gold animate-pulse" />
-          <span className="text-[9px] font-mono uppercase tracking-widest text-vantage-gold font-bold">Encrypted Dossier</span>
-        </div>
-      </div>
+      <NavBar />
 
       <motion.div 
         variants={staggerContainer}
