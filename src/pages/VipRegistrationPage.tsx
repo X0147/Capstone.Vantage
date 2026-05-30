@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Send, ShieldCheck, Star, Sparkles, Fingerprint, Lock, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -27,10 +27,7 @@ export default function VipRegistrationPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const triggerTracking = useCallback(async () => {
-    // example placeholder logic
-    // TODO: implement actual tracking logic with proper type checks
-  }, []);
+
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();

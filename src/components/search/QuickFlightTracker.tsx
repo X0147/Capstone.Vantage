@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Compass, Search, Navigation } from 'lucide-react';
+import { Compass, Navigation } from 'lucide-react';
 
 export const QuickFlightTracker: React.FC = () => {
   const [flightNo, setFlightNo] = useState('');
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (flightNo.trim()) {
       navigate('/tracker', { state: { flightNumber: flightNo.trim().toUpperCase() } });

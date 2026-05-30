@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, ArrowRight, Zap, Crown, Key, Star, Fingerprint } from 'lucide-react';
+import { ShieldCheck, Crown, Key, Star, Fingerprint } from 'lucide-react';
 import SEO from '../components/SEO';
 import StructuredFooter from '../components/StructuredFooter';
 

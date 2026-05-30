@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSearchStore, TripType } from '../../store/useSearchStore';
+import { useSearchStore } from '../../store/useSearchStore';
 import { GlobalLocationInput } from '../GlobalLocationInput';
 import { TabSwitcher } from './TabSwitcher';
 import { DateRangePicker } from './DateRangePicker';
@@ -52,7 +52,7 @@ export const SearchHero: React.FC = () => {
     setMultiCitySegments(multiCitySegments.map((s, i) => (i === idx ? { ...s, ...patch } : s)));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (searchParams.tripType === 'multicity') {
@@ -126,10 +126,11 @@ export const SearchHero: React.FC = () => {
                   />
                 </div>
                 <div className="md:col-span-3">
-                  <label className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold mb-2xs">
+                  <label htmlFor={`segment-date-${idx}`} className="block text-[9px] uppercase tracking-widest text-vantage-muted font-bold mb-2xs">
                     Departure Date
                   </label>
                   <input
+                    id={`segment-date-${idx}`}
                     type="date"
                     value={segment.date}
                     onChange={(e) => handleSegmentChange(idx, { date: e.target.value })}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useBookingStore, BookingRecord } from '../store/useBookingStore';
-import { Search, MapPin, Calendar, Users, Briefcase, ChevronRight, ShieldCheck, Fingerprint, Lock, ArrowRight, RotateCcw } from 'lucide-react';
+import { MapPin, Users, Briefcase, ChevronRight, ShieldCheck, Fingerprint, Lock, ArrowRight, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -295,6 +295,7 @@ export const ManageBookingPage: React.FC = () => {
                               <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Traveler {i + 1}</p>
                             </div>
                             <div className="text-right">
+                              {/* eslint-disable-next-line security/detect-object-injection */}
                               <p className="text-xs text-white/80">{booking.seats[i] ?? 'Unassigned'}</p>
                               <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Seat</p>
                             </div>

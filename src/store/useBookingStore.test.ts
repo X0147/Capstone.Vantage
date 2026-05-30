@@ -57,6 +57,7 @@ describe('useBookingStore', () => {
 
   it('clearTrackedTicket should reset state', () => {
     useBookingStore.setState({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       trackedTicket: { pnr: '123' } as any,
       trackError: 'Some error',
     });

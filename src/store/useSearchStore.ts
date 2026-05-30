@@ -125,6 +125,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     const key = `${pnr.toUpperCase()}:${lastName.toLowerCase()}`;
+    // eslint-disable-next-line security/detect-object-injection
     const ticket = MOCK_TICKETS[key];
 
     if (ticket) {

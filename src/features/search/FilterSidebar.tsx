@@ -15,6 +15,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = React.memo(
       const stats: Record<string, number> = {};
       rawFlights.forEach((flight) => {
         const name = flight.outbound[0]?.airline;
+        // eslint-disable-next-line security/detect-object-injection
         if (name) stats[name] = (stats[name] ?? 0) + 1;
       });
       return stats;

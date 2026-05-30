@@ -5,6 +5,7 @@ import type { TicketDetails } from '../store/useBookingStore';
 export const TrackingRequestSchema = z.object({
   pnr: z.string().min(5).max(10),
   lastName: z.string().min(2),
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   email: z.string().email(),
 });
 

@@ -11,7 +11,7 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [biometricStatus, setBiometricStatus] = useState<'idle' | 'scanning' | 'success'>('idle');
 
-  const handleAuthentication = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAuthentication = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);

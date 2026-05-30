@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBookingStore, Passenger as PassengerDetails } from '../store/useBookingStore';
 import SeatSelector from '../features/seat/SeatSelector';
@@ -51,7 +51,7 @@ export const CheckoutPage: React.FC = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nextErrors: Record<string, string> = {};
     if (!formFields.firstName) nextErrors.firstName = 'First name required';
@@ -184,7 +184,7 @@ export const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="relative">
-                  <input id="passportNumber"
+                  <input id="profile-passportNumber"
                     type="text"
                     value={formFields.passportNumber}
                     onChange={(e) => {
@@ -193,7 +193,7 @@ export const CheckoutPage: React.FC = () => {
                     className="w-full bg-black/20 border border-white/10 rounded-xl px-xs pt-md pb-2xs text-sm text-white focus:outline-none focus:border-vantage-accent peer transition-colors"
                     placeholder=" "
                   />
-                  <label className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
+                  <label htmlFor="profile-passportNumber" className="absolute text-xs text-vantage-muted left-xs top-xs scale-100 origin-top-left transition-all peer-placeholder-shown:scale-100 peer-placeholder-shown:top-sm peer-focus:scale-75 peer-focus:top-2xs peer-focus:text-vantage-accent">
                     Passport Number
                   </label>
                   {errors.passportNumber && (

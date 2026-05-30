@@ -4,22 +4,15 @@ import { useBookingStore } from '../store/useBookingStore';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  User,
   Plane,
-  MapPin,
   CreditCard,
   Award,
-  Clock,
-  Calendar,
   ShieldCheck,
   Ticket,
-  TrendingUp,
   Compass,
   CheckCircle2,
-  Settings2,
   Lock,
 } from 'lucide-react';
-import { TravelInfoCard } from '../components/TravelInfoCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -45,7 +38,7 @@ export const DashboardPage: React.FC = () => {
   const [dietaryPreference, setDietaryPreference] = useState(profile.dietaryPreference);
   const [isSaved, setIsSaved] = useState(false);
 
-  const handleSaveProfile = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSaveProfile = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProfile({
       firstName,
@@ -68,7 +61,7 @@ export const DashboardPage: React.FC = () => {
     return b.pnr;
   });
 
-  const handleUnlock = (e: React.FormEvent) => {
+  const handleUnlock = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAuthError('');
     

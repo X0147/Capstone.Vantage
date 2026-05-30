@@ -37,6 +37,7 @@ const HEADINGS = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest
 
 const generateMockFlight = (flightNo: string): TrackedFlight => {
   const carrierCode = flightNo.slice(0, 2);
+  // eslint-disable-next-line security/detect-object-injection
   const airline = carrierCode in MOCK_AIRLINES ? MOCK_AIRLINES[carrierCode] : 'Vantage Global Alliance';
   let seed = 0;
   for (let i = 0; i < flightNo.length; i++) seed += flightNo.charCodeAt(i);

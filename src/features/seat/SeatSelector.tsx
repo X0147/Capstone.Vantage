@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Armchair, ShieldCheck } from 'lucide-react';
+import { Armchair } from 'lucide-react';
 import useBookingStore from '../../store/useBookingStore';
 
 interface Seat {

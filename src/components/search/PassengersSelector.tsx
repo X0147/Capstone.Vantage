@@ -51,12 +51,14 @@ export const PassengersSelector: React.FC = () => {
 
   const inc = (key: keyof typeof searchParams.passengers) => {
     const p = { ...searchParams.passengers };
-    (p as any)[key] = Math.min(((p as any)[key] as number) + 1, 9);
+    // eslint-disable-next-line security/detect-object-injection
+    p[key] = Math.min(p[key] + 1, 9);
     setSearchParams({ passengers: p });
   };
   const dec = (key: keyof typeof searchParams.passengers) => {
     const p = { ...searchParams.passengers };
-    (p as any)[key] = Math.max(((p as any)[key] as number) - 1, 0);
+    // eslint-disable-next-line security/detect-object-injection
+    p[key] = Math.max(p[key] - 1, 0);
     setSearchParams({ passengers: p });
   };
 
@@ -128,13 +130,13 @@ export const PassengersSelector: React.FC = () => {
               />
 
               <div className="mt-sm border-t border-white/10 pt-sm">
-                <label className="text-[10px] uppercase font-mono tracking-widest text-vantage-muted block mb-2 select-none">Class</label>
+                <div className="text-[10px] uppercase font-mono tracking-widest text-vantage-muted block mb-2 select-none">Class</div>
                 <div className="grid grid-cols-2 gap-xs">
                   {['economy', 'premium', 'business', 'first'].map((c) => (
                     <button
                       key={c}
                       onClick={() => {
-                        setSearchParams({ travelClass: c as any });
+                        setSearchParams({ travelClass: c as 'economy' | 'premium' | 'business' | 'first' });
                       }}
                       className={`px-sm py-xs rounded-lg text-xs font-semibold transition-all ${
                         searchParams.travelClass === c
