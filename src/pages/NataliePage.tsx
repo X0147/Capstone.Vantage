@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Plane } from 'lucide-react';
-import './NataliePage.module.css';
 
 // Hardcoded passenger data for Natalie (could be fetched from store/API).
 const passenger = {
