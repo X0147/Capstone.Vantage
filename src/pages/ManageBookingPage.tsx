@@ -67,7 +67,7 @@ export default function ManageBookingPage() {
                 <p className="text-slate-400 mt-0.5">Istanbul Airport (<span className="text-slate-300">IST</span>) — Turkey Transit</p>
               </div>
               <div className="text-right font-mono text-xs text-slate-400">
-                <span>Duration: <span className="text-slate-200 font-bold">~1h 20m</span></span>
+                <span>Duration: <span className="text-slate-200 font-bold">~1h 10m</span></span>
               </div>
             </div>
 
@@ -84,7 +84,7 @@ export default function ManageBookingPage() {
                 </div>
                 <div className="text-right text-xs">
                   <span className="text-emerald-400 font-bold block">LEG 02 // TK 1918</span>
-                  <span className="text-slate-500">Total Loop: ~17h 45m</span>
+                  <span className="text-slate-500">Total Loop: ~33h 45m</span>
                 </div>
               </div>
             </div>

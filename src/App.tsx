@@ -24,6 +24,7 @@ const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const ConfirmationPage = lazy(() => import('./pages/ConfirmationPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const FlightTrackerPage = lazy(() => import('./pages/FlightTrackerPage'));
+const TrackPage = lazy(() => import('./pages/TrackPage'));
 const ManageBookingPage = lazy(() => import('./pages/ManageBookingPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TripsPage = lazy(() => import('./pages/TripsPage'));
@@ -137,6 +138,14 @@ function AnimatedRoutes() {
           element={
             <Suspense fallback={<ResultsSkeleton />}>
               <FlightTrackerPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/live-track"
+          element={
+            <Suspense fallback={<ResultsSkeleton />}>
+              <TrackPage />
             </Suspense>
           }
         />

@@ -77,7 +77,7 @@ const hydratedRecord: BookingRecord = {
     origin: mockJourney.legs[0]?.departure?.iata ?? 'JIB',
     destination: mockJourney.legs[mockJourney.legs.length - 1]?.arrival?.iata ?? 'ORD',
     departureDate: mockJourney.legs[0]?.departure?.date ?? '01-06-26',
-    arrivalDate: mockJourney.legs[mockJourney.legs.length - 1]?.arrival?.date ?? '02-06-26',
+    arrivalDate: mockJourney.legs[mockJourney.legs.length - 1]?.arrival?.date ?? '01-06-26',
     carrier: mockJourney.legs[0]?.carrier ?? 'Turkish Airlines',
     flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
     // Optional computed fields

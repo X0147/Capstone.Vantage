@@ -10,13 +10,13 @@ const BOOKING_REF = 'OFDTIF69RBJJZIJ1OSMR';
 const PASSENGER   = 'Jennifer Natalie Newton';
 const SECURITY_KEY = 'AX7890zklmnpqt';
 
-// Boarding target: today at 13:15 local
-function getBoardingTarget(): Date {
-  const t = new Date();
-  t.setHours(13, 15, 0, 0);
-  if (t < new Date()) t.setDate(t.getDate() + 1);
-  return t;
-}
+  // Boarding target: today at 23:55 local
+  function getBoardingTarget(): Date {
+    const t = new Date();
+    t.setHours(23, 55, 0, 0);
+    if (t < new Date()) t.setDate(t.getDate() + 1);
+    return t;
+  }
 
 function formatCountdown(ms: number): string {
   if (ms <= 0) return '00h 00m 00s';
@@ -91,7 +91,7 @@ export default function BoardingPassPage() {
             <div className="text-xs text-slate-400 font-mono mt-1">Djibouti Ambouli</div>
             <div className="flex items-center gap-1.5 mt-2">
               <Clock className="w-3 h-3 text-slate-500" />
-              <span className="text-sm font-mono font-bold text-white">13:15</span>
+                            <span className="text-sm font-mono font-bold text-white">23:55</span>
             </div>
           </div>
 
@@ -103,7 +103,7 @@ export default function BoardingPassPage() {
                 <Plane className="w-3 h-3 text-indigo-400 rotate-90" />
               </div>
             </div>
-            <span className="text-[9px] font-mono text-slate-500">TK 1972 / 1998</span>
+              <span className="text-[9px] font-mono text-slate-500">TK 1972 / 1918</span>
           </div>
 
           <div className="text-right">
@@ -111,7 +111,7 @@ export default function BoardingPassPage() {
             <div className="text-xs text-slate-400 font-mono mt-1">Chicago O'Hare</div>
             <div className="flex items-center gap-1.5 mt-2 justify-end">
               <Clock className="w-3 h-3 text-slate-500" />
-              <span className="text-sm font-mono font-bold text-cyan-400">21:40</span>
+                            <span className="text-sm font-mono font-bold text-cyan-400">09:40</span>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function BoardingPassPage() {
               <Clock className="w-3 h-3 text-slate-500" />
               <span className="text-[9px] text-slate-500 uppercase">Boarding</span>
             </div>
-            <span className="text-sm font-black text-white">13:15</span>
+            <span className="text-sm font-black text-white">23:55</span>
             <span className="block text-[8px] text-indigo-400 mt-0.5 animate-pulse">{countdown}</span>
           </div>
           <div className="bg-slate-950/50 rounded-2xl p-3 border border-white/5">
