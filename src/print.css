@@ -1,0 +1,24 @@
+/* Print stylesheet for Boarding Pass physical manifest */
+@media print {
+  /* Hide UI elements that should not appear in the printed voucher */
+  .no-print {
+    display: none !important;
+  }
+  /* Ensure the printable container fills the page */
+  .printable {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  /* Reset background colors for better contrast on paper */
+  body {
+    background: white !important;
+    color: #000 !important;
+  }
+  /* Remove shadows and gradients for print clarity */
+  * {
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+}

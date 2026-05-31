@@ -28,17 +28,51 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        runtimeCaching: [
+          {
+            // Cache-First for images and icons
+            urlPattern: ({request}) => request.destination === 'image' || /\\.(png|jpe?g|svg|webp|ico)$/i.test(request.url),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] }
+            }
+          },
+          {
+            // Network-First for store assets / routing JSON
+            urlPattern: ({url}) => /\\/src\\/.*/.test(url.pathname) || /\\.json$/.test(url.pathname),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+              cacheableResponse: { statuses: [0, 200] }
+            }
+          }
+        ]
       },
       manifest: {
         name: 'Capstone.Vantage',
         short_name: 'Vantage',
         description: 'Premium Flight Booking Experience',
         theme_color: '#0a0f16',
+        background_color: '#020617',
         icons: [
           {
             src: 'favicon.jpg',
             sizes: '192x192',
             type: 'image/jpeg'
+          },
+          {
+            src: 'icons/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'icons/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png'
           }
         ]
       }

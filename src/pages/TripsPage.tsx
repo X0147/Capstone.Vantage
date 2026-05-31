@@ -41,7 +41,30 @@ export default function TripsPage() {
     navigate('/boarding-pass');
   };
 
-  return (
+  const [isOnline, setIsOnline] = React.useState(navigator.onLine);
+React.useEffect(() => {
+  const handleOnline = () => setIsOnline(true);
+  const handleOffline = () => setIsOnline(false);
+  window.addEventListener('online', handleOnline);
+  window.addEventListener('offline', handleOffline);
+  return () => {
+    window.removeEventListener('online', handleOnline);
+    window.removeEventListener('offline', handleOffline);
+  };
+}, []);
+
+// Offline banner
+const offlineBanner = !isOnline ? (
+  <div className="fixed top-0 left-0 right-0 bg-red-600 text-white text-center py-1 z-50">
+    Offline Mode Enabled
+  </div>
+) : null;
+
+return (
+  <>
+    {offlineBanner}
+    <div className="min-h-screen bg-slate-950/40 backdrop-blur-2xl border-white/5 text-white relative overflow-hidden font-sans flex flex-col justify-start pt-24 px-4 md:px-8">
+
     <div className="min-h-screen bg-slate-950/40 backdrop-blur-2xl border-white/5 text-white relative overflow-hidden font-sans flex flex-col justify-start pt-24 px-4 md:px-8">
       {/* Breadcrumb */}
       <div className="flex items-center justify-between mb-4">

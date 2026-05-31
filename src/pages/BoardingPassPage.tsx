@@ -1,8 +1,10 @@
-
+import React, { useRef } from 'react';
+import { jsPDF } from 'jspdf';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { mockJourney } from '../data/flightMocks';
 import { useBookingStore } from '../store/useBookingStore';
+import SeatMapMatrix from '../components/SeatMapMatrix';
 
 /**
  * Premium boarding pass page – displays the full multi‑leg itinerary, PNR, tracking code,
@@ -11,6 +13,35 @@ import { useBookingStore } from '../store/useBookingStore';
 export default function BoardingPassPage() {
   const journey = mockJourney;
   const bookingDetails = useBookingStore(state => state.bookingDetails);
+  const qrRef = useRef<HTMLDivElement>(null);
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    const now = new Date();
+    doc.setFontSize(18);
+    doc.text('Capstone Vantage System', 20, 20);
+    doc.setFontSize(10);
+    doc.text(`Timestamp: ${now.toLocaleString()}`, 20, 30);
+    doc.text(`Passenger: ${journey.passengerName}`, 20, 40);
+    doc.text(`PNR: ${journey.pnr}`, 20, 50);
+    doc.text(`Tracking: ${journey.trackingCode}`, 20, 60);
+    doc.text(`Route: ${journey.legs[0].departure.iata} → ${journey.legs[journey.legs.length - 1].arrival.iata}`, 20, 70);
+    doc.text('TRANSACTION METHOD: PHYSICAL CASH // LEDGER BALANCES VERIFIED BY OPERATOR: ANTI GRAVITY CODER', 20, 80);
+    if (bookingDetails) {
+      doc.text(`Payment Method: ${bookingDetails.paymentMethod}`, 20, 90);
+      doc.text(`Receipt: ${bookingDetails.currencyReceipt}`, 20, 100);
+    }
+    try {
+      const qrElem = qrRef.current;
+      if (qrElem) {
+        const svg = qrElem.innerHTML;
+        const imgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+        doc.addImage(imgData, 'SVG', 120, 20, 60, 60);
+      }
+    } catch (e) {
+      // ignore embedding errors
+    }
+    doc.save(`${journey.pnr}_manifest.pdf`);
+  };
 
   // Simple timeline component rendering each leg
   const LegItem = ({ leg, isLast }: { leg: typeof journey.legs[0]; isLast: boolean }) => (
@@ -43,7 +74,28 @@ export default function BoardingPassPage() {
     </div>
   );
 
-  return (
+const [isOnline, setIsOnline] = React.useState(navigator.onLine);
+React.useEffect(() => {
+  const handleOnline = () => setIsOnline(true);
+  const handleOffline = () => setIsOnline(false);
+  window.addEventListener('online', handleOnline);
+  window.addEventListener('offline', handleOffline);
+  return () => {
+    window.removeEventListener('online', handleOnline);
+    window.removeEventListener('offline', handleOffline);
+  };
+}, []);
+
+// Offline banner
+const offlineBanner = !isOnline ? (
+  <div className="fixed top-0 left-0 right-0 bg-red-600 text-white text-center py-1 z-50">
+    Offline Mode Enabled
+  </div>
+) : null;
+
+return (
+  <>
+    {offlineBanner}
     <motion.main
       className="max-w-4xl mx-auto p-6 bg-slate-950/40 backdrop-blur-xl border border-white/10 rounded-2xl mt-8"
       initial={{ opacity: 0, y: 30 }}
@@ -52,12 +104,20 @@ export default function BoardingPassPage() {
       {/* Header */}
       <header className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-display text-white">Boarding Pass – {journey.passengerName}</h1>
-        <button
-          className="px-4 py-2 bg-vantage-gold text-black rounded-md hover:bg-vantage-gold/80 transition"
-          onClick={() => alert('Reschedule request sent – we will email you shortly.')}
-        >
-          Reschedule
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="px-4 py-2 border border-vantage-gold text-vantage-gold rounded-md hover:bg-vantage-gold/10 transition"
+            onClick={handleExportPDF}
+          >
+            Export PDF
+          </button>
+          <button
+            className="px-4 py-2 bg-vantage-gold text-black rounded-md hover:bg-vantage-gold/80 transition"
+            onClick={() => alert('Reschedule request sent – we will email you shortly.')}
+          >
+            Reschedule
+          </button>
+        </div>
       </header>
 
       {/* Main Card */}
@@ -77,6 +137,7 @@ export default function BoardingPassPage() {
             <a href={`mailto:${journey.contactEmail}`} className="text-vantage-gold hover:underline">
               {journey.contactEmail}
             </a>
+            <SeatMapMatrix />
           </div>
 
           {/* Timeline */}
@@ -107,14 +168,14 @@ export default function BoardingPassPage() {
           <p className="mt-2 text-sm text-vantage-muted">
             {journey.legs?.[0]?.departure?.iata ?? ''} → {journey.legs?.at(-1)?.arrival?.iata ?? ''}
           </p>
-          <div className="my-4">
-            <QRCodeSVG
-              value={`PNR:${journey.pnr}|TRACK:${journey.trackingCode}`}
-              size={120}
-              bgColor="#0a0e14"
-              fgColor="#38bdf8"
-              level="M"
-            />
+            <div className="my-4" ref={qrRef}>
+              <QRCodeSVG
+                value={`PNR:${journey.pnr}|TRACK:${journey.trackingCode}`}
+                size={120}
+                bgColor="#0a0e14"
+                fgColor="#38bdf8"
+                level="M"
+              />
           </div>
           <p className="text-xs text-vantage-muted text-center">
             Show this QR code at any Vantage check‑in kiosk. Physical tickets can be printed on‑site.

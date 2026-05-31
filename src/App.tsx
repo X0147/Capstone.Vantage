@@ -1,11 +1,14 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
+import DiagnosticsHUD from './components/DiagnosticsHUD';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
+import RouteGuard from './components/RouteGuard';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
+import React, { ReactNode, useEffect } from 'react';
+import '../print.css';
 import { lazy, Suspense } from 'react';
-import React from 'react';
 import './skipLink.css';
 import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';
 import ResultsSkeleton from './features/search/ResultsSkeleton';
@@ -38,10 +41,11 @@ function App() {
   return (
     <ErrorBoundary>
       <I18nextProvider i18n={i18n}>
-        <Router>
-          <AppShell />
-          <Toaster position="top-right" />
-        </Router>
+          <Router>
+            <AppShell />
+            <DiagnosticsHUD />
+            <Toaster position="top-right" />
+          </Router>
       </I18nextProvider>
     </ErrorBoundary>
   );
@@ -73,7 +77,7 @@ function AppShell() {
               </div>
             }
           >
-            <AnimatedRoutes />
+            <RouteGuard><AnimatedRoutes /></RouteGuard>
           </Suspense>
         </main>
       </div>
