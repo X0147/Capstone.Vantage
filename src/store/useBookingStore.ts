@@ -148,7 +148,7 @@ export interface BookingState {
   lookupTicket: (pnr: string, name: string, email: string) => Promise<boolean>;
   clearTrackedTicket: () => void;
   setPayment: (details: unknown) => void;
-  confirmBooking: () => void;
+  resetStore: () => void;
   selectOutbound: (flight: unknown) => void;
   selectReturn: (flight: unknown) => void;
   getBooking: (pnr: string, lastName: string) => BookingRecord | null;
@@ -159,16 +159,35 @@ export interface BookingState {
 // ==========================================
 // 2. UNIFIED INITIAL STATE BALANCES
 // ==========================================
-const initialStoreState = {
+  // Initial state without resetStore
   flightSelections: [],
   passengerData: [],
   seatMaps: {},
   selectedSeats: [],
   seatPriceTotal: 0,
-  searchParams: null,
+  searchParams: { passengers: { adults: 1 } },
   paymentDetails: null,
   passenger: null,
   selectedOutbound: null,
+  trackedTicket: null,
+  trackError: null,
+  bookingDetails: hydratedRecord,
+  currentStep: 1,
+  pastBookings: [
+    {
+      ...hydratedRecord,
+      passengerName: 'John Newton',
+      bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
+      trackingCode: 'MAT-TRACK-001',
+    },
+  ],
+  error: null,
+  isLoading: false,
+};
+  // Removed resetStore from initial state to avoid undefined set reference
+  resetStore: () => set({ ...initialStoreState, bookingDetails: null }),
+  // Updated searchParams default
+  searchParams: { passengers: { adults: 1 } },
   trackedTicket: null,
   trackError: null,
 
@@ -178,7 +197,7 @@ const initialStoreState = {
   pastBookings: [
     {
       ...hydratedRecord,
-      passengerName: 'Matalie',
+      passengerName: 'John Newton',
       bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
       trackingCode: 'MAT-TRACK-001',
     },
@@ -214,8 +233,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     };
   },
   ...initialStoreState,
-
-  // --- Action Implementations (Declared Exactly Once) ---
+  resetStore: () => set({ ...initialStoreState, bookingDetails: null }),
   setSearchParams: (params) => set({ searchParams: params }),
 
   setSelectedSeats: (seats) => set({ selectedSeats: seats }),
@@ -232,7 +250,26 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   setStep: (step) => set({ currentStep: step }),
 
-  lookupTicket: async (_pnr, _name, _email) => { await Promise.resolve(); return false; },
+  lookupTicket: async (pnr, name, email) => {
+    // Simple mock lookup using pastBookings
+    const record = get().pastBookings.find((b) => {
+      const pnrMatch = b.bookingReference.toUpperCase() === pnr.trim().toUpperCase();
+      const nameMatch = b.passengerName.toUpperCase().includes(name.trim().toUpperCase());
+      return pnrMatch && nameMatch;
+    });
+    if (record) {
+      const ticket = {
+        pnr: record.bookingReference,
+        lastName: record.passengerName.split(' ').pop() || '',
+        flightNumber: record.route?.flightNumber || '',
+        // Additional fields can be added as needed
+      } as any;
+      set({ trackedTicket: ticket, trackError: null });
+      return true;
+    }
+    set({ trackedTicket: null, trackError: 'No active reservation found.' });
+    return false;
+  },
   clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
   setPayment: (details) => set({ paymentDetails: details }),
   confirmBooking: () => set({ currentStep: 5 }),
@@ -244,9 +281,15 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     const cleanName = lastName.trim().toUpperCase();
 
     const found = get().pastBookings?.find((b: BookingRecord) => {
+      const nameUpper = b.passengerName.toUpperCase();
+      const tokens = nameUpper.split(' ');
+      const lastNameToken = tokens[tokens.length - 1] ?? '';
+      const nameMatches = nameUpper.includes(cleanName);
+      const lastNameMatches = lastNameToken === cleanName;
+      const tokenStartsWith = tokens.some(t => t.startsWith(cleanName));
       return (
         b.bookingReference.toUpperCase() === cleanPNR &&
-        b.passengerName.toUpperCase().includes(cleanName)
+        (nameMatches || lastNameMatches || tokenStartsWith)
       );
     });
 

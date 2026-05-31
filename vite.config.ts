@@ -41,7 +41,7 @@ export default defineConfig({
           },
           {
             // Network-First for store assets / routing JSON
-            urlPattern: ({url}) => /\\/src\\/.*/.test(url.pathname) || /\\.json$/.test(url.pathname),
+            urlPattern: ({url}) => url.pathname.startsWith('/src/') || url.pathname.endsWith('.json'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
