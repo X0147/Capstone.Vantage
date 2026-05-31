@@ -1,5 +1,19 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import toast from 'react-hot-toast';
+
+// In-memory user map for demo purposes
+const USERS: Record<string, { password: string; profile: UserProfile }> = {
+  'nalalie@example.com': {
+    password: 'password123',
+    profile: {
+      ...DEFAULT_PROFILE,
+      firstName: 'Nalalie',
+      lastName: 'User',
+      email: 'nalalie@example.com',
+    },
+  },
+};
 
 export interface UserProfile {
   firstName: string;
@@ -25,7 +39,7 @@ export interface UserStore {
   isLoggedIn: boolean;
   updateProfile: (updates: Partial<UserProfile>) => void;
   addMiles: (miles: number) => void;
-  login: () => void;
+  login: (creds: { email: string; password: string }) => void;
   logout: () => void;
 }
 
@@ -52,7 +66,7 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       profile: DEFAULT_PROFILE,
-      isLoggedIn: true, // Defaulting to logged in to make UX smooth
+      isLoggedIn: false, // default to logged out
 
       updateProfile: (updates) =>
         set((state) => ({
@@ -67,7 +81,15 @@ export const useUserStore = create<UserStore>()(
           },
         })),
 
-      login: () => set({ isLoggedIn: true }),
+      login: ({ email, password }) => {
+  const entry = USERS[email];
+  if (entry && entry.password === password) {
+    set({ isLoggedIn: true, profile: entry.profile });
+    toast.success('Logged in successfully');
+  } else {
+    toast.error('Invalid email or password');
+  }
+},
       logout: () => set({ isLoggedIn: false }),
     }),
     {

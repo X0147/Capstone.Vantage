@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Fingerprint, RefreshCw, CheckCircle, ArrowRight } from 'lucide-react';
 import BrandLogo from '../components/BrandLogo';
+import { useUserStore } from '../store/useUserStore';
 import SEO from '../components/SEO';
 
 export const LoginPage: React.FC = () => {
@@ -11,13 +12,27 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [biometricStatus, setBiometricStatus] = useState<'idle' | 'scanning' | 'success'>('idle');
 
+  const { login } = useUserStore();
+  const isLoggedIn = useUserStore(state => state.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn, navigate]);
+
   const handleAuthentication = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Attempt login via store
+    login({ email, password });
+    // Small delay to allow state update and toast display
+    await new Promise((resolve) => setTimeout(resolve, 500));
     setIsLoading(false);
-    navigate('/');
+    if (isLoggedIn) {
+      navigate('/');
+    }
   };
 
   const handleBiometricAuth = async () => {

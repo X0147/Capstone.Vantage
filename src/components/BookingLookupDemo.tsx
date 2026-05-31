@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useBookingStore } from '@/store/useBookingStore';
+import type { BookingRecord } from '@/store/useBookingStore';
 
 /**
  * Demo component that looks up a booking by PNR and last name and displays the result.
  * Uses the store's `getBooking` selector.
  */
 const BookingLookupDemo: React.FC = () => {
-  const [booking, setBooking] = useState<null | any>(null);
+  const [booking, setBooking] = useState<BookingRecord | null>(null);
 
   useEffect(() => {
     // Example values from the user request
