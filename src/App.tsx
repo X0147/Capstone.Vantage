@@ -7,7 +7,7 @@ import RouteGuard from './components/RouteGuard';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import React, { ReactNode, useEffect } from 'react';
-import '../print.css';
+import "./print.css";
 import { lazy, Suspense } from 'react';
 import './skipLink.css';
 import EnterpriseNavigationBar from './components/EnterpriseNavigationBar';

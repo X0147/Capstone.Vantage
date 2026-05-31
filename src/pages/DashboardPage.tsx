@@ -66,7 +66,7 @@ export const DashboardPage: React.FC = () => {
     e.preventDefault();
     setAuthError('');
     
-    if (!clientName.trim() ?? !trackingId.trim()) {
+    if (!clientName.trim() || !trackingId.trim()) {
       setAuthError('Please provide both Client Identity and Tracking ID.');
       return;
     }
@@ -312,19 +312,19 @@ export const DashboardPage: React.FC = () => {
                         >
                           <div className="space-y-3xs">
                             <span className="font-mono text-[10px] text-vantage-accent uppercase tracking-wider font-bold">
-                              PNR: {booking.pnr}
+                              PNR: {booking.bookingReference}
                             </span>
                             <div className="flex items-center gap-xs">
                               <span className="text-md font-black text-white">
-                                {booking.outbound?.departure.iata}
+                                {booking.route?.departure.iata}
                               </span>
                               <span className="text-vantage-muted text-xs">→</span>
                               <span className="text-md font-black text-white">
-                                {booking.outbound?.arrival.iata}
+                                {booking.route?.arrival.iata}
                               </span>
                             </div>
                             <span className="block text-[10px] text-vantage-muted font-mono">
-                              {booking.dateBooked.slice(0, 10)}
+                              {booking.dateBooked?.slice(0, 10) ?? 'N/A'}
                             </span>
                           </div>
 
@@ -340,7 +340,7 @@ export const DashboardPage: React.FC = () => {
                               onClick={() =>
                                 navigate('/tracker', {
                                   state: {
-                                    flightNumber: booking.outbound?.id.split('-')[3] ?? 'EK201',
+                                    flightNumber: booking.route?.id?.split('-')[3] ?? 'EK201',
                                   },
                                 })
                               }
@@ -434,10 +434,10 @@ export const DashboardPage: React.FC = () => {
                       <div className="flex justify-between items-start border-b border-white/5 pb-xs">
                         <div>
                           <span className="inline-block rounded-md bg-vantage-accent/10 border border-vantage-accent/20 text-vantage-accent font-mono text-[10px] px-2xs py-3xs font-bold uppercase">
-                            PNR: {booking.pnr}
+                            PNR: {booking.bookingReference}
                           </span>
                           <span className="block text-[9px] text-vantage-muted mt-2xs">
-                            Booked on {booking.dateBooked.slice(0, 10)}
+                            Booked on {booking.dateBooked?.slice(0, 10) ?? 'N/A'}
                           </span>
                         </div>
                         <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-xs py-3xs rounded-full border border-emerald-500/20">
@@ -472,7 +472,7 @@ export const DashboardPage: React.FC = () => {
                         <div className="flex justify-between items-center text-xs border-t border-white/5 pt-xs">
                           <span className="text-vantage-muted">Total Price Paid</span>
                           <span className="font-mono font-bold text-vantage-accent">
-                            ${booking.totalPrice}
+                            ${booking.currencyReceipt}
                           </span>
                         </div>
                       </div>
@@ -488,7 +488,7 @@ export const DashboardPage: React.FC = () => {
                           onClick={() =>
                             navigate('/tracker', {
                               state: {
-                                flightNumber: booking.outbound?.id.split('-')[3] ?? 'EK201',
+                                flightNumber: booking.outbound?.id?.split('-')[3] ?? 'EK201',
                               },
                             })
                           }

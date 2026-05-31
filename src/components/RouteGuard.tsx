@@ -21,7 +21,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   // Define the set of paths that require a hydrated booking profile.
   const protectedPaths = [ROUTE_MAP.TRIPS, ROUTE_MAP.BOARDING_PASS];
 
-  const isProtected = protectedPaths.includes(location.pathname as string);
+  const isProtected = protectedPaths.includes(location.pathname);
   const shouldRedirect = isProtected && !bookingDetails;
 
   // Trigger telemetry warning exactly once when a redirection occurs.

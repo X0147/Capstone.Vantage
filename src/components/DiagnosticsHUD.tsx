@@ -12,8 +12,8 @@ const DiagnosticsHUD: React.FC = () => {
   const [logs, setLogs] = useState<string[]>([]);
   const [renderTime, setRenderTime] = useState<number>(0);
 
-  // Snapshot of the current Zustand store (all keys)
-  const storeSnapshot = useBookingStore(state => ({ ...state }));
+  // Snapshot of the current Zustand store (stable reference)
+  const storeSnapshot = useBookingStore.getState();
 
   // Toggle visibility on key combo
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -25,12 +25,14 @@ const DiagnosticsHUD: React.FC = () => {
     }
   }, []);
 
-  // Poll logs every second
+  // Poll logs every 2 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      const recent = telemetry.getLogs?.().slice(-10) ?? [];
-      setLogs(recent);
-    }, 1000);
+    const fetchLogs = () => {
+      const logEntries = telemetry.getLogs?.() ?? [];
+      setLogs(logEntries.map((entry: { message: string }) => entry.message));
+    };
+    fetchLogs();
+    const interval = setInterval(fetchLogs, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,10 +57,9 @@ const DiagnosticsHUD: React.FC = () => {
     throw new Error('Manual error trigger from DiagnosticsHUD');
   };
 
-  const clearLogs = () => {
-    telemetry.clearLogs?.();
+  const handleClear = () => {
+    telemetry.clear?.();
     setLogs([]);
-    telemetry.info('DiagnosticsHUD: logs cleared via System Override');
   };
 
   const swapPassenger = () => {
@@ -132,7 +133,7 @@ const DiagnosticsHUD: React.FC = () => {
                 Throw Hard Error
               </button>
               <button
-                onClick={clearLogs}
+                onClick={handleClear}
                 className="bg-yellow-600 hover:bg-yellow-500 text-white px-3 py-1 rounded"
               >
                 Clear Logs

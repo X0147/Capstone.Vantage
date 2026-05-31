@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 
+
+
+
+
 export const ManageBookingPage: React.FC = () => {
   const [pnr, setPnr] = useState('');
   const [lastName, setLastName] = useState('');
@@ -181,7 +185,7 @@ export const ManageBookingPage: React.FC = () => {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-3xl font-black text-white font-display leading-none">Booking Overview</h2>
-                  <p className="text-vantage-gold font-mono tracking-widest text-[11px] mt-2 uppercase">Ref: {booking.pnr}</p>
+                  <p className="text-vantage-gold font-mono tracking-widest text-[11px] mt-2 uppercase">Ref: {booking.bookingReference}</p>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest border border-emerald-500/20">
@@ -288,19 +292,16 @@ export const ManageBookingPage: React.FC = () => {
                         <h3 className="text-xs font-mono uppercase tracking-widest font-bold">Passenger Manifest</h3>
                       </div>
                       <div className="space-y-3">
-                        {booking.passengers.map((p, i) => (
-                          <div key={i} className="flex items-center justify-between bg-white/[0.02] border border-white/5 p-3 rounded-xl">
+                          <div className="flex items-center justify-between bg-white/[0.02] border border-white/5 p-3 rounded-xl">
                             <div>
-                              <p className="text-sm font-bold text-white">{p.firstName} {p.lastName}</p>
-                              <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Traveler {i + 1}</p>
+                              <p className="text-sm font-bold text-white">{booking.passengerName}</p>
+                              <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Primary Traveler</p>
                             </div>
                             <div className="text-right">
-                              {/* eslint-disable-next-line security/detect-object-injection */}
-                              <p className="text-xs text-white/80">{booking.seats[i] ?? 'Unassigned'}</p>
+                              <p className="text-xs text-white/80">{booking.seat ?? 'Unassigned'}</p>
                               <p className="text-[9px] font-mono text-vantage-muted uppercase mt-0.5">Seat</p>
                             </div>
                           </div>
-                        ))}
                       </div>
                     </div>
 

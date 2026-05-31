@@ -4,7 +4,7 @@ import { useBookingStore } from '../store/useBookingStore';
 
 export default function PassengerPage() {
   const navigate = useNavigate();
-  const { setPassengers } = useBookingStore();
+  const { setPassengerData } = useBookingStore();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -15,7 +15,7 @@ export default function PassengerPage() {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setPassengers([formData]); // Currently handling single passenger for demo
+    setPassengerData([formData]); // Store passenger data as array
     navigate('/seat-selection');
   };
 
