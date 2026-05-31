@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useBookingStore } from '../store/useBookingStore';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +8,6 @@ import { Search, Ticket, Plane, ShieldAlert, QrCode, RefreshCw,
 } from 'lucide-react';
 import AnimatedSpinner from '../components/AnimatedSpinner';
 import SEO from '../components/SEO';
-import { mockJourney } from '../data/flightMocks';
 
 const TicketSkeleton = () => (
   <div className="max-w-5xl mx-auto px-sm py-xl min-h-[85vh] flex flex-col justify-center animate-pulse">
@@ -34,57 +32,30 @@ const TicketSkeleton = () => (
 );
 export const TrackTicketPage: React.FC = () => {
   const { t } = useTranslation();
-  const { trackedTicket, trackError,  clearTrackedTicket } = useBookingStore();
+  const { trackedTicket, trackError, lookupTicket, clearTrackedTicket } = useBookingStore();
 
   const [pnr, setPnr] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const navigate = useNavigate();
-  const { setBookingDetails } = useBookingStore();
   const handleLookup = async (e: React.SyntheticEvent) => {
-    await Promise.resolve();
     e.preventDefault();
+    // Ensure all fields are filled
     if (!pnr || !lastName || !email) return;
-    // Normalize inputs
-    const normPnr = pnr.trim().toUpperCase();
-    const normLast = lastName.trim().toUpperCase();
-    // Validate against mock journey
-    const isValid =
-      normPnr === mockJourney.pnr &&
-      (normLast.includes('NEWTON') || normLast === 'JENNIFER NATALIE NEWTON');
-    if (isValid) {
-      // Hydrate store with mock journey data
-      setBookingDetails({
-        passengerName: mockJourney.passengerName,
-        email: mockJourney.contactEmail,
-        trackingCode: mockJourney.trackingCode,
-        bookingReference: mockJourney.pnr,
-        status: mockJourney.checkInStatus,
-        route: {
-          origin: mockJourney.legs[0].departure.iata,
-          destination: mockJourney.legs[mockJourney.legs.length - 1].arrival.iata,
-          departureDate: mockJourney.legs[0].departureTime,
-          arrivalDate: mockJourney.legs[mockJourney.legs.length - 1].arrivalTime,
-          carrier: mockJourney.legs.map(l => l.carrier).join(' / '),
-          flightNumber: mockJourney.legs.map(l => l.flightNumber).join(' / '),
-          layover: `${mockJourney.legs[0].stopover?.minConnectionMins ?? 0}m`
-        },
-      });
-      // Clear any error state
-      clearTrackedTicket();
-      // Navigate to boarding pass
-      navigate('/boarding-pass');
-    } else {
-      // Show error via store error field
-      // reuse existing trackError mechanism by setting a temporary error
-      // We'll set a local error state
-      // For simplicity, use toast
-      toast.error('No active reservation found for provided credentials');
-      // Optionally, you could set a store error if needed
-    }
+
+    // Start loading state
+    setIsSearching(true);
+
+    // Call the store's lookupTicket method (mocked in tests)
+    const success = await lookupTicket(pnr, lastName, email);
+
+    // If lookup failed, keep error handling inside the store (trackError will be set)
+    // Reset loading state regardless of outcome
     setIsSearching(false);
+
+    // If successful, you may optionally navigate or perform additional actions here.
+    // For now, we rely on store state updates (trackedTicket) to render the live view.
   };
 
 

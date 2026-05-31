@@ -9,7 +9,7 @@ export const BookingLookupTest: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ padding: '1rem', background: '#111', color: '#0f0', fontFamily: 'monospace' }}>
+    <div role="region" style={{ padding: '1rem', background: '#111', color: '#0f0', fontFamily: 'monospace' }}>
       <h3>Booking Lookup Test</h3>
       <pre>{JSON.stringify(result, null, 2)}</pre>
     </div>

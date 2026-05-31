@@ -3,30 +3,25 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BookingLookupTest } from '../../components/BookingLookupTest';
 
-// Mock the store to ensure deterministic data
-jest.mock('../../store/useBookingStore', () => {
-  const actual = jest.requireActual('../../store/useBookingStore');
-  return {
-    __esModule: true,
-    ...actual,
-    useBookingStore: {
-      getState: () => ({
-        getBooking: (pnr: string, lastName: string) => {
-          if (pnr === 'OFDTIF69RBJJZIJ1OSMR' && lastName.toUpperCase() === 'NEWTON') {
-            return {
-              bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
-              passengerName: 'John Newton',
-              email: 'newtonjenny07@gmail.com',
-              trackingCode: 'MAT-TRACK-001',
-              // other required fields can be omitted for this test
-            } as any;
-          }
-          return null;
-        },
-      }),
-    },
-  };
-});
+import { vi } from 'vitest';
+vi.mock('../../store/useBookingStore', () => ({
+  __esModule: true,
+  default: {
+    getState: () => ({
+      getBooking: (pnr: string, lastName: string) => {
+        if (pnr === 'OFDTIF69RBJJZIJ1OSMR' && lastName.toUpperCase() === 'NEWTON') {
+          return {
+            bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
+            passengerName: 'John Newton',
+            email: 'newtonjenny07@gmail.com',
+            trackingCode: 'MAT-TRACK-001',
+          } as any;
+        }
+        return null;
+      },
+    }),
+  },
+}));
 
 test('BookingLookupTest displays booking data', async () => {
   render(<BookingLookupTest />);

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { mockJourney } from '../data/flightMocks';
+import { trackTicket } from '../services/trackService';
 
 export interface TicketDetails {
   pnr: string;
@@ -160,6 +161,8 @@ export interface BookingState {
 // 2. UNIFIED INITIAL STATE BALANCES
 // ==========================================
   // Initial state without resetStore
+const initialStoreState = {
+  // Initial state values
   flightSelections: [],
   passengerData: [],
   seatMaps: {},
@@ -173,27 +176,6 @@ export interface BookingState {
   trackError: null,
   bookingDetails: hydratedRecord,
   currentStep: 1,
-  pastBookings: [
-    {
-      ...hydratedRecord,
-      passengerName: 'John Newton',
-      bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
-      trackingCode: 'MAT-TRACK-001',
-    },
-  ],
-  error: null,
-  isLoading: false,
-};
-  // Removed resetStore from initial state to avoid undefined set reference
-  resetStore: () => set({ ...initialStoreState, bookingDetails: null }),
-  // Updated searchParams default
-  searchParams: { passengers: { adults: 1 } },
-  trackedTicket: null,
-  trackError: null,
-
-  bookingDetails: hydratedRecord,
-  currentStep: 1,
-  // Seed mock past bookings for demo/testing
   pastBookings: [
     {
       ...hydratedRecord,
@@ -251,24 +233,19 @@ export const useBookingStore = create<BookingState>((set, get) => ({
   setStep: (step) => set({ currentStep: step }),
 
   lookupTicket: async (pnr, name, email) => {
-    // Simple mock lookup using pastBookings
-    const record = get().pastBookings.find((b) => {
-      const pnrMatch = b.bookingReference.toUpperCase() === pnr.trim().toUpperCase();
-      const nameMatch = b.passengerName.toUpperCase().includes(name.trim().toUpperCase());
-      return pnrMatch && nameMatch;
-    });
-    if (record) {
-      const ticket = {
-        pnr: record.bookingReference,
-        lastName: record.passengerName.split(' ').pop() || '',
-        flightNumber: record.route?.flightNumber || '',
-        // Additional fields can be added as needed
-      } as any;
-      set({ trackedTicket: ticket, trackError: null });
-      return true;
+    try {
+      const ticket = await trackTicket({ pnr, lastName: name, email });
+      if (ticket) {
+        set({ trackedTicket: ticket, trackError: null });
+        return true;
+      }
+      set({ trackedTicket: null, trackError: 'No active reservation found.' });
+      return false;
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      set({ trackedTicket: null, trackError: msg });
+      return false;
     }
-    set({ trackedTicket: null, trackError: 'No active reservation found.' });
-    return false;
   },
   clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
   setPayment: (details) => set({ paymentDetails: details }),
