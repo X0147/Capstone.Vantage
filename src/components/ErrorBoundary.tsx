@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { telemetry } from '../utils/telemetryLogger';
+import { telemetry } from '../utils/telemetry';
 import { ShieldAlert, RefreshCw } from 'lucide-react';
 
 interface Props { children: ReactNode; }

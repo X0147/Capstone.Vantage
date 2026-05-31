@@ -32,7 +32,7 @@ export default function TripsPage() {
     };
   }, []);
 
-  const activeRecord = bookingDetails || {
+  const activeRecord = bookingDetails ?? {
     passengerName: "Jennifer Natalie Newton",
     bookingReference: "OFDTIF69RBJJZIJ1OSMR",
     trackingCode: "AX7890zklmnpqrt",
@@ -71,7 +71,7 @@ export default function TripsPage() {
       {/* Structural Breadcrumb Line */}
       <div className="w-full max-w-4xl mx-auto mb-6 flex items-center justify-between text-xs text-slate-500 font-mono relative z-10">
         <div className="flex items-center gap-2">
-          <span className="hover:text-slate-300 cursor-pointer" onClick={() => navigate('/')}>Hub</span>
+          <button type="button" className="hover:text-slate-300 cursor-pointer" onClick={() => navigate('/')}>Hub</button>
           <span>/</span>
           <span className="text-indigo-400">Trips</span>
         </div>
@@ -168,18 +168,18 @@ export default function TripsPage() {
               <div className="space-y-0.5">
                 <span className="text-[9px] font-mono tracking-wider text-emerald-500 uppercase block font-black">Reconciled Ledger Entry</span>
                 <p className="text-xs font-medium text-slate-300">
-                  Payment Tracked: <span className="font-mono text-emerald-400 font-bold">{activeRecord.paymentMethod?.replace('_', ' ')}</span>
+                  Payment Tracked: <span className="font-mono text-emerald-400 font-bold">{activeRecord.paymentMethod ?? ''.replace('_', ' ')}</span>
                 </p>
               </div>
               <div className="text-right sm:text-right">
                 <span className="text-[9px] font-mono text-slate-500 block uppercase">Settled Amount</span>
-                <span className="text-xs font-mono font-black text-white">{activeRecord.currencyReceipt || "USD 4,250.00"}</span>
+                <span className="text-xs font-mono font-black text-white">{activeRecord.currencyReceipt ?? "USD 4,250.00"}</span>
               </div>
             </div>
 
             <div className="md:col-span-4 flex flex-col sm:flex-row gap-2 w-full">
               <a
-                href={`mailto:${activeRecord.email || "newtonjenny07@gmail.com"}`}
+                href={`mailto:${activeRecord.email ?? "newtonjenny07@gmail.com"}`}
                 className="flex-1 bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:bg-slate-850 text-xs font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 group"
               >
                 <Mail className="w-3.5 h-3.5" />

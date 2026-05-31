@@ -34,7 +34,7 @@ const TicketSkeleton = () => (
 );
 export const TrackTicketPage: React.FC = () => {
   const { t } = useTranslation();
-  const { trackedTicket, trackError, lookupTicket, clearTrackedTicket } = useBookingStore();
+  const { trackedTicket, trackError,  clearTrackedTicket } = useBookingStore();
 
   const [pnr, setPnr] = useState('');
   const [lastName, setLastName] = useState('');
@@ -44,6 +44,7 @@ export const TrackTicketPage: React.FC = () => {
   const navigate = useNavigate();
   const { setBookingDetails } = useBookingStore();
   const handleLookup = async (e: React.SyntheticEvent) => {
+    await Promise.resolve();
     e.preventDefault();
     if (!pnr || !lastName || !email) return;
     // Normalize inputs

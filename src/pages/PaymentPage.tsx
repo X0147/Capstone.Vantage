@@ -17,13 +17,13 @@ export default function PaymentPage() {
     cvv: '',
   });
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsProcessing(true);
     setPayment(formData);
 
     try {
-      await confirmBooking();
+      confirmBooking();
       toast.success(t('payment.success') ?? 'Payment complete!');
       navigate('/confirmation');
     } catch {

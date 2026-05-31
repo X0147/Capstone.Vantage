@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { useBookingStore } from '../store/useBookingStore';
-import { telemetry } from '../utils/telemetryLogger';
+import { telemetry } from '../utils/telemetry';
 import SeatMapMatrix from '../components/SeatMapMatrix';
 import { jsPDF } from 'jspdf';
 import {
@@ -75,7 +75,7 @@ export default function BoardingPassPage() {
 
   const exportManifest = (): void => {
     try {
-      const doc = new jsPDF() as any;
+      const doc = new jsPDF();
       let y = 40;
       const lineHeight = 24;
 
@@ -125,12 +125,12 @@ export default function BoardingPassPage() {
             doc.addImage(imgData, 'PNG', 40, y, 140, 140);
           }
           URL.revokeObjectURL(blobUrl);
-          doc.save(`${String(bookingDetails.bookingReference)}_manifest.pdf`);
+          doc.save(`${bookingDetails.bookingReference}_manifest.pdf`);
           telemetry.info('Exported physical manifest voucher PDF successfully.');
         };
         img.src = blobUrl;
       } else {
-        doc.save(`${String(bookingDetails.bookingReference)}_manifest.pdf`);
+        doc.save(`${bookingDetails.bookingReference}_manifest.pdf`);
         telemetry.warn('QR code asset missing during export sequence.');
       }
     } catch (error: unknown) {
@@ -277,28 +277,28 @@ export default function BoardingPassPage() {
                 </div>
               </div>
               <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold rounded-lg uppercase">
-                {String(bookingDetails.status ?? 'CHECKED IN')}
+                {bookingDetails.status ?? 'CHECKED IN'}
               </div>
             </div>
 
             <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               <div className="text-center md:col-span-4 md:text-left">
                 <span className="text-[10px] font-mono text-slate-500 block uppercase">Origin</span>
-                <h1 className="text-4xl font-black text-white tracking-tight">{String(bookingDetails.route?.origin ?? 'JIB')}</h1>
+                <h1 className="text-4xl font-black text-white tracking-tight">{bookingDetails.route?.origin ?? 'JIB'}</h1>
                 <p className="text-xs text-slate-400 mt-0.5">Djibouti Ambouli</p>
               </div>
               <div className="flex flex-col items-center justify-center md:col-span-4">
                 <span className="text-[9px] font-mono text-slate-400 bg-slate-950 border border-white/5 px-2 py-0.5 rounded-md mb-1">
-                  {String(bookingDetails.route?.carrier ?? 'Turkish Airlines')}
+                  {bookingDetails.route?.carrier ?? 'Turkish Airlines'}
                 </span>
                 <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent relative my-1">
                   <Plane className="absolute left-1/2 top-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rotate-90 text-indigo-400" />
                 </div>
-                <span className="text-[10px] font-mono text-slate-500">{String(bookingDetails.route?.flightNumber ?? 'TK 1972')}</span>
+                <span className="text-[10px] font-mono text-slate-500">{bookingDetails.route?.flightNumber ?? 'TK 1972'}</span>
               </div>
               <div className="text-center md:col-span-4 md:text-right">
                 <span className="text-[10px] font-mono text-slate-500 block uppercase">Destination</span>
-                <h1 className="text-4xl font-black text-white tracking-tight">{String(bookingDetails.route?.destination ?? 'ORD')}</h1>
+                <h1 className="text-4xl font-black text-white tracking-tight">{bookingDetails.route?.destination ?? 'ORD'}</h1>
                 <p className="text-xs text-slate-400 mt-0.5">Chicago O'Hare</p>
               </div>
             </div>
@@ -306,33 +306,33 @@ export default function BoardingPassPage() {
             <div className="mx-6 md:mx-8 p-4 bg-slate-950/40 rounded-2xl border border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center sm:text-left">
               <div>
                 <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center justify-center sm:justify-start gap-1"><Clock className="w-3 h-3" /> Boarding</span>
-                <span className="text-sm font-mono font-black text-white">{String(bookingDetails.boardingTime ?? "13:15")}</span>
+                <span className="text-sm font-mono font-black text-white">{bookingDetails.boardingTime ?? "13:15"}</span>
               </div>
               <div>
                 <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center justify-center sm:justify-start gap-1"><Plane className="w-3 h-3" /> Gate Lock</span>
-                <span className="text-sm font-mono font-black text-indigo-400">{String(bookingDetails.gate ?? "B14")}</span>
+                <span className="text-sm font-mono font-black text-indigo-400">{bookingDetails.gate ?? "B14"}</span>
               </div>
               <div>
                 <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center justify-center sm:justify-start gap-1"><User className="w-3 h-3" /> Assigned Seat</span>
-                <span className="text-sm font-mono font-black text-emerald-400">{String(bookingDetails.seat ?? selectedSeat)}</span>
+                <span className="text-sm font-mono font-black text-emerald-400">{bookingDetails.seat ?? selectedSeat}</span>
               </div>
               <div>
                 <span className="text-[9px] font-mono text-slate-500 uppercase flex items-center justify-center sm:justify-start gap-1"><Briefcase className="w-3 h-3" /> Bags</span>
-                <span className="block text-xs font-sans font-bold text-slate-300 truncate">{String(bookingDetails.baggage ?? `${baggageCount} Checked Bags`)}</span>
+                <span className="block text-xs font-sans font-bold text-slate-300 truncate">{bookingDetails.baggage ?? `${baggageCount} Checked Bags`}</span>
               </div>
             </div>
 
             <div className="mt-6 p-6 bg-slate-950/60 border-t border-dashed border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="space-y-1.5 text-center sm:text-left">
                 <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest block">Manifest Index Passenger</span>
-                <h4 className="text-sm font-black text-white">{String(bookingDetails.passengerName)}</h4>
-                <p className="text-[10px] font-mono text-slate-400">Security Key: <span className="text-indigo-400">{String(bookingDetails.trackingCode ?? 'AX7890')}</span></p>
+                <h4 className="text-sm font-black text-white">{bookingDetails.passengerName}</h4>
+                <p className="text-[10px] font-mono text-slate-400">Security Key: <span className="text-indigo-400">{bookingDetails.trackingCode ?? 'AX7890'}</span></p>
               </div>
 
               <div className="flex flex-col items-center gap-3 no-print">
                 <div ref={qrRef} className="bg-white p-3 rounded-2xl shadow-xl border border-white/10 flex items-center justify-center">
                   <QRCodeSVG
-                    value={`VANTAGE::${String(bookingDetails.bookingReference ?? '')}::${String(bookingDetails.passengerName)}::${String(bookingDetails.seat ?? selectedSeat)}`}
+                    value={`VANTAGE::${bookingDetails.bookingReference ?? ''}::${bookingDetails.passengerName}::${bookingDetails.seat ?? selectedSeat}`}
                     size={100}
                     level="H"
                   />
@@ -354,7 +354,7 @@ export default function BoardingPassPage() {
               </div>
               <div className="text-right">
                 <span className="text-slate-500 block">RECEIPT</span>
-                <span className="text-white font-bold">{String(bookingDetails.currencyReceipt ?? 'USD 4,250.00')} [SETTED]</span>
+                <span className="text-white font-bold">{bookingDetails.currencyReceipt ?? 'USD 4,250.00'} [SETTED]</span>
               </div>
             </div>
           </motion.div>

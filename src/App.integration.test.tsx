@@ -46,7 +46,7 @@ vi.mock('./hooks/useFlightsQuery', () => ({
 describe('End-to-End Premium Booking Funnel Integration Matrix', () => {
   beforeEach(() => {
     useSearchStore.getState().reset();
-    useBookingStore.getState().resetBooking();
+    useBookingStore.getState().clearStore();
 
     useSearchStore.getState().setSearchParams({
       from: 'DXB',

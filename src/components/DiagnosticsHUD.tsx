@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBookingStore } from '../store/useBookingStore';
-import { telemetry } from '../utils/telemetryLogger';
+import { telemetry } from '../utils/telemetry';
 
 /**
  * Hidden developer diagnostics overlay.
@@ -28,7 +28,7 @@ const DiagnosticsHUD: React.FC = () => {
   // Poll logs every 2 seconds
   useEffect(() => {
     const fetchLogs = () => {
-      const logEntries = telemetry.getLogs?.() ?? [];
+      const logEntries = telemetry.getLogs();
       setLogs(logEntries.map((entry: { message: string }) => entry.message));
     };
     fetchLogs();
@@ -58,7 +58,7 @@ const DiagnosticsHUD: React.FC = () => {
   };
 
   const handleClear = () => {
-    telemetry.clear?.();
+    telemetry.clear();
     setLogs([]);
   };
 

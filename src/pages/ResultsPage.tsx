@@ -68,7 +68,7 @@ export const ResultsPage: React.FC = () => {
       airline: { name: mainSegment.airline, logo: '' },
       departure: { iata: mainSegment.origin, time: mainSegment.departureTime },
       arrival: { iata: mainSegment.destination, time: mainSegment.arrivalTime },
-      duration: `${String(Math.floor(mainSegment.duration / 60))}h ${String(mainSegment.duration % 60)}m`,
+      duration: `${String(Math.floor(mainSegment.duration / 60))}h ${mainSegment.duration % 60}m`,
       stops: flight.outbound.length - 1,
       price: flight.price,
     };

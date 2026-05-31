@@ -11,7 +11,7 @@ const MAX_LOGS = 50;
 export const telemetry = {
   log(level: LogEntry['level'], message: string, context?: unknown) {
     try {
-      const logs: LogEntry[] = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+      const logs = (JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')) as LogEntry[];
       
       const newEntry: LogEntry = {
         timestamp: new Date().toISOString(),
@@ -39,7 +39,7 @@ export const telemetry = {
 
   getLogs(): LogEntry[] {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+      return (JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')) as LogEntry[];
     } catch {
       return [];
     }
@@ -49,4 +49,15 @@ export const telemetry = {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem('vantage_telemetry');
   }
+};
+
+export const getTelemetrySummary = (): Record<string, number> => {
+  const cached = localStorage.getItem('vantage_telemetry');
+  const logs: any[] = cached ? (JSON.parse(cached) as any[]) : [];
+  
+  return logs.reduce((acc: Record<string, number>, log) => {
+    const level = log.level ?? 'info';
+    acc[level] = (acc[level] ?? 0) + 1;
+    return acc;
+  }, { info: 0, warn: 0, error: 0 });
 };

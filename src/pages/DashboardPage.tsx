@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   Lock,
 } from 'lucide-react';
-import { ItineraryTrackerCard } from '../components/ItineraryTrackerCard';
+import ItineraryTrackerCard from '../components/ItineraryTrackerCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();

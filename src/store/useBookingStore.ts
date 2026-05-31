@@ -1,6 +1,24 @@
-import { telemetry } from '../utils/telemetryLogger';
 import { create } from 'zustand';
 import { mockJourney } from '../data/flightMocks';
+
+export interface TicketDetails {
+  pnr: string;
+  lastName: string;
+  flightNumber: string;
+  origin: string;
+  destination: string;
+  departureTime: string;
+  arrivalTime: string;
+  status: string;
+  seat: string;
+  passengerName: string;
+  passengerFirstName: string;
+  passengerLastName: string;
+  cabin: string;
+  gate: string;
+  terminal: string;
+}
+import { telemetry } from '../utils/telemetry';
 
 export interface Passenger {
   firstName: string;
@@ -33,6 +51,9 @@ export interface BookingRecord {
   passengerName: string;
   email?: string;
   status: string;
+  trackingCode?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   gate?: string;
 
   baggage?: string;
@@ -122,7 +143,7 @@ export interface BookingState {
   completePayment: () => void;
   setStep: (step: number) => void;
   
-  trackedTicket: unknown | null;
+  trackedTicket: TicketDetails | null;
   trackError: string | null;
   lookupTicket: (pnr: string, name: string, email: string) => Promise<boolean>;
   clearTrackedTicket: () => void;
@@ -178,6 +199,9 @@ export const useBookingStore = create<BookingState>((set, get) => ({
       pnr: b?.pnr,
       passengerName: b?.passengerName ?? '',
       email: b?.email,
+      trackingCode: b?.trackingCode,
+      paymentMethod: b?.paymentMethod,
+      paymentStatus: b?.paymentStatus,
       status: b?.status ?? 'UNKNOWN',
       gate: b?.gate,
       seat: b?.seat,
@@ -208,12 +232,12 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   setStep: (step) => set({ currentStep: step }),
 
-  lookupTicket: async (pnr, name, email) => { return false; },
+  lookupTicket: async (_pnr, _name, _email) => { await Promise.resolve(); return false; },
   clearTrackedTicket: () => set({ trackedTicket: null, trackError: null }),
   setPayment: (details) => set({ paymentDetails: details }),
   confirmBooking: () => set({ currentStep: 5 }),
   selectOutbound: (flight) => set({ selectedOutbound: flight }),
-  selectReturn: (flight) => {},
+  selectReturn: (_flight) => { return; },
 
   getBooking: (pnr: string, lastName: string): BookingRecord | null => {
     const cleanPNR = pnr.trim().toUpperCase();

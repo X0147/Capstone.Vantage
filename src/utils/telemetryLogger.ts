@@ -1,22 +1,18 @@
-export { telemetry } from './telemetry';
-
-// Register online/offline listeners to log connection changes
-if (typeof window !== 'undefined') {
-  window.addEventListener('online', () => {
-    telemetry.info('Network status: online');
-  });
-  window.addEventListener('offline', () => {
-    telemetry.warn('Network status: offline');
-  });
-}
+// src/utils/telemetryLogger.ts
 export interface LogEntry {
   timestamp: string;
   level: 'info' | 'warn' | 'error';
   message: string;
 }
 
-// Ensure your array tracking return matches the type cleanly
-export const getLogs = (): LogEntry[] => {
+const writeInternalLog = (level: 'info' | 'warn' | 'error', message: string) => {
   const cached = localStorage.getItem('vantage_telemetry');
-  return cached ? (JSON.parse(cached) as LogEntry[]) : [];
+  const logs: LogEntry[] = cached ? (JSON.parse(cached) as LogEntry[]) : [];
+  logs.push({ timestamp: new Date().toISOString(), level, message });
+  localStorage.setItem('vantage_telemetry', JSON.stringify(logs));
+};
+
+export const telemetry = {
+  info: (msg: string) => writeInternalLog('info', msg),
+  warn: (msg: string) => writeInternalLog('warn', msg),
 };

@@ -20,7 +20,7 @@ export type Leg = {
   /** Flight number (numeric part) */
   flightNumber: string;
   /** Aircraft type */
-  aircraft: 'Airbus A350-1000' | string;
+  aircraft: string;
   /** Departure airport */
   departure: Airport;
   /** Arrival airport */
