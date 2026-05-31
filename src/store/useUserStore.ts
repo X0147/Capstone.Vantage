@@ -83,7 +83,7 @@ export const useUserStore = create<UserStore>()(
 
       login: ({ email, password }) => {
   const entry = USERS[email];
-  if (entry && entry.password === password) {
+  if (entry?.password === password) {
     set({ isLoggedIn: true, profile: entry.profile });
     toast.success('Logged in successfully');
   } else {

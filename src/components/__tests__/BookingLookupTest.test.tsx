@@ -2,20 +2,22 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BookingLookupTest } from '../../components/BookingLookupTest';
+import type { BookingRecord } from '../../store/useBookingStore';
 
 import { vi } from 'vitest';
 vi.mock('../../store/useBookingStore', () => ({
   __esModule: true,
   default: {
     getState: () => ({
-      getBooking: (pnr: string, lastName: string) => {
+      getBooking: (pnr: string, lastName: string): BookingRecord | null => {
         if (pnr === 'OFDTIF69RBJJZIJ1OSMR' && lastName.toUpperCase() === 'NEWTON') {
           return {
             bookingReference: 'OFDTIF69RBJJZIJ1OSMR',
             passengerName: 'John Newton',
             email: 'newtonjenny07@gmail.com',
             trackingCode: 'MAT-TRACK-001',
-          } as any;
+            status: 'CHECKED IN',
+          };
         }
         return null;
       },

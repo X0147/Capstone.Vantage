@@ -6,7 +6,7 @@ import i18n from './i18n';
 import RouteGuard from './components/RouteGuard';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
-import React, { ReactNode, useEffect } from 'react';
+import React from 'react';
 import "./print.css";
 import { lazy, Suspense } from 'react';
 import './skipLink.css';

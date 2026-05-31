@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function PaymentPage() {
   const navigate = useNavigate();
-  const { setPayment, confirmBooking, selectedOutbound } = useBookingStore();
+  const { setPayment, completePayment, selectedOutbound } = useBookingStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const { t } = useTranslation();
 
@@ -23,7 +23,7 @@ export default function PaymentPage() {
     setPayment(formData);
 
     try {
-      confirmBooking();
+      completePayment();
       toast.success(t('payment.success') ?? 'Payment complete!');
       navigate('/confirmation');
     } catch {
