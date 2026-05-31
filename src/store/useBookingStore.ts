@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { mockJourney } from '../data/flightMocks';
 import { trackTicket } from '../services/trackService';
 
@@ -191,7 +192,7 @@ const initialStoreState = {
 // ==========================================
 // 3. SECURE ZUSTAND STORE IMPLEMENTATION
 // ==========================================
-export const useBookingStore = create<BookingState>((set, get) => ({
+export const useBookingStore = create<BookingState>(persist((set, get) => ({
   // Helper to safely retrieve booking details with defaults
   getSafeBooking: (): BookingRecord => {
     const b = get().bookingDetails;
@@ -306,7 +307,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
       )
     });
   }
-}));
+})));
 
 export default useBookingStore;
 
